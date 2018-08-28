@@ -1,0 +1,77 @@
+package cucumber.examples.java.testNG.stepDefinitions.StraitTimes.Web;
+
+import cucumber.api.java.en.And;
+import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
+import cucumber.examples.java.testNG.DriverManager;
+import cucumber.examples.java.testNG.page_objects.LoginPage;
+import org.apache.log4j.Logger;
+import org.openqa.selenium.*;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.util.List;
+
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
+/**
+ * Simple steps mapping class that always fails.
+ * I've added it to show how failed story will look like in the final Cucumber HTML report.
+ * @author jk
+ */
+public class StepDefs_Web {
+
+    static Logger log;
+    WebDriver driver = DriverManager.getDriver();
+    private LoginPage loginPage;
+    private List<WebElement> searchResults;
+
+    static {
+        log = Logger.getLogger(StepDefs_Web.class);
+    }
+
+    public StepDefs_Web() throws MalformedURLException {
+    }
+
+    @Given("^I want to launch the Straits Times website$")
+    public void givenISearchFor() throws InterruptedException {
+        log.info("Given I launch the Strait Times Webiste");
+        loginPage = new LoginPage(this.driver);
+        loginPage.launch_Strait_Times();
+
+    }
+    @When("^I want to click on the login link$")
+    public void i_want_to_click_the_login_link() throws IOException, InterruptedException {
+        log.info("I want to click on the login link");
+        loginPage.login_StraitTimes();
+    }
+
+    @And("^I want to login the straits time site as (.+) and (.+)$")
+    public void i_want_to_login_straits_time(String UserName, String Password) throws IOException, InterruptedException {
+        loginPage.enter_Login_Credentials(UserName, Password);
+
+    }
+    @And("^I want to verify the user has been logged in as (.+)$")
+    public void i_want_to_verify_that_the_user_is_logged_in(String UserName) throws IOException, InterruptedException {
+        loginPage.user_logged_in(UserName);
+
+    }
+
+    @And("^I want to verify and read the main article has a picture or video$")
+    public void i_want_to_verify_the_main_article() throws IOException, InterruptedException {
+        loginPage.verify_main_article_image();
+
+    }
+    @And("^I want to click the main article$")
+    public void i_want_to_click_the_main_article() throws IOException, InterruptedException {
+        loginPage.click_main_article();
+
+    }
+    @Then("^I want to verify the main article page$")
+    public void i_want_to_verify_the_main_article_page() throws IOException, InterruptedException {
+        loginPage.verify_main_article_page();
+
+    }
+}

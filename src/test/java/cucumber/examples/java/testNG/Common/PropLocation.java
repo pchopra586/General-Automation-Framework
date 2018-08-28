@@ -1,0 +1,14 @@
+package cucumber.examples.java.testNG.Common;
+
+public class PropLocation {
+
+    public String location()
+    {
+        return "src//main//resources//credentials.properties";
+    }
+
+    public String elementLocation()
+    {
+        return "src//test//resources//resources.properties";
+    }
+}
