@@ -1,13 +1,14 @@
-package cucumber.examples.java.testNG.stepDefinitions.StraitTimes.Android;
+package cucumber.java.testNG.stepDefinitions.StraitTimes.Android;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import cucumber.examples.java.testNG.DriverManager;
-import cucumber.examples.java.testNG.page_objects.Android;
-import cucumber.examples.java.testNG.page_objects.LoginPage;
-import cucumber.examples.java.testNG.stepDefinitions.StraitTimes.Web.StepDefs_Web;
+import cucumber.java.testNG.DriverManager;
+import cucumber.java.testNG.page_objects.Android;
+import cucumber.java.testNG.page_objects.LoginPage;
+import cucumber.java.testNG.stepDefinitions.StraitTimes.Web.StepDefs_Web;
+
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

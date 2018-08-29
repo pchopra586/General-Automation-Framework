@@ -1,4 +1,4 @@
-package cucumber.examples.java.testNG.Common;
+package cucumber.java.testNG.Common;
 
 import java.io.File;
 import java.io.FileInputStream;

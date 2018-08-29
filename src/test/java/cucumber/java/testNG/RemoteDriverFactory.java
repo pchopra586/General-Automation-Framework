@@ -1,4 +1,4 @@
-package cucumber.examples.java.testNG;
+package cucumber.java.testNG;
 
 import io.appium.java_client.remote.MobileCapabilityType;
 import org.apache.log4j.Logger;

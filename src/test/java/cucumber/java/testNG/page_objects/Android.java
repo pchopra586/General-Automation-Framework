@@ -1,7 +1,5 @@
-package cucumber.examples.java.testNG.page_objects;
+package cucumber.java.testNG.page_objects;
 
-import cucumber.examples.java.testNG.Common.PropLocation;
-import cucumber.examples.java.testNG.Common.ReadPropertiesValues;
 import io.appium.java_client.PerformsTouchActions;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.touch.WaitOptions;
@@ -9,6 +7,9 @@ import io.appium.java_client.touch.offset.PointOption;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.log4testng.Logger;
+
+import cucumber.java.testNG.Common.PropLocation;
+import cucumber.java.testNG.Common.ReadPropertiesValues;
 
 import java.net.MalformedURLException;
 import java.time.*;

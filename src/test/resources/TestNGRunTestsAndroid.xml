@@ -6,7 +6,7 @@
         This TestNG listener takes care of setting up and tearing down the Local Selenium driver,
         and it also changes test names in the final TestNG HTML report.
         -->
-        <listener class-name="cucumber.examples.java.testNG.LocalWebDriverListener" />
+        <listener class-name="cucumber.java.testNG.LocalWebDriverListener" />
     </listeners>
     <test name="Tests in Android">
         <parameter name="browserName" value="android" />
@@ -16,13 +16,13 @@
         <parameter name="appPath" value="/Users/pchopra/Downloads/Android_APK.apk"/>
         <!-- If you want to be more specific, replace this with a list of test classes you'd like to run -->
         <classes>
-            <class name="cucumber.examples.java.testNG.runners.RunCukesTestInAndroid" />
+            <class name="cucumber.java.testNG.runners.RunCukesTestInAndroid" />
         </classes>
     </test>
-    <test name="Tests in Chrome" >
+   <!--  <test name="Tests in Chrome" >
         <parameter name="browserName" value="chrome" />
         <classes>
-            <class name="cucumber.examples.java.testNG.runners.RunCukesTestInChrome"/>
+            <class name="cucumber.java.testNG.runners.RunCukesTestInChrome"/>
         </classes>
-    </test>
+    </test> -->
 </suite>
