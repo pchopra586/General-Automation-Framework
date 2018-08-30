@@ -25,7 +25,7 @@ import java.io.File;
 @RunWith(Cucumber.class)
 @CucumberOptions(
         features = "target/test-classes/features/Android",
-        glue = {"cucumber.java.testNG.stepDefinitions/StraitTimes/Android"},
+        glue = {"com.sph.straittimes.stepDefinitions/StraitTimes/Android"},
         format = {"pretty","rerun:target/cucumber-reports/rerun.txt",
                 "html:target/cucumber-report/android/cucumber-pretty",
                 "json:target/cucumber-report/android/cucumber.json",

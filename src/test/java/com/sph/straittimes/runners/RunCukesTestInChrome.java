@@ -26,7 +26,7 @@ import java.io.File;
 @RunWith(Cucumber.class)
 @CucumberOptions(
         features = "target/test-classes/features/Website",
-        glue = {"cucumber.java.testNG.stepDefinitions/StraitTimes/Web"},
+        glue = {"com.sph.straittimes.stepDefinitions/StraitTimes/Web"},
         format = {"pretty:target/cucumber-report/chrome/cucumber.txt",
                 "html:target/cucumber-report/chrome",
                 "json:target/cucumber-report/chrome/cucumber.json",
