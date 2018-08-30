@@ -1,4 +1,4 @@
-package cucumber.java.testNG.Common;
+package com.sph.straittimes.Common;
 
 public class PropLocation {
 

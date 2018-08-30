@@ -1,4 +1,4 @@
-package cucumber.java.testNG.Common;
+package com.sph.straittimes.Common;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -1,15 +1,21 @@
-package cucumber.java.testNG.page_objects;
+package com.sph.straittimes.page_objects;
 
+import com.sph.straittimes.utilities.AndroidElements;
+import io.appium.java_client.MobileElement;
 import io.appium.java_client.PerformsTouchActions;
 import io.appium.java_client.TouchAction;
+import io.appium.java_client.pagefactory.AndroidFindBy;
+import io.appium.java_client.pagefactory.AppiumFieldDecorator;
+import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.PointOption;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.log4testng.Logger;
 
-import cucumber.java.testNG.Common.PropLocation;
-import cucumber.java.testNG.Common.ReadPropertiesValues;
+import com.sph.straittimes.Common.PropLocation;
+import com.sph.straittimes.Common.ReadPropertiesValues;
+import com.sph.straittimes.utilities.IOSElements;
 
 import java.net.MalformedURLException;
 import java.time.*;
@@ -22,16 +28,25 @@ public class Android {
     ReadPropertiesValues loc = new ReadPropertiesValues(file.location());
     ReadPropertiesValues elementLoc = new ReadPropertiesValues(file.elementLocation());
     Logger logger= Logger.getLogger(Android.class);
+    
+    @iOSXCUITFindBy(xpath = "\"//XCUIElementTypeButton[@id=\\\"\"" + IOSElements.TERMS_CONDITIONS + "\"]")
+	@AndroidFindBy(id = AndroidElements.TERMS_AND_CONDITIONS)
+	private MobileElement terms_conditions;
+    
+    @iOSXCUITFindBy(xpath = "\"//XCUIElementTypeButton[@id=\\\"\"" + IOSElements.TERMS_CONDITIONS + "\"]")
+	@AndroidFindBy(id = AndroidElements.SKIP_TUTORIAL)
+	private MobileElement skip_tutorials;
 
     static WebDriver driver;
     public Android(WebDriver driver) throws MalformedURLException {
         this.driver = driver;
-        PageFactory.initElements(this.driver, this);
+        //PageFactory.initElements(this.driver, this);
+        PageFactory.initElements(new AppiumFieldDecorator(driver), this);
     }
 
     public Android accept_terms_and_conditions() throws InterruptedException {
         Thread.sleep(10000);
-        this.driver.findElement(By.id(elementLoc.readProperty("terms_conditions_android"))).click();
+        terms_conditions.click();
         logger.info("Terms and condition are accepted");
         return this;
     }
@@ -42,7 +57,7 @@ public class Android {
         Dimension size = this.driver.manage().window ().getSize();
         int startX = (int) (size.width * 0.8);
         int startY = size.height / 2;
-        int endX = (int) (size.width * 0.20);
+        int endX = (int) (size.width * 0.40);
         TouchAction action = new TouchAction ((PerformsTouchActions) driver);
         action.press(PointOption.point(startX,startY)).waitAction(WaitOptions.waitOptions(Duration.ofMillis(1000)))
                 .moveTo(PointOption.point(endX, startY)).release().perform();

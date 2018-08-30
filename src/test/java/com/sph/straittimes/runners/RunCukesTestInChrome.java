@@ -1,4 +1,4 @@
-package cucumber.java.testNG.runners;
+package com.sph.straittimes.runners;
 
 
 
@@ -26,7 +26,7 @@ import java.io.File;
 @RunWith(Cucumber.class)
 @CucumberOptions(
         features = "target/test-classes/features/Website",
-        glue = {"cucumber.examples.java.testNG.stepDefinitions"},
+        glue = {"cucumber.java.testNG.stepDefinitions/StraitTimes/Web"},
         format = {"pretty:target/cucumber-report/chrome/cucumber.txt",
                 "html:target/cucumber-report/chrome",
                 "json:target/cucumber-report/chrome/cucumber.json",
@@ -56,10 +56,10 @@ public class RunCukesTestInChrome extends AbstractTestNGCucumberTests {
 
     @AfterClass(alwaysRun = true)
     public void tearDownClass() throws Exception {
-        Reporter.loadXMLConfig(new File("src/test/resources/extent-config.xml"));
+        /*Reporter.loadXMLConfig(new File("src/test/resources/extent-config.xml"));
         Reporter.setSystemInfo("user", System.getProperty("user.name"));
         Reporter.setSystemInfo("os", "Mac OSX");
-        Reporter.setTestRunnerOutput("Sample test runner output message");
+        Reporter.setTestRunnerOutput("Sample test runner output message");*/
         testNGCucumberRunner.finish();
     }
 }

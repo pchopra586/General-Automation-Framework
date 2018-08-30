@@ -1,10 +1,10 @@
-package cucumber.java.testNG.stepDefinitions;
+package com.sph.straittimes.stepDefinitions;
 
 import cucumber.api.Scenario;
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
-import cucumber.java.testNG.DriverManager;
+import com.sph.straittimes.DriverFactory.DriverManager;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.OutputType;

@@ -1,4 +1,4 @@
-package cucumber.java.testNG;
+package com.sph.straittimes.DriverFactory;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
