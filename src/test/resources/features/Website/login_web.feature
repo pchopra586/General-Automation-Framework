@@ -5,9 +5,8 @@ Feature: Login into Straits Time Website
     When I want to click on the login link
     And I want to login the straits time site as <UserName> and <Password>
     And I want to verify the user has been logged in as <UserName>
-    And I want to verify and read the main article has a picture or video
-    And I want to click the main article
     Then I want to verify the main article page
+    Then I want to logout StraiTimes app
 
     Examples:
       |UserName     |Password   |

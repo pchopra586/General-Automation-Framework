@@ -9,35 +9,30 @@
 		<listener
 			class-name="com.sph.straittimes.DriverFactory.LocalWebDriverListener" />
 	</listeners>
-	<test name= "Tests in Android">
+	<!--<test name= "Tests in Mobile">
 		<parameter name="browserName" value="android" />
 		<parameter name="driverHost" value="127.0.0.1" />
 		<parameter name="driverPort" value="5000" />
 		<parameter name="devicename" value="emulator-5554" />
 		<parameter name="appPathvalue" value ="/Users/pchopra/Downloads/Android_APK.apk" />
-		<!-- If you want to be more specific, replace this with a list of test
-		classes you'd like to run -->
 		<classes>
-			<class name="com.sph.straittimes.runners.RunCukesTestInAndroid" />
+			<class name="com.sph.straittimes.runners.RunCukesTestInMobile" />
 		</classes>
 	</test>
 	<test name="Tests in Chrome">
 		<parameter name="browserName" value="chrome" />
 		<classes>
-			<class name="com.sph.straittimes.runners.RunCukesTestInChrome" />
+			<class name="com.sph.straittimes.runners.RunCukesTestInWeb" />
 		</classes>
-	</test>
+	</test>-->
 	<test name="Tests in iOS">
 		<parameter name="browserName" value="IOS" />
 		<parameter name="driverHost" value="127.0.0.1" />
 		<parameter name="driverPort" value="5000" />
 		<parameter name="devicename" value="iPhone X" />
 		<parameter name="udID" value="FD4C36C4-5F96-459F-A65F-F3F5C88FA327" />
-		<parameter name="appPath" value="/Users/pchopra/Downloads/Android_APK.apk" />
-		<!-- If you want to be more specific, replace this with a list of test 
-			classes you'd like to run -->
 		<classes>
-			<class name="com.sph.straittimes.runners.RunCukesTestInAndroid" />
+			<class name="com.sph.straittimes.runners.RunCukesTestInMobile" />
 		</classes>
 	</test>
 </suite>

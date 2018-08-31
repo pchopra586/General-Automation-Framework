@@ -18,6 +18,9 @@ import java.net.MalformedURLException;
  */
 public class LocalWebDriverListener implements IInvokedMethodListener {
 
+    public static String browserName;
+
+
     static Logger log = Logger.getLogger(LocalWebDriverListener.class);
 
     @Override
@@ -25,7 +28,7 @@ public class LocalWebDriverListener implements IInvokedMethodListener {
         log.debug("BEGINNING: org.stng.jbehave.LocalWebDriverListener.beforeInvocation");
         if (method.isTestMethod()) {
             // get browser name specified in the TestNG XML test suite file
-            String browserName = method.getTestMethod().getXmlTest().getLocalParameters().get("browserName");
+            browserName = method.getTestMethod().getXmlTest().getLocalParameters().get("browserName");
             String driverHost = method.getTestMethod().getXmlTest().getLocalParameters().get("driverHost");
             String driverPort = method.getTestMethod().getXmlTest().getLocalParameters().get("driverPort");
             String devicename = method.getTestMethod().getXmlTest().getLocalParameters().get("devicename");

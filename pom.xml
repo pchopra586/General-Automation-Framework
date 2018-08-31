@@ -50,7 +50,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <testNG.suiteXmlFile>src/test/resources/TestNGRunTestsLocally.xml</testNG.suiteXmlFile>
+                <testNG.suiteXmlFile>TestNGRun.xml</testNG.suiteXmlFile>
             </properties>
             <build>
                 <plugins>
@@ -163,7 +163,7 @@
                         <configuration>
                             <suiteXmlFiles>
                                 <!--<suiteXmlFile>${testNG.suiteXmlFile}</suiteXmlFile>-->
-                                <suiteXmlFile>TestNGRunTestsAndroid.xml</suiteXmlFile>
+                                <suiteXmlFile>TestNG.xml</suiteXmlFile>
                             </suiteXmlFiles>
                             <reuseForks>false</reuseForks>
                             <argLine>-Duser.language=en</argLine>

@@ -1,6 +1,6 @@
 package com.sph.straittimes.stepDefinitions.StraitTimes.Web;
 
-import com.sph.straittimes.page_objects.LoginPage;
+import com.sph.straittimes.page_objects.Web;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -26,7 +26,7 @@ public class StepDefs_Web {
 
     static Logger log;
     WebDriver driver = DriverManager.getDriver();
-    private LoginPage loginPage;
+    private Web loginPage;
     private List<WebElement> searchResults;
 
     static {
@@ -39,7 +39,7 @@ public class StepDefs_Web {
     @Given("^I want to launch the Straits Times website$")
     public void givenISearchFor() throws InterruptedException {
         log.info("Given I launch the Strait Times Webiste");
-        loginPage = new LoginPage(this.driver);
+        loginPage = new Web(this.driver);
         loginPage.launch_Strait_Times();
 
     }
@@ -60,19 +60,15 @@ public class StepDefs_Web {
 
     }
 
-    @And("^I want to verify and read the main article has a picture or video$")
-    public void i_want_to_verify_the_main_article() throws IOException, InterruptedException {
-        loginPage.verify_main_article_image();
-
-    }
-    @And("^I want to click the main article$")
-    public void i_want_to_click_the_main_article() throws IOException, InterruptedException {
-        loginPage.click_main_article();
-
-    }
     @Then("^I want to verify the main article page$")
     public void i_want_to_verify_the_main_article_page() throws IOException, InterruptedException {
+        loginPage.read_main_artcle();
         loginPage.verify_main_article_page();
+
+    }
+    @Then("^I want to logout StraiTimes app")
+    public void i_want_to_logout_strait_times_app() throws IOException, InterruptedException {
+        loginPage.logout();
 
     }
 }

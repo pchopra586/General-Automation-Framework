@@ -49,16 +49,16 @@ public class LocalDriverFactory{
                 driver = new InternetExplorerDriver();
                 break;
             case CHROME:
-            	url = new URL("https://demo.experitest.com:443/wd/hub");
+            	/*url = new URL("https://demo.experitest.com:443/wd/hub");
             	capability = new DesiredCapabilities().chrome();
             	capability.setCapability(CapabilityType.BROWSER_NAME, BrowserType.CHROME);
             	capability.setCapability(CapabilityType.VERSION, "Any");
                 capability.setCapability(CapabilityType.PLATFORM, Platform.ANY);
             	capability.setCapability("accessKey", ACCESS_KEY);
-            	capability.setCapability("testName", "Quick Start Chrome Browser Demo");
-                //System.setProperty("webdriver.chrome.driver", "/Applications/Softwares/chromedriver");
-            	driver = new RemoteWebDriver(url, capability);
-            	//driver = new ChromeDriver();
+            	capability.setCapability("testName", "Quick Start Chrome Browser Demo");*/
+                System.setProperty("webdriver.chrome.driver", "/Applications/Softwares/chromedriver");
+            	//driver = new RemoteWebDriver(url, capability);
+            	driver = new ChromeDriver();
                 break;
             case ANDROID:
             	capability = new DesiredCapabilities().android();
@@ -71,50 +71,56 @@ public class LocalDriverFactory{
         		// In case your user is assign to a single project leave empty,
         		// otherwise please specify the project name
         		capability.setCapability("project", "SPH_POC");
-            	
         		capability.setCapability(MobileCapabilityType.APP, "cloud:com.buuuk.st/com.sph.straitstimes.views.activities.SplashActivity");
         		capability.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, "com.buuuk.st");
         		capability.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, "com.sph.straitstimes.views.activities.SplashActivity");
-        		capability.setCapability("appVersion", "6.5.0");
+        		capability.setCapability("appVersion", "6.5.4");
+            	
+        	
         		capability.setCapability("instrumentApp", false);
-        		//pability.setCapability("platformName","Android");
+        		//pability.setCapability("platformName","Mobile");
                 //capability.setCapability("deviceName",devicename);
                 //capability.setCapability("app",appPath);
-               // capability.setCapability("browserName",
-                        //"");
+               // capability.setCapability("browserName",dc.setCapability(MobileCapabilityType.APP, "cloud:com.zb.sph.sguat/com.zb.sph.app.activity.SplashPageActivity");
+        	
+                      
                // capability.setCapability(AndroidMobileCapabilityType.APP_WAIT_PACKAGE,"com.buuuk.st");
                 //capability.setCapability("appPackage", "com.buuuk.st");
 //                        "com.sph.straitstimes.views.activities.TncActivity");
                 //driver = new AppiumDriver<>(new URL(hubUrl), capability);
                driver = new AndroidDriver<>(new URL("https://demo.experitest.com:443/wd/hub"), capability);
-                System.out.printf("Android driver is returned");
+                System.out.printf("Mobile driver is returned");
                 break;
             case IOS:
             	capability = new DesiredCapabilities().iphone();
-            	
-            	//capability.setCapability("deviceQuery", "@os='ios' and @category='PHONE'");
-        		//capability.setCapability("reportDirectory", "reports");
-        		//capability.setCapability("reportFormat", "xml");
+        		capability.setCapability("reportDirectory", "reports");
+        		capability.setCapability("reportFormat", "xml");
         	
-        		//capability.setCapability("accessKey", ACCESS_KEY);
-        		// In case your user is assign to a single project leave empty,
-        		// otherwise please specify the project name
-        		//capability.setCapability("project", "SPH_POC");
-        		capability.setCapability(MobileCapabilityType.UDID,udID);
+        		capability.setCapability("accessKey", ACCESS_KEY);
+                capability.setCapability("deviceQuery", "@os='ios' and @category='PHONE'");
+        		capability.setCapability("instrumentApp", false);
+        		capability.setCapability("project", "SPH_POC");
+        		//capability.setCapability(MobileCapabilityType.APP, "cloud:com.sph.stiPhone");
+        		capability.setCapability(IOSMobileCapabilityType.BUNDLE_ID, "com.sph.stiPhone");
+        		capability.setCapability(MobileCapabilityType.FULL_RESET,true);
+        		//capability.setCapability(MobileCapabilityType.APP, "/Users/pchopra/Downloads/StraitsTimes-Revamp.app");
+        		
+        		/*capability.setCapability(MobileCapabilityType.UDID,udID);
+                capability.setCapability(MobileCapabilityType.PLATFORM_NAME,"iOS");
                 capability.setCapability("automationName","XCUITest");
         		capability.setCapability("deviceName",devicename);
-        		//capability.setCapability(MobileCapabilityType.APP, "/Users/pchopra/Downloads/StraitsTimes-Revamp.ipa");
-        		capability.setCapability(MobileCapabilityType.APP, "/Users/pchopra/Downloads/DEV_StraitsTimes-Revamp.app");
-        		capability.setCapability(IOSMobileCapabilityType.BUNDLE_ID, "com.sph.stiPhone");
-        		//capability.setCapability("instrumentApp", false);
-        		//pability.setCapability("platformName","Android");
-                capability.setCapability("deviceName",devicename);
-                //capability.setCapability("app",appPath);
-               // capability.setCapability("browserName",
-                        //"");
-              // driver = new IOSDriver<>(new URL("https://demo.experitest.com:443/wd/hub"), capability);
+        		capability.setCapability(MobileCapabilityType.APP, "/Users/pchopra/Downloads/StraitsTimes-Revamp.ipa");
+        		capability.setCapability(MobileCapabilityType.APP, "/Users/pchopra/Documents/ZbiPhoneSg.app");
+                capability.setCapability(MobileCapabilityType.APP, "/Users/pchopra/Downloads/StraitsTimes-Revamp.app");
+        		
+        		capability.setCapability("xcodeConfigFile", "/Users/pchopra/Documents/sph_parallel_testing_framework/src/test/resources/configs/appium.xcconfig");
+        		capability.setCapability("xcodeOrgId","L6TLAD67NF");
+                capability.setCapability("xcodeSigningId","iPhone Developer");
+        		capability.setCapability("showXcodeLog","true");*/
+
+               driver = new IOSDriver<>(new URL("https://demo.experitest.com:443/wd/hub"), capability);
                 System.out.printf("iOSdriver is returned");
-                driver = new IOSDriver<MobileElement>(new URL("http://127.0.0.1:5000/wd/hub"),capability);
+                //driver = new AppiumDriver<>(new URL("http://127.0.0.1:5000/wd/hub"),capability);
                 //driver = new IOSDriver<MobileElement>(new URL(hubUrl), capability);
                 break;
             default:
@@ -122,6 +128,7 @@ public class LocalDriverFactory{
                 break;
         }
         return driver;
+        
     }
 
     private static enum Browser {

@@ -60,7 +60,7 @@ public class RemoteDriverFactory {
         if (browserName.equalsIgnoreCase("android")) {
             DesiredCapabilities capability = DesiredCapabilities.android();
             capability.setCapability("platformName",
-                    "Android");
+                    "Mobile");
             driver = new RemoteWebDriver(hubUrl, capability);
             return driver;
         }
