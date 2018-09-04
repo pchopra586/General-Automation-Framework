@@ -53,7 +53,7 @@
         <classes>
             <class name="com.sph.straittimes.runners.RunCukesTestInWeb"/>
         </classes>
-    </test>&ndash;&gt;
+    </test>
     -
     <test name="Tests iOS in Remote">
         <parameter name="browserName" value="iosremote"/>
@@ -62,13 +62,13 @@
         <parameter name="accessKey"
                    value="eyJ4cC51IjoxNTI2OTAsInhwLnAiOjE1MjM4MCwieHAubSI6Ik1UVXpORGMxT0RNNE5qVTJPQSIsImFsZyI6IkhTMjU2In0.eyJleHAiOjE4NTAxMTgzODcsImlzcyI6ImNvbS5leHBlcml0ZXN0In0.xsk1s8oR7HYSm8nVmcIgjTSAwOPF9S2Ut-1HCsFdAM4"/>
         <parameter name="projectName" value="SPH_POC"/>
-        &lt;!&ndash;<parameter name="appPath" value="cloud:com.sph.stiPhone"/>&ndash;&gt;
+        <parameter name="appPath" value="cloud:com.sph.stiPhone"/>
         <parameter name="bundleID" value="com.sph.stiPhone"/>
         <classes>
             <class name="com.sph.straittimes.runners.RunCukesTestInMobile"/>
         </classes>
     </test>
-    <!--<test name="Tests iOS in Local">
+    <test name="Tests iOS in Local">
         <parameter name="browserName" value="ioslocal"/>
         <parameter name="driverHost" value="0.0.0.0" />
         <parameter name="driverPort" value="4723" />
@@ -83,5 +83,5 @@
         <classes>
             <class name="com.sph.straittimes.runners.RunCukesTestInMobile"/>
         </classes>
-    </test>-->
+    </test>
 </suite>
