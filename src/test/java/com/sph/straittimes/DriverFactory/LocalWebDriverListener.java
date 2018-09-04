@@ -9,6 +9,7 @@ import org.testng.internal.BaseTestMethod;
 
 import java.lang.reflect.Field;
 import java.net.MalformedURLException;
+import java.net.URL;
 
 
 /**
@@ -19,7 +20,6 @@ import java.net.MalformedURLException;
 public class LocalWebDriverListener implements IInvokedMethodListener {
 
     public static String browserName;
-
 
     static Logger log = Logger.getLogger(LocalWebDriverListener.class);
 
@@ -34,13 +34,22 @@ public class LocalWebDriverListener implements IInvokedMethodListener {
             String devicename = method.getTestMethod().getXmlTest().getLocalParameters().get("devicename");
             String appPath = method.getTestMethod().getXmlTest().getLocalParameters().get("appPath");
             String udID = method.getTestMethod().getXmlTest().getLocalParameters().get("udID");
+            String hubUrl =method.getTestMethod().getXmlTest().getLocalParameters().get("hubUrl");
+            String configFilePath =method.getTestMethod().getXmlTest().getLocalParameters().get("configFilePath");
+            String signingID=method.getTestMethod().getXmlTest().getLocalParameters().get("signingID");
+            String teamID =method.getTestMethod().getXmlTest().getLocalParameters().get("teamID");
+            String accessKey =method.getTestMethod().getXmlTest().getLocalParameters().get("accessKey");
+            String bundleID =method.getTestMethod().getXmlTest().getLocalParameters().get("bundleID");
+            String appPackage =method.getTestMethod().getXmlTest().getLocalParameters().get("appPackage");
+            String appActivity =method.getTestMethod().getXmlTest().getLocalParameters().get("appActivity");
+            String projectName =method.getTestMethod().getXmlTest().getLocalParameters().get("projectName");
             // get and set new instance of local WebDriver
             log.info("getting driver for: " + browserName);
 
 
             WebDriver   driver = null;
             try {
-                driver = LocalDriverFactory.createInstance(browserName,driverHost,driverPort, devicename, appPath,udID);
+                driver = LocalDriverFactory.createInstance(driverHost,driverPort,browserName,configFilePath,signingID, teamID, accessKey, devicename,bundleID,appPath,udID,appPackage,projectName,appActivity);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }

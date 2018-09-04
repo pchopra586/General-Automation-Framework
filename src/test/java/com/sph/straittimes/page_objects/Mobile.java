@@ -97,12 +97,24 @@ public class Mobile {
     public Mobile accept_terms_and_conditions() throws InterruptedException {
         Thread.sleep(8000);
         System.out.println("Browser is " + browserName);
-        if (browserName.equalsIgnoreCase("IOS")) {
-            if (!terms_conditions.isDisplayed()) {
-                if (!navigation_title.isDisplayed()) {
-                    driver.switchTo().alert().accept();
-                    logger.info("Allowed the Permissions for ST App Default Notification");
+        if (browserName.equalsIgnoreCase("IOSREMOTE")||browserName.equalsIgnoreCase("IOSLOCAL")) {
+            try {
+                if (!terms_conditions.isDisplayed()) {
+                    try {
+                        if (!hamburger_menu.isDisplayed()) {
+                            driver.switchTo().alert().accept();
+                            logger.info("Allowed the Permissions for ST App Default Notification");
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        System.out.println("Hamburger menu not found");
+                    }
                 }
+            }
+            catch(Exception e)
+            {
+                System.out.println("Not found");
             }
         }
         try {
@@ -110,28 +122,11 @@ public class Mobile {
                 terms_conditions.click();
             }
         } catch (Exception e) {
-            System.out.printf("Element Not Found");
+            System.out.printf("Term and conditions Not Found");
         }
         logger.info("Terms and condition are accepted");
         return this;
     }
-
-
-    public Boolean onLoginPage() {
-
-        Boolean onLoginPage = false;
-
-        try {
-            driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-            navigation_title.isDisplayed();
-            onLoginPage = true;
-        } catch (Exception e) {
-            onLoginPage = false;
-        }
-        return onLoginPage;
-
-    }
-
     public Mobile skip_tutorials() throws InterruptedException {
         Thread.sleep(3000);
         try {

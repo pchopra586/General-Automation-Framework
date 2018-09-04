@@ -60,4 +60,5 @@ public class RunCukesTestInMobile extends AbstractTestNGCucumberTests {
         Reporter.setTestRunnerOutput("Sample test runner output message");*/
         testNGCucumberRunner.finish();
     }
+
 }

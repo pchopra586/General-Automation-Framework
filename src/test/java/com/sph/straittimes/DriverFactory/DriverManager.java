@@ -30,7 +30,7 @@ public class DriverManager {
         if (driver.get() == null) {
             // this is need when running tests from IDE
             log.info("Thread has no WedDriver, creating new one");
-            setWebDriver(LocalDriverFactory.createInstance(null,null,null, null,null,null));
+            setWebDriver(LocalDriverFactory.createInstance(null,null,null, null,null,null,null,null,null,null,null,null,null,null));
         }
         log.debug("Getting instance of remote driver" + driver.get().getClass());
         return driver.get();
