@@ -11,7 +11,7 @@
     </listeners>
 
 
-   <test name="Tests Android in Remote">
+  <!-- <test name="Tests Android in Remote">
         <parameter name="browserName" value="androidremote"/>
         <parameter name="driverHost" value="demo.experitest.com"/>
         <parameter name="driverPort" value="443"/>
@@ -36,36 +36,48 @@
         <classes>
             <class name="com.sph.Runners.RunCukesTestInMobile" />
         </classes>
-    </test>
-    <test name="Tests Chrome browser in Local">
-          <parameter name="browserName" value="chromelocal"/>
-          <classes>
-              <class name="com.sph.Runners.RunCukesTestInWeb"/>
-          </classes>
-      </test>
+    </test>-->
+    <!-- <test name="Tests Chrome browser in Local">
+           <parameter name="browserName" value="chromelocal"/>
+           <classes>
+               <class name="com.sph.Runners.RunCukesTestInWeb"/>
+           </classes>
+       </test>
 
-       <test name="Tests in Chrome browser Remotely">
-          <parameter name="browserName" value="chromeremote"/>
-          <parameter name="driverHost" value="demo.experitest.com"/>
-          <parameter name="driverPort" value="443"/>
-          <parameter name="accessKey"
-                     value="eyJ4cC51IjoxNTI2OTAsInhwLnAiOjE1MjM4MCwieHAubSI6Ik1UVXpORGMxT0RNNE5qVTJPQSIsImFsZyI6IkhTMjU2In0.eyJleHAiOjE4NTAxMTgzODcsImlzcyI6ImNvbS5leHBlcml0ZXN0In0.xsk1s8oR7HYSm8nVmcIgjTSAwOPF9S2Ut-1HCsFdAM4"/>
-          <parameter name="projectName" value="SPH_POC"/>
-          <classes>
-              <class name="com.sph.Runners.RunCukesTestInWeb"/>
-          </classes>
-      </test>
+     <test name="Tests in Chrome browser Remotely">
+        <parameter name="browserName" value="chromeremote"/>
+        <parameter name="driverHost" value="demo.experitest.com"/>
+        <parameter name="driverPort" value="443"/>
+        <parameter name="accessKey"
+                   value="eyJ4cC51IjoxNTI2OTAsInhwLnAiOjE1MjM4MCwieHAubSI6Ik1UVXpORGMxT0RNNE5qVTJPQSIsImFsZyI6IkhTMjU2In0.eyJleHAiOjE4NTAxMTgzODcsImlzcyI6ImNvbS5leHBlcml0ZXN0In0.xsk1s8oR7HYSm8nVmcIgjTSAwOPF9S2Ut-1HCsFdAM4"/>
+        <parameter name="projectName" value="SPH_POC"/>
+        <classes>
+            <class name="com.sph.Runners.RunCukesTestInWeb"/>
+        </classes>
+    </test>
     <test name= "Tests Android Browser in Local ">
         <parameter name="browserName" value="androidlocalbrowser" />
         <parameter name="driverHost" value="0.0.0.0" />
         <parameter name="driverPort" value="4723" />
-        <parameter name="devicename" value="emulator-5554" />
+        <parameter name="devicename" value="0215313745333838" />
         <classes>
-            <class name="com.sph.Runners.RunCukesTestInMobile" />
+            <class name="com.sph.Runners.RunCukesTestInWeb" />
+        </classes>
+    </test>-->
+
+    <test name="Tests in Android Remotely">
+        <parameter name="browserName" value="androidremotebrowser"/>
+        <parameter name="driverHost" value="demo.experitest.com"/>
+        <parameter name="driverPort" value="443"/>
+        <parameter name="accessKey"
+                   value="eyJ4cC51IjoxNTI2OTAsInhwLnAiOjE1MjM4MCwieHAubSI6Ik1UVXpORGMxT0RNNE5qVTJPQSIsImFsZyI6IkhTMjU2In0.eyJleHAiOjE4NTAxMTgzODcsImlzcyI6ImNvbS5leHBlcml0ZXN0In0.xsk1s8oR7HYSm8nVmcIgjTSAwOPF9S2Ut-1HCsFdAM4"/>
+        <parameter name="projectName" value="SPH_POC"/>
+        <classes>
+            <class name="com.sph.Runners.RunCukesTestInWeb"/>
         </classes>
     </test>
 
-            <test name="Tests iOS in Remote">
+           <!-- <test name="Tests iOS in Remote">
                <parameter name="browserName" value="iosremote"/>
                <parameter name="driverHost" value="demo.experitest.com"/>
                <parameter name="driverPort" value="443"/>
@@ -93,5 +105,5 @@
                  <classes>
                      <class name="com.sph.Runners.RunCukesTestInMobile"/>
                  </classes>
-             </test>
+             </test>-->
 </suite>

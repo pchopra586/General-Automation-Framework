@@ -2,6 +2,7 @@ package com.sph.PageObjects;
 
 import com.sph.Common.PropLocation;
 import com.sph.Common.ReadPropertiesValues;
+import com.sph.DriverFactory.LocalWebDriverListener;
 import com.sph.Utilities.WebElements;
 
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -26,6 +27,7 @@ public class Web {
     private WebDriver driver;
     private WebDriverWait wait;
     private String Read_Story_Headline;
+    String browserName = LocalWebDriverListener.browserName;
 
     @FindBy(xpath = "//div[contains(@id,'ebAd')]/iframe")
     private WebElement iframe;
@@ -66,11 +68,13 @@ public class Web {
 
     public void launch_Strait_Times() throws InterruptedException {
         this.driver.get("https://www.straitstimes.com");
-        this.driver.manage().window().maximize();
+        if(browserName.equalsIgnoreCase("CHROMELOCAL")) {
+            this.driver.manage().window().maximize();
+        }
     }
 
     public void login_StraitTimes() throws InterruptedException {
-        Thread.sleep(20000);
+        Thread.sleep(10000);
         //driver.switchTo().frame(0);
         try {
             if (iframe.isDisplayed()) {
@@ -89,8 +93,10 @@ public class Web {
             System.out.println("Ad is not displayed");
         }
 
-            Actions actions = new Actions(driver);
-            actions.moveToElement(login_link).click().build().perform();
+            /*Actions actions = new Actions(driver);
+            actions.moveToElement(login_link).click().build().perform();*/
+            Thread.sleep(5000);
+            login_link.click();
 
 
     }

@@ -7,6 +7,7 @@ import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.remote.AndroidMobileCapabilityType;
 import io.appium.java_client.remote.IOSMobileCapabilityType;
 import io.appium.java_client.remote.MobileCapabilityType;
+import io.appium.java_client.remote.MobilePlatform;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -63,7 +64,7 @@ public class LocalDriverFactory{
                 System.out.printf("Remote Chrome Driver is returned");
                 break;
             case CHROMELOCAL:
-                System.setProperty("webdriver.chrome.driver","/Applications/Softwares/chromedriver");
+                System.setProperty("webdriver.chrome.driver","/Users/pchopra/Documents/sph_test_automation_framework/src/test/resources/Apps_Drivers/chromedriver");
                 driver = new ChromeDriver();
                 System.out.printf("Local Chrome Driver is returned");
                 break;
@@ -102,22 +103,23 @@ public class LocalDriverFactory{
                 break;
             case ANDROIDLOCALBROWSER:
                 capability = DesiredCapabilities.android();
-                capability.setCapability("deviceQuery", "@os='android'");
-                capability.setCapability("reportDirectory", "reports");
-                capability.setCapability("reportFormat", "xml");
-                capability.setCapability("accessKey", accessKey);
-                capability.setCapability("project", projectName);
-                capability.setCapability(MobileCapabilityType.BROWSER_NAME, "Chrome");
-                driver=new ChromeDriver();
+                // set the capability to execute test in chrome browser
+                capability.setCapability("browserName","CHROME");
+                capability.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.ANDROID);
+                capability.setCapability("deviceName",
+                        devicename);
+                System.setProperty("webdriver.chrome.driver","/Apps_Drivers/chromedriver");
+                driver = new AppiumDriver<>(new URL("http://0.0.0.0:4723/wd/hub"), capability);
                 System.out.printf("Remote Android Browser is returned");
                 break;
             case ANDROIDREMOTEBROWSER:
                 capability = DesiredCapabilities.android();
+                capability.setCapability(CapabilityType.BROWSER_NAME, BrowserType.CHROME);
+                capability.setCapability(CapabilityType.VERSION, "Any");
+                //capability.setCapability(CapabilityType.PLATFORM, Platform.ANDROID);
+                capability.setCapability("accessKey", accessKey);
                 capability.setCapability(MobileCapabilityType.PLATFORM_NAME, "android");
-                capability.setCapability("deviceName",
-                        devicename);
-                capability.setCapability(MobileCapabilityType.BROWSER_NAME, "Chrome");
-                driver = new RemoteWebDriver(new URL(localUrl), capability);
+                driver = new RemoteWebDriver(new URL(remoteUrl), capability);
                 break;
 
             case IOSLOCAL:
@@ -127,8 +129,7 @@ public class LocalDriverFactory{
                 //capability.setCapability(MobileCapabilityType.FULL_RESET, true);
                 capability.setCapability(MobileCapabilityType.APP, appPath);
                 capability.setCapability(MobileCapabilityType.UDID,udID);
-                capability.setCapability("deviceName",
-                        devicename);
+                capability.setCapability("deviceName", devicename);
                 capability.setCapability("automationName","XCUITest");
                 capability.setCapability("deviceName",devicename);
                 //capability.setCapability("xcodeConfigFile", configFilePath);
