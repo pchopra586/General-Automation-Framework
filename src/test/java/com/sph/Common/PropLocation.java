@@ -1,4 +1,4 @@
-package com.sph.straittimes.Common;
+package com.sph.Common;
 
 public class PropLocation {
 

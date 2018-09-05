@@ -1,8 +1,9 @@
-package com.sph.straittimes.stepDefinitions.StraitTimes.Mobile;
+package com.sph.StepDefinitions.Mobile;
 
-import com.sph.straittimes.DriverFactory.DriverManager;
-import com.sph.straittimes.page_objects.Mobile;
-import com.sph.straittimes.stepDefinitions.StraitTimes.Web.StepDefs_Web;
+import com.sph.DriverFactory.DriverManager;
+import com.sph.PageObjects.Mobile;
+import com.sph.StepDefinitions.Web.StepDefs_Web;
+
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;

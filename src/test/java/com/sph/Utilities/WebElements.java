@@ -1,4 +1,4 @@
-package com.sph.straittimes.utilities;
+package com.sph.Utilities;
 
 public class WebElements {
 
@@ -6,7 +6,7 @@ public class WebElements {
 
     public static final String CLOSE_AD ="//div[@id='ad-container']/button[@id='close-button']";
 
-    public static final String LOGIN_LINK = "//*[@id='navbar']/div/div[2]/nav/div[2]/div/ul/li[1]/a";
+    public static final String LOGIN_LINK = "//li[@class='nav-login']/a";
 
     public static final String LOGIN_ID = "j_username";
 

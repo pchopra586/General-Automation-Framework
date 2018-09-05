@@ -1,4 +1,4 @@
-package com.sph.straittimes.utilities;
+package com.sph.Utilities;
 import java.io.File;
 
 public class Constant {

@@ -1,15 +1,16 @@
-package com.sph.straittimes.stepDefinitions;
+package com.sph.StepDefinitions;
 
 import cucumber.api.Scenario;
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
-import com.sph.straittimes.DriverFactory.DriverManager;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriverException;
+
+import com.sph.DriverFactory.DriverManager;
 
 import java.net.MalformedURLException;
 

@@ -1,4 +1,5 @@
-package com.sph.straittimes.runners;
+package com.sph.Runners;
+
 
 
 import com.vimalselvam.cucumber.listener.ExtentProperties;
@@ -24,27 +25,28 @@ import java.io.File;
  */
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        features = "src/test/resources/features/Mobile",
-        glue = {"com.sph.straittimes.stepDefinitions/StraitTimes/Mobile"},
-        format = {"pretty","rerun:target/cucumber-reports/rerun.txt",
-                "html:target/cucumber-report/android/cucumber-pretty",
-                "json:target/cucumber-report/android/cucumber.json",
-                "junit:target/cucumber-report/android/cucumber.xml"})
-        //plugin = {"com.vimalselvam.cucumber.ExtentCucumberFormatter:output/myreport_Android.html"})
-public class RunCukesTestInMobile extends AbstractTestNGCucumberTests {
+        features = "src/test/resources/features/Website",
+        glue = {"com.sph/StepDefinitions/Web"},
+        format = {"pretty:target/cucumber-report/chrome/cucumber.txt",
+                "html:target/cucumber-report/chrome",
+                "json:target/cucumber-report/chrome/cucumber.json",
+                "junit:target/cucumber-report/chrome/cucumber.xml"})
+//plugin = {"com.vimalselvam.cucumber.ExtentCucumberFormatter:output/myreport.html"})
+public class RunCukesTestInWeb extends AbstractTestNGCucumberTests {
     private TestNGCucumberRunner testNGCucumberRunner;
 
     @BeforeClass(alwaysRun = true)
     public void setUpClass() throws Exception {
         testNGCucumberRunner = new TestNGCucumberRunner(this.getClass());
         ExtentProperties extentProperties = ExtentProperties.INSTANCE;
-        extentProperties.setReportPath("output/myreport_android.html");
+        extentProperties.setReportPath("output/myreport_chrome.html");
 
     }
 
     @Test(groups = "cucumber", description = "Runs Cucumber Feature", dataProvider = "features")
     public void feature(CucumberFeatureWrapper cucumberFeature) {
         testNGCucumberRunner.runCucumber(cucumberFeature.getCucumberFeature());
+
     }
 
     @DataProvider
@@ -54,11 +56,10 @@ public class RunCukesTestInMobile extends AbstractTestNGCucumberTests {
 
     @AfterClass(alwaysRun = true)
     public void tearDownClass() throws Exception {
-        /*Reporter.loadXMLConfig(new File("src/test/resources/extent-config.xml"));
+       /* Reporter.loadXMLConfig(new File("src/test/resources/extent-config.xml"));
         Reporter.setSystemInfo("user", System.getProperty("user.name"));
         Reporter.setSystemInfo("os", "Mac OSX");
         Reporter.setTestRunnerOutput("Sample test runner output message");*/
         testNGCucumberRunner.finish();
     }
-
 }

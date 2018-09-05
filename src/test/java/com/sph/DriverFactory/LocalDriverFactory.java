@@ -1,4 +1,4 @@
-package com.sph.straittimes.DriverFactory;
+package com.sph.DriverFactory;
 
 
 import io.appium.java_client.AppiumDriver;
@@ -37,31 +37,40 @@ public class LocalDriverFactory{
         browserName = (browserName != null) ? browserName : "chromelocal";
 
         switch (Browser.valueOf(browserName.toUpperCase())) {
-            case SAFARI:
+            case SAFARILOCAL:
                 driver = new SafariDriver();
+                break;
+            case SAFARIREMOTE:
+                capability = DesiredCapabilities.safari();
+                capability.setCapability(CapabilityType.BROWSER_NAME, BrowserType.SAFARI);
+                capability.setCapability(CapabilityType.VERSION, "Any");
+                capability.setCapability(CapabilityType.PLATFORM, Platform.ANY);
+                capability.setCapability("accessKey", accessKey);
+                capability.setCapability("testName", "Quick Start Safari Browser Demo");
+                driver = new RemoteWebDriver(new URL(remoteUrl), capability);
                 break;
             case IE:
                 driver = new InternetExplorerDriver();
                 break;
             case CHROMEREMOTE:
-            	capability = new DesiredCapabilities().chrome();
+            	capability = DesiredCapabilities.chrome();
             	capability.setCapability(CapabilityType.BROWSER_NAME, BrowserType.CHROME);
             	capability.setCapability(CapabilityType.VERSION, "Any");
                 capability.setCapability(CapabilityType.PLATFORM, Platform.ANY);
             	capability.setCapability("accessKey", accessKey);
+            	System.out.printf("Remote URL is"+remoteUrl);
                 driver = new RemoteWebDriver(new URL(remoteUrl), capability);
                 System.out.printf("Remote Chrome Driver is returned");
                 break;
             case CHROMELOCAL:
-                System.setProperty("webdriver.chrome.driver", "/Applications/Softwares/chromedriver");
+                System.setProperty("webdriver.chrome.driver","/Applications/Softwares/chromedriver");
                 driver = new ChromeDriver();
                 System.out.printf("Local Chrome Driver is returned");
                 break;
             case ANDROIDLOCAL:
                 capability = DesiredCapabilities.android();
-                System.out.println("Browser is" +browserName);
-                capability.setCapability(MobileCapabilityType.PLATFORM_NAME,
-                        Platform.ANDROID);
+                System.out.println("Browser is "+browserName);
+                capability.setCapability(MobileCapabilityType.PLATFORM_NAME, "android");
                 capability.setCapability(MobileCapabilityType.FULL_RESET, true);
                 capability.setCapability(MobileCapabilityType.TAKES_SCREENSHOT,
                         true);
@@ -72,7 +81,8 @@ public class LocalDriverFactory{
                 capability.setCapability(MobileCapabilityType.APP,appPath);
                 capability.setCapability(AndroidMobileCapabilityType.APP_WAIT_PACKAGE,appPackage);
                 capability.setCapability(AndroidMobileCapabilityType.APP_WAIT_ACTIVITY, appActivity);
-                driver = new AppiumDriver<>(new URL(localUrl), capability);
+                System.out.println("URL is"+localUrl);
+                driver = new AndroidDriver<>(new URL(localUrl), capability);
                 System.out.printf("Local Android driver is returned");
                 break;
             case ANDROIDREMOTE:
@@ -90,9 +100,28 @@ public class LocalDriverFactory{
                 driver = new AndroidDriver<>(new URL(remoteUrl), capability);
                 System.out.printf("Remote Android driver is returned");
                 break;
+            case ANDROIDLOCALBROWSER:
+                capability = DesiredCapabilities.android();
+                capability.setCapability("deviceQuery", "@os='android'");
+                capability.setCapability("reportDirectory", "reports");
+                capability.setCapability("reportFormat", "xml");
+                capability.setCapability("accessKey", accessKey);
+                capability.setCapability("project", projectName);
+                capability.setCapability(MobileCapabilityType.BROWSER_NAME, "Chrome");
+                driver=new ChromeDriver();
+                System.out.printf("Remote Android Browser is returned");
+                break;
+            case ANDROIDREMOTEBROWSER:
+                capability = DesiredCapabilities.android();
+                capability.setCapability(MobileCapabilityType.PLATFORM_NAME, "android");
+                capability.setCapability("deviceName",
+                        devicename);
+                capability.setCapability(MobileCapabilityType.BROWSER_NAME, "Chrome");
+                driver = new RemoteWebDriver(new URL(localUrl), capability);
+                break;
 
             case IOSLOCAL:
-                capability = new DesiredCapabilities().iphone();
+                capability = DesiredCapabilities.iphone();
                 capability.setCapability(MobileCapabilityType.PLATFORM_NAME,"iOS");
                 //capability.setCapability(IOSMobileCapabilityType.BUNDLE_ID, bundleID);
                 //capability.setCapability(MobileCapabilityType.FULL_RESET, true);
@@ -110,21 +139,21 @@ public class LocalDriverFactory{
                 System.out.printf("Local iOSdriver is returned");
                 break;
             case IOSREMOTE:
-            capability = new DesiredCapabilities().iphone();
-            capability.setCapability("reportDirectory", "reports");
-            capability.setCapability("reportFormat", "xml");
-            capability.setCapability("accessKey", accessKey);
-            capability.setCapability("deviceQuery", "@os='ios' and @category='PHONE'");
-            capability.setCapability(MobileCapabilityType.APP, appPath);
-            capability.setCapability("instrumentApp", false);
-            capability.setCapability("project", projectName);
-            capability.setCapability(IOSMobileCapabilityType.BUNDLE_ID, bundleID);
-            capability.setCapability(MobileCapabilityType.FULL_RESET, true);
-            capability.setCapability("autoGrantPermissions", "true");
-            capability.setCapability("autoAcceptAlerts", "true");
-            driver = new IOSDriver<>(new URL (remoteUrl), capability);
-            System.out.printf("Remote iOSdriver is returned");
-            break;
+	            capability = DesiredCapabilities.iphone();
+	            capability.setCapability("reportDirectory", "reports");
+	            capability.setCapability("reportFormat", "xml");
+	            capability.setCapability("accessKey", accessKey);
+	            capability.setCapability("deviceQuery", "@os='ios' and @category='PHONE'");
+	            capability.setCapability(MobileCapabilityType.APP, appPath);
+	            capability.setCapability("instrumentApp", false);
+	            capability.setCapability("project", projectName);
+	            capability.setCapability(IOSMobileCapabilityType.BUNDLE_ID, bundleID);
+	            capability.setCapability(MobileCapabilityType.FULL_RESET, true);
+	            capability.setCapability("autoGrantPermissions", "true");
+	            capability.setCapability("autoAcceptAlerts", "true");
+	            driver = new IOSDriver<>(new URL (remoteUrl), capability);
+	            System.out.printf("Remote iOSdriver is returned");
+	            break;
             default:
                 driver = new ChromeDriver();
                 break;
@@ -134,13 +163,16 @@ public class LocalDriverFactory{
     }
 
     private static enum Browser {
-        SAFARI,
+        SAFARILOCAL,
+        SAFARIREMOTE,
         CHROMEREMOTE,
         IE,
         ANDROIDLOCAL,
         ANDROIDREMOTE,
         CHROMELOCAL,
         IOSLOCAL,
-        IOSREMOTE;
+        IOSREMOTE,
+        ANDROIDREMOTEBROWSER,
+        ANDROIDLOCALBROWSER;
     }
 }

@@ -1,4 +1,4 @@
-package com.sph.straittimes.DriverFactory;
+package com.sph.DriverFactory;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
@@ -45,9 +45,7 @@ public class LocalWebDriverListener implements IInvokedMethodListener {
             String projectName =method.getTestMethod().getXmlTest().getLocalParameters().get("projectName");
             // get and set new instance of local WebDriver
             log.info("getting driver for: " + browserName);
-
-
-            WebDriver   driver = null;
+            WebDriver driver = null;
             try {
                 driver = LocalDriverFactory.createInstance(driverHost,driverPort,browserName,configFilePath,signingID, teamID, accessKey, devicename,bundleID,appPath,udID,appPackage,projectName,appActivity);
             } catch (MalformedURLException e) {
@@ -57,7 +55,7 @@ public class LocalWebDriverListener implements IInvokedMethodListener {
             DriverManager.setWebDriver(driver);
             log.info("Done! Created "+ browserName + " driver!" );
         } else {
-            log.warn("Provided method is NOT a TestNG testMethod!!!");
+            log.warn("Creating the Driver!!!");
         }
         log.debug("END: org.stng.jbehave.LocalWebDriverListener.beforeInvocation");
     }

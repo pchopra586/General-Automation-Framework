@@ -1,9 +1,13 @@
-package com.sph.straittimes.page_objects;
+package com.sph.PageObjects;
 
-import com.sph.straittimes.DriverFactory.DriverManager;
-import com.sph.straittimes.DriverFactory.LocalDriverFactory;
-import com.sph.straittimes.DriverFactory.LocalWebDriverListener;
-import com.sph.straittimes.utilities.AndroidElements;
+import com.sph.Common.PropLocation;
+import com.sph.Common.ReadPropertiesValues;
+import com.sph.DriverFactory.DriverManager;
+import com.sph.DriverFactory.LocalDriverFactory;
+import com.sph.DriverFactory.LocalWebDriverListener;
+import com.sph.Utilities.AndroidElements;
+import com.sph.Utilities.IOSElements;
+
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.PerformsTouchActions;
 import io.appium.java_client.TouchAction;
@@ -14,11 +18,8 @@ import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.PointOption;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.log4testng.Logger;
-
-import com.sph.straittimes.Common.PropLocation;
-import com.sph.straittimes.Common.ReadPropertiesValues;
-import com.sph.straittimes.utilities.IOSElements;
 
 import java.net.MalformedURLException;
 import java.time.*;
@@ -85,12 +86,13 @@ public class Mobile {
     private MobileElement navigation_title;
 
 
-    static WebDriver driver;
+    private WebDriver driver;
+    private WebDriverWait wait;
 
     public Mobile(WebDriver driver) throws MalformedURLException {
         this.driver = driver;
-        this.logger = logger;
-        //PageFactory.initElements(this.driver, this);
+        this.wait = new WebDriverWait(this.driver, 10);
+       // PageFactory.initElements(driver, this);
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
     }
 

@@ -1,4 +1,4 @@
-package com.sph.straittimes.DriverFactory;
+package com.sph.DriverFactory;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;

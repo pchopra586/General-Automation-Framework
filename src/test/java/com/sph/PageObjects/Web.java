@@ -1,6 +1,9 @@
-package com.sph.straittimes.page_objects;
+package com.sph.PageObjects;
 
-import com.sph.straittimes.utilities.WebElements;
+import com.sph.Common.PropLocation;
+import com.sph.Common.ReadPropertiesValues;
+import com.sph.Utilities.WebElements;
+
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -11,9 +14,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-
-import com.sph.straittimes.Common.PropLocation;
-import com.sph.straittimes.Common.ReadPropertiesValues;
 
 import java.io.IOException;
 
@@ -72,19 +72,22 @@ public class Web {
     public void login_StraitTimes() throws InterruptedException {
         Thread.sleep(20000);
         //driver.switchTo().frame(0);
-        if (iframe.isDisplayed()) {
-            driver.switchTo().frame((WebElement) iframe);
-        }
-            try {
-                if (close_ad.isDisplayed()) {
-                    ((JavascriptExecutor) driver).executeScript("arguments[0].click();", close_ad);
-                    close_ad.click();
-                    driver.switchTo().defaultContent();
-                }
-            } catch (Exception e) {
-                System.out.println("Ad is not displayed");
+        try {
+            if (iframe.isDisplayed()) {
+                driver.switchTo().frame((WebElement) iframe);
             }
-
+        } catch (Exception e) {
+            System.out.println("Element not found");
+        }
+        try {
+            if (close_ad.isDisplayed()) {
+                ((JavascriptExecutor) driver).executeScript("arguments[0].click();", close_ad);
+                close_ad.click();
+               // driver.switchTo().defaultContent();
+            }
+        } catch (Exception e) {
+            System.out.println("Ad is not displayed");
+        }
 
             Actions actions = new Actions(driver);
             actions.moveToElement(login_link).click().build().perform();
@@ -105,6 +108,7 @@ public class Web {
 //        Assert.assertEquals(UserName, Verify_User_Name);
 
     }
+
     public void read_main_artcle() throws InterruptedException {
         Read_Story_Headline = story_headline.getText();
         System.out.println("Story Headline is: " + Read_Story_Headline);

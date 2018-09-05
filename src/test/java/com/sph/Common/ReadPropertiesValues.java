@@ -1,4 +1,4 @@
-package com.sph.straittimes.Common;
+package com.sph.Common;
 
 import java.io.File;
 import java.io.FileInputStream;
