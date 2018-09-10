@@ -1,4 +1,4 @@
-package listener;
+package listeners;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
@@ -12,6 +12,7 @@ import com.mongodb.MongoClientURI;
 import gherkin.formatter.Formatter;
 import gherkin.formatter.Reporter;
 import gherkin.formatter.model.*;
+import org.testng.ITestContext;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -20,10 +21,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * A cucumber based reporting listener which generates the Extent Report
+ * A cucumber based reporting liistener which generates the Extent Report
  */
 public class ExtentCucumberFormatter implements Reporter, Formatter {
-    private static ExtentReports extentReports;
+    public static ExtentReports extentReports;
     private static ExtentHtmlReporter htmlReporter;
     private static KlovReporter klovReporter;
     private static ThreadLocal<ExtentTest> featureTestThreadLocal = new InheritableThreadLocal<>();
@@ -152,6 +153,7 @@ public class ExtentCucumberFormatter implements Reporter, Formatter {
 
     public void feature(Feature feature) {
         featureTestThreadLocal.set(getExtentReport().createTest(com.aventstack.extentreports.gherkin.model.Feature.class, feature.getName()));
+
         ExtentTest test = featureTestThreadLocal.get();
 
         for (Tag tag : feature.getTags()) {
@@ -214,6 +216,7 @@ public class ExtentCucumberFormatter implements Reporter, Formatter {
     public void scenario(Scenario scenario) {
 
     }
+
 
     public void step(Step step) {
         if (scenarioOutlineFlag) {

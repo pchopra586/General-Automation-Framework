@@ -7,44 +7,44 @@
             Local Selenium driver, and it also changes test names in the final TestNG
             HTML report. -->
         <listener
-                class-name="com.sph.DriverFactory.LocalWebDriverListener"/>
+                class-name="com.sph.driverFactory.LocalWebDriverListener"/>
     </listeners>
 
 
-  <!-- <test name="Tests Android in Remote">
-        <parameter name="browserName" value="androidremote"/>
-        <parameter name="driverHost" value="demo.experitest.com"/>
-        <parameter name="driverPort" value="443"/>
-        <parameter name="accessKey"
-                   value="eyJ4cC51IjoxNTI2OTAsInhwLnAiOjE1MjM4MCwieHAubSI6Ik1UVXpORGMxT0RNNE5qVTJPQSIsImFsZyI6IkhTMjU2In0.eyJleHAiOjE4NTAxMTgzODcsImlzcyI6ImNvbS5leHBlcml0ZXN0In0.xsk1s8oR7HYSm8nVmcIgjTSAwOPF9S2Ut-1HCsFdAM4"/>
-        <parameter name="projectName" value="SPH_POC"/>
-        <parameter name="appPath" value="cloud:com.buuuk.st/com.sph.straitstimes.views.activities.SplashActivity"/>
-        <parameter name="appActivity" value="com.sph.straitstimes.views.activities.SplashActivity"/>
-        <parameter name="appPackage" value="com.buuuk.st"/>
-        <classes>
-            <class name="com.sph.Runners.RunCukesTestInMobile"/>
-        </classes>
-    </test>
-    <test name= "Tests Android in Local ">
-        <parameter name="browserName" value="androidlocal" />
-        <parameter name="driverHost" value="0.0.0.0" />
-        <parameter name="driverPort" value="4723" />
-        <parameter name="devicename" value="emulator-5554" />
-        <parameter name="appPath" value ="/Users/pchopra/Downloads/stplus-phone-prod-v654-aug16-v7.apk"/>
-        <parameter name="appActivity" value="com.sph.straitstimes.views.activities.TncActivity"/>
-        <parameter name="appPackage" value ="com.buuuk.st"/>
-        <classes>
-            <class name="com.sph.Runners.RunCukesTestInMobile" />
-        </classes>
-    </test>-->
-    <!-- <test name="Tests Chrome browser in Local">
+       <test name="Tests Android in Remote">
+             <parameter name="browserName" value="androidremote"/>
+             <parameter name="driverHost" value="demo.experitest.com"/>
+             <parameter name="driverPort" value="443"/>
+             <parameter name="accessKey"
+                        value="eyJ4cC51IjoxNTI2OTAsInhwLnAiOjE1MjM4MCwieHAubSI6Ik1UVXpORGMxT0RNNE5qVTJPQSIsImFsZyI6IkhTMjU2In0.eyJleHAiOjE4NTAxMTgzODcsImlzcyI6ImNvbS5leHBlcml0ZXN0In0.xsk1s8oR7HYSm8nVmcIgjTSAwOPF9S2Ut-1HCsFdAM4"/>
+             <parameter name="projectName" value="SPH_POC"/>
+             <parameter name="appPath" value="cloud:com.buuuk.st/com.sph.straitstimes.views.activities.SplashActivity"/>
+             <parameter name="appActivity" value="com.sph.straitstimes.views.activities.SplashActivity"/>
+             <parameter name="appPackage" value="com.buuuk.st"/>
+             <classes>
+                 <class name="com.sph.runners.RunCukesTestInMobile"/>
+             </classes>
+         </test>
+          <test name= "Tests Android in Local ">
+             <parameter name="browserName" value="androidlocal" />
+             <parameter name="driverHost" value="0.0.0.0" />
+             <parameter name="driverPort" value="4723" />
+             <parameter name="devicename" value="emulator-5554" />
+             <parameter name="appPath" value ="/Users/pchopra/Downloads/stplus-phone-prod-v654-aug16-v7.apk"/>
+             <parameter name="appActivity" value="com.sph.straitstimes.views.activities.TncActivity"/>
+             <parameter name="appPackage" value ="com.buuuk.st"/>
+             <classes>
+                 <class name="com.sph.runners.RunCukesTestInMobile" />
+             </classes>
+         </test>
+    <test name="Tests Chrome browser in Local">
            <parameter name="browserName" value="chromelocal"/>
            <classes>
-               <class name="com.sph.Runners.RunCukesTestInWeb"/>
+               <class name="com.sph.runners.RunCukesTestInWeb"/>
            </classes>
        </test>
 
-     <test name="Tests in Chrome browser Remotely">
+    <test name="Tests in Chrome browser Remotely">
         <parameter name="browserName" value="chromeremote"/>
         <parameter name="driverHost" value="demo.experitest.com"/>
         <parameter name="driverPort" value="443"/>
@@ -52,58 +52,77 @@
                    value="eyJ4cC51IjoxNTI2OTAsInhwLnAiOjE1MjM4MCwieHAubSI6Ik1UVXpORGMxT0RNNE5qVTJPQSIsImFsZyI6IkhTMjU2In0.eyJleHAiOjE4NTAxMTgzODcsImlzcyI6ImNvbS5leHBlcml0ZXN0In0.xsk1s8oR7HYSm8nVmcIgjTSAwOPF9S2Ut-1HCsFdAM4"/>
         <parameter name="projectName" value="SPH_POC"/>
         <classes>
-            <class name="com.sph.Runners.RunCukesTestInWeb"/>
+            <class name="com.sph.runners.RunCukesTestInWeb"/>
         </classes>
     </test>
-    <test name= "Tests Android Browser in Local ">
-        <parameter name="browserName" value="androidlocalbrowser" />
-        <parameter name="driverHost" value="0.0.0.0" />
-        <parameter name="driverPort" value="4723" />
-        <parameter name="devicename" value="0215313745333838" />
-        <classes>
-            <class name="com.sph.Runners.RunCukesTestInWeb" />
-        </classes>
-    </test>-->
-
-    <test name="Tests in Android Remotely">
-        <parameter name="browserName" value="androidremotebrowser"/>
+     <test name= "Tests Safari Browser in Remote ">
+        <parameter name="browserName" value="IOSREMOTEBROWSER" />
         <parameter name="driverHost" value="demo.experitest.com"/>
         <parameter name="driverPort" value="443"/>
         <parameter name="accessKey"
                    value="eyJ4cC51IjoxNTI2OTAsInhwLnAiOjE1MjM4MCwieHAubSI6Ik1UVXpORGMxT0RNNE5qVTJPQSIsImFsZyI6IkhTMjU2In0.eyJleHAiOjE4NTAxMTgzODcsImlzcyI6ImNvbS5leHBlcml0ZXN0In0.xsk1s8oR7HYSm8nVmcIgjTSAwOPF9S2Ut-1HCsFdAM4"/>
         <parameter name="projectName" value="SPH_POC"/>
         <classes>
-            <class name="com.sph.Runners.RunCukesTestInWeb"/>
+            <class name="com.sph.runners.RunCukesTestInWeb" />
         </classes>
     </test>
+     <test name= "Tests Android Browser in Local ">
+          <parameter name="browserName" value="androidlocalbrowser" />
+          <parameter name="driverHost" value="0.0.0.0" />
+          <parameter name="driverPort" value="4723" />
+          <parameter name="devicename" value="0215313745333838" />
+          <classes>
+              <class name="com.sph.runners.RunCukesTestInWeb" />
+          </classes>
+      </test>
 
-           <!-- <test name="Tests iOS in Remote">
-               <parameter name="browserName" value="iosremote"/>
-               <parameter name="driverHost" value="demo.experitest.com"/>
-               <parameter name="driverPort" value="443"/>
-               <parameter name="accessKey"
-                          value="eyJ4cC51IjoxNTI2OTAsInhwLnAiOjE1MjM4MCwieHAubSI6Ik1UVXpORGMxT0RNNE5qVTJPQSIsImFsZyI6IkhTMjU2In0.eyJleHAiOjE4NTAxMTgzODcsImlzcyI6ImNvbS5leHBlcml0ZXN0In0.xsk1s8oR7HYSm8nVmcIgjTSAwOPF9S2Ut-1HCsFdAM4"/>
-               <parameter name="projectName" value="SPH_POC"/>
-               <parameter name="appPath" value="cloud:com.sph.stiPhone"/>
-               <parameter name="bundleID" value="com.sph.stiPhone"/>
-               <classes>
-                   <class name="com.sph.Runners.RunCukesTestInMobile"/>
-               </classes>
-           </test>
-             <test name="Tests iOS in Local">
-                 <parameter name="browserName" value="ioslocal"/>
-                 <parameter name="driverHost" value="0.0.0.0" />
-                 <parameter name="driverPort" value="4723" />
-                 <parameter name="devicename" value="iPhone X"/>
-                 <parameter name="appPath" value="/Users/pchopra/Downloads/StraitsTimes-Revamp_iPhone.ipa"/>
-                 <parameter name="bundleID" value="com.sph.stiPhone"/>
-                 <parameter name="xcodeConfigFile" value="/src/test/resources/configs/appium.xcconfig"/>
-                 <parameter name="xcodeOrgId" value="L6TLAD67NF"/>
-                 <parameter name="xcodeSigningId" value="iPhone Developer"/>
-                 <parameter name="udID" value="FD4C36C4-5F96-459F-A65F-F3F5C88FA327"/>
+      <test name="Tests in Android Browser in Remote">
+          <parameter name="browserName" value="androidremotebrowser"/>
+          <parameter name="driverHost" value="demo.experitest.com"/>
+          <parameter name="driverPort" value="443"/>
+          <parameter name="accessKey"
+                     value="eyJ4cC51IjoxNTI2OTAsInhwLnAiOjE1MjM4MCwieHAubSI6Ik1UVXpORGMxT0RNNE5qVTJPQSIsImFsZyI6IkhTMjU2In0.eyJleHAiOjE4NTAxMTgzODcsImlzcyI6ImNvbS5leHBlcml0ZXN0In0.xsk1s8oR7HYSm8nVmcIgjTSAwOPF9S2Ut-1HCsFdAM4"/>
+          <parameter name="projectName" value="SPH_POC"/>
+          <classes>
+              <class name="com.sph.runners.RunCukesTestInWeb"/>
+          </classes>
+      </test>
 
-                 <classes>
-                     <class name="com.sph.Runners.RunCukesTestInMobile"/>
-                 </classes>
-             </test>-->
+    <!--   <test name="Tests iOS in Remote">
+          <parameter name="browserName" value="iosremote"/>
+          <parameter name="driverHost" value="demo.experitest.com"/>
+          <parameter name="driverPort" value="443"/>
+          <parameter name="accessKey"
+                     value="eyJ4cC51IjoxNTI2OTAsInhwLnAiOjE1MjM4MCwieHAubSI6Ik1UVXpORGMxT0RNNE5qVTJPQSIsImFsZyI6IkhTMjU2In0.eyJleHAiOjE4NTAxMTgzODcsImlzcyI6ImNvbS5leHBlcml0ZXN0In0.xsk1s8oR7HYSm8nVmcIgjTSAwOPF9S2Ut-1HCsFdAM4"/>
+          <parameter name="projectName" value="SPH_POC"/>
+          <parameter name="appPath" value="cloud:com.sph.stiPhone"/>
+          <parameter name="bundleID" value="com.sph.stiPhone"/>
+        <parameter name="appPath" value="cloud:com.sph.cnd.zaobao.iphone.row"/>
+        <parameter name="bundleID" value="com.sph.cnd.zaobao.iphone.row"/>
+        <classes>
+            <class name="com.sph.runners.RunCukesTestInMobile"/>
+        </classes>
+    </test>
+        <test name="Tests iOS in Local">
+            <parameter name="browserName" value="ioslocal"/>
+            <parameter name="driverHost" value="0.0.0.0" />
+            <parameter name="driverPort" value="4723" />
+            <parameter name="devicename" value="iPhone X"/>
+            <parameter name="appPath" value="/Users/pchopra/Downloads/StraitsTimes-Revamp_iPhone.ipa"/>
+            <parameter name="bundleID" value="com.sph.stiPhone"/>
+            <parameter name="xcodeConfigFile" value="/src/test/resources/configs/appium.xcconfig"/>
+            <parameter name="xcodeOrgId" value="L6TLAD67NF"/>
+            <parameter name="xcodeSigningId" value="iPhone Developer"/>
+            <parameter name="udID" value="FD4C36C4-5F96-459F-A65F-F3F5C88FA327"/>
+
+            <classes>
+                <class name="com.sph.runners.RunCukesTestInMobile"/>
+            </classes>
+        </test>
+    <test name="Tests Chrome browser in Local in headless mode">
+        <parameter name="browserName" value="chromeheadless"/>
+        <classes>
+            <class name="com.sph.runners.RunCukesTestInWeb"/>
+        </classes>
+    </test>-->
 </suite>
