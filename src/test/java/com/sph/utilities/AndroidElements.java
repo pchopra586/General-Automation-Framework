@@ -26,8 +26,6 @@ public class AndroidElements {
 
 	public static final String	LOGOUT_BUTTON="tv_logout";
 
-
-
-
+	public static final String 	LOGGED_IN_USER_ID = "tv_login_name";
 	
 }

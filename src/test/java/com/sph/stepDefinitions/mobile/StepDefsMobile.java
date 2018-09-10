@@ -7,6 +7,7 @@ import com.sph.stepDefinitions.web.StepDefsWeb;
 import com.vimalselvam.cucumber.listener.Reporter;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 import org.apache.log4j.Logger;
@@ -52,19 +53,28 @@ public class StepDefsMobile {
         Reporter.addStepLog("User wants to click the hamburger menu");
         Reporter.addScenarioLog("User wants to click the hamburger menu");
     }
-    @And("^I want to enter the login credentials$")
-    public void i_want_to_enter_the_login_credentials() throws IOException, InterruptedException {
-        mobileApp.enter_Login_Credentials();
-        Reporter.addStepLog("User wants to enter the login credentials");
-        Reporter.addScenarioLog("User wants to enter the login credentials");
 
+    @When("^I want to enter the login credentials as \"([^\"]*)\" and \"([^\"]*)\"$")
+    public void i_want_to_enter_the_login_credentials_as_and(String username, String password) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+    		mobileApp.enter_Login_Credentials(username, password);
+    		Reporter.addStepLog("User wants to enter the login credentials");
+    		Reporter.addScenarioLog("User wants to enter the login credentials");
     }
+    
     @And("^I want to click the continue button$")
     public void i_want_to_click_the_continue_button() throws IOException, InterruptedException {
         mobileApp.click_continue_button();
-        Reporter.addStepLog("User wants to click the continue button");
-        Reporter.addScenarioLog("User wants to click the continue button");
+    }
+    
+    @Then("^I want to verify the logged-in user as \"([^\"]*)\"$")
+    public void i_want_to_verify_the_logged_in_user_as(String loggedInUser) throws Throwable {
+    		mobileApp.verifyLoggedInUser(loggedInUser);
+    }
 
+    @Then("^I want to logout the user$")
+    public void i_want_to_logout_the_user() throws Throwable {
+    		mobileApp.logout_app();
     }
 
 }
