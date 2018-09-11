@@ -86,11 +86,8 @@ public class Mobile {
 	@AndroidFindBy(id =  AndroidElements.LOGOUT_BUTTON)
 	private MobileElement logoutMenu;
 	
-	
     private WebDriver driver;
     private WebDriverWait wait;
-
-
 
     public Mobile(WebDriver driver) throws MalformedURLException {
         this.driver = driver;
