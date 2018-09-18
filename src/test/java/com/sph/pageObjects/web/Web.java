@@ -1,4 +1,4 @@
-package com.sph.pageObjects;
+package com.sph.pageObjects.web;
 
 import com.sph.driverFactory.LocalWebDriverListener;
 import com.sph.utilities.WebElements;

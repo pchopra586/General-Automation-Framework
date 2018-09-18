@@ -72,6 +72,7 @@ public class Reporter {
      * @param message The message to be logged to the current step
      */
     public static void addStepLog(String message) {
+    		message = message.replace("Mango123", "*****");
         getCurrentStep().info(message);
     }
 
@@ -81,6 +82,7 @@ public class Reporter {
      * @param message The message to be logged to the current scenario
      */
     public static void addScenarioLog(String message) {
+    		message = message.replace("Mango123", "*****");
         getCurrentScenario().info(message);
     }
 

@@ -35,7 +35,6 @@ public class BeforeAfterHooks {
     @Before
     public void deleteAllCookies() throws MalformedURLException, InterruptedException {
         log.info("Deleting all cookies...");
-        Thread.sleep(2000);
         DriverManager.getDriver().manage().deleteAllCookies();
     }
 

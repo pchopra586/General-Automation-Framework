@@ -40,11 +40,6 @@ public class Constant {
 	public static final String REGISTERED_USER = "Premium_access1";
 	public static final String REGISTERED_PWD = "Password123";
 	
-//	public static DateFormat dateFormat = new SimpleDateFormat("HH-mm-ss-dd/MM/yyyy");
-//	public static Calendar cal = Calendar.getInstance();
-//	
-//	public static final String REPORT_LOCATION = "/Users/madhu/Documents/Automation Framework/SG/backup - 7th May/STPlusAutomationFramework/reports/Report" + dateFormat.format(cal).toString() + ".html";
-
 	public static final String REPORT_LOCATION = "/Users/madhu/Documents/Automation Framework/SG/backup - 7th May/STPlusAutomationFramework/reports/";
 	
 	/* webview - native view */
@@ -64,7 +59,18 @@ public class Constant {
 	public static final String LOG_OUT = "Log Out";
 	public static final String ACCOUNT_MANAGE_LABEL = "MANAGE";
 	public static final String ACCOUNT_PAGE_TITLE = "ACCOUNT";
-
+	public static final String PRINT_EDITION_PAGE_TITLE = "PRINT EDITION";
+	public static final String COMMON_NAVIGATION_BAR_TITLE = "THE STRAITS TIMES";
+	
+	/*Alert and pop-ups*/
+	public static final String PRINT_EDITION_ALERT_TITLE = "Get your Print Edition instantly"; 
+	public static final String PRINT_EDITION_ALERT_MESSAGE = "Leave your device on Wi–Fi and we'll preload the Print Edition for you. You can also set your preferences later from Settings.";
+	public static final String PRINT_EDITION_ALERT_IGNORE = "No thanks!";
+	public static final String PRINT_EDITION_ALERT_ACCEPT = "OK";
+	public static final String PRINT_EDITION_ENABLE_PUSH_NOTIFICATION_ALERT_TITLE = "Please enable push notifications";
+	public static final String PRINT_EDITION_ENABLE_PUSH_NOTIFICATION_ALERT_MSG = "To let us preload the Print Edition, please enable push notifications for the ST app in your device's Settings > Notifications";
+	public static final String PRINT_EDITION_ENABLE_PUSH_NOTIFICATION_ALERT_CLOSE = "OK";
+	
 	/* Article Type */
 	public static final String PREMIUM = "PREMIUM";
 	public static final String FREE = "FREE";
@@ -84,7 +90,6 @@ public class Constant {
 	public static final Integer VIEWPOINT_ARTICLE_LAYOUT_SEQUENCE = 4;
 
 	/* Tab names */
-	
 	public static final String ST_NOW_TAB_LABEL = "ST NOW";
 	public static final String HOME_TAB_LABEL = "HOME";
 	public static final String LATEST_TAB_LABEL = "LATEST";
@@ -101,29 +106,30 @@ public class Constant {
 	public static final String SPORT_TAB_LABEL = "SPORT";
 	public static final String TECH_TAB_LABEL = "TECH";
 	
+	public static final String TOP_OF_THE_NEWS_TAB_LABEL = "TOP OF THE NEWS";
+	public static final String LIFE_TAB_LABEL = "LIFE";
+	public static final String BIG_PICTURE_TAB_LABEL = "BIG PICTURE";
+	public static final String EDUCATION_TAB_LABEL = "EDUCATION";
+	public static final String INVEST_TAB_LABEL = "INVEST";
+	public static final String INSIGHT_TAB_LABEL = "INSIGHT";
+	
 	public enum TAB {
-
-		STNOW, LATEST, HOME, SINGAPORE, POLITICS, ASIA, WORLD, LIFESTYLE, FOOD, FORUM, VIDEOS, OPINION, BUSINESS, SPORT, TECH
-
+		ST_NOW, LATEST, HOME, SINGAPORE, POLITICS, ASIA, WORLD, LIFESTYLE, FOOD, FORUM, VIDEOS, OPINION, BUSINESS, SPORT, TECH, 
+		TOP_OF_THE_NEWS, HOME_WRAP, LIFE, CLASSIFIEDS, SCIENCE, COMMUNITY, MIND_AND_BODY,EDUCATION, INSIGHT,INVEST,RECRUIT,
+		BIG_PICTURE 
 	}
 
 	public enum INTROCARD {
-
 		FIRST, SECOND, THIRD, FOURTH, FIFTH
-
 	}
 	
 	public enum SETTINGS_MENU {
-
 		ACCOUNT, EDIT_HOME, NOTIFICATIONS, EDIT_NOTIFICATIONS, SUBSCRIPTION, AUTO_DOWNLOAD, DOWNLOADED_ISSUES, CLEAR_CACHE, TEXT_SIZE, 
 		SPEAKING_RATE, SUPPORT, FAQ_AND_HELP, ADVERTISING_ENQUIRY, TERMS_AND_CONDITIONS, PRIVACY_POLICY
-
 	}
 	
 	public enum MENU {
-
 		SUBSCRIBE, LOGIN, LOGOUT, HOME_PAGE, EPAPER, BOOKMARK, PRINT_EDITION, SETTINGS, MORE_FROM_ST
-
 	}
 
 }

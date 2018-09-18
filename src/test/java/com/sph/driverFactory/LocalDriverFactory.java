@@ -2,10 +2,13 @@ package com.sph.driverFactory;
 
 
 import com.aventstack.extentreports.ExtentTest;
+import com.sph.utilities.Constant;
+
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.remote.*;
+
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -40,7 +43,6 @@ public class LocalDriverFactory{
 //extentReport is object of ExtentReport class
 
        // test= extentReports.createTest("This is Title Section", "This is Description Section<br />"  + " <br /> Browser Name: "+browserName);
-
         switch (Browser.valueOf(browserName.toUpperCase())) {
             case SAFARILOCAL:
                 driver = new SafariDriver();
@@ -68,12 +70,12 @@ public class LocalDriverFactory{
                 System.out.printf("Remote Chrome Driver is returned");
                 break;
             case CHROMELOCAL:
-                System.setProperty("webdriver.chrome.driver","/Users/pchopra/Documents/sph_test_automation_framework/src/test/resources/appDrivers/chromedriver");
+                System.setProperty("webdriver.chrome.driver","/Users/madhu/git/parallel-testing-cucumber/src/test/resources/appDrivers/chromedriver");
                 driver = new ChromeDriver();
                 System.out.printf("Local Chrome Driver is returned");
                 break;
             case CHROMEHEADLESS:
-                System.setProperty("webdriver.chrome.driver","/Users/pchopra/Documents/sph_test_automation_framework/src/test/resources/appDrivers/chromedriver");
+                System.setProperty("webdriver.chrome.driver","/Users/madhu/git/parallel-testing-cucumber/src/test/resources/appDrivers/chromedriver");
                 ChromeOptions chromeOptions = new ChromeOptions();
                 chromeOptions.addArguments("--headless");
                 driver = new ChromeDriver(chromeOptions);
@@ -107,7 +109,7 @@ public class LocalDriverFactory{
                 capability.setCapability(MobileCapabilityType.APP, appPath);
                 capability.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, appPackage);
                 capability.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, appActivity);
-                capability.setCapability("appVersion", "6.5.4");
+                //capability.setCapability("appVersion", "6.5.0");
                 capability.setCapability("instrumentApp", false);
                 driver = new AndroidDriver<>(new URL(remoteUrl), capability);
                 System.out.printf("Remote Android driver is returned");
@@ -151,11 +153,23 @@ public class LocalDriverFactory{
                 capability.setCapability(MobileCapabilityType.UDID,udID);
                 capability.setCapability("deviceName", devicename);
                 capability.setCapability("automationName","XCUITest");
-                capability.setCapability("deviceName",devicename);
                 //capability.setCapability("xcodeConfigFile", configFilePath);
                 capability.setCapability("xcodeOrgId",teamID);
                 capability.setCapability("xcodeSigningId",signingID);
                 capability.setCapability("showXcodeLog","true");
+                driver = new IOSDriver<>(new URL(localUrl), capability);
+                System.out.printf("Local iOSdriver is returned");
+                break;
+            case IOSLOCALSIMULATOR:
+                capability = DesiredCapabilities.iphone();
+                capability.setCapability(MobileCapabilityType.PLATFORM_NAME,"iOS");
+                capability.setCapability(MobileCapabilityType.APP, appPath);
+                capability.setCapability(MobileCapabilityType.UDID,udID);
+                capability.setCapability(MobileCapabilityType.DEVICE_NAME, devicename);
+                capability.setCapability(MobileCapabilityType.AUTOMATION_NAME,Constant.AUTOMATION_NAME_IOS);
+                capability.setCapability(IOSMobileCapabilityType.XCODE_CONFIG_FILE,Constant.CONFIGFILE);
+                capability.setCapability(IOSMobileCapabilityType.XCODE_ORG_ID,signingID);
+                capability.setCapability(IOSMobileCapabilityType.BUNDLE_ID,Constant.BUNDLE_ID);
                 driver = new IOSDriver<>(new URL(localUrl), capability);
                 System.out.printf("Local iOSdriver is returned");
                 break;
@@ -197,6 +211,7 @@ public class LocalDriverFactory{
         IOSREMOTEBROWSER,
         IOSLOCAL,
         IOSREMOTE,
+        IOSLOCALSIMULATOR,
         ANDROIDREMOTEBROWSER,
         ANDROIDLOCALBROWSER;
     }

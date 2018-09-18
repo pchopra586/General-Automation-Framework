@@ -1,4 +1,4 @@
-package com.sph.pageObjects;
+package com.sph.pageObjects.mobile;
 
 import com.sph.driverFactory.LocalWebDriverListener;
 import com.sph.utilities.AndroidElements;
@@ -13,6 +13,7 @@ import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.PointOption;
 import org.openqa.selenium.*;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -20,6 +21,8 @@ import org.testng.log4testng.Logger;
 
 import java.net.MalformedURLException;
 import java.time.*;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 public class Mobile {
@@ -38,7 +41,7 @@ public class Mobile {
     @AndroidFindBy(id = AndroidElements.WELCOME_TEXT)
     private MobileElement welcome_text;
 
-    @iOSXCUITFindBy(accessibility = IOSElements.CLOSE_INTERSTITIAL_AD_ID)
+    
     @AndroidFindBy(className = AndroidElements.CLOSE_AD)
     private MobileElement close_ad;
 
@@ -61,60 +64,44 @@ public class Mobile {
     @iOSXCUITFindBy(accessibility = IOSElements.LOGIN_CONTINUE_LABEL)
     @AndroidFindBy(id = AndroidElements.CONTINUE)
     private MobileElement continue_button;
-
-    @iOSXCUITFindBy(accessibility = IOSElements.LOGIN_CONTINUE_LABEL)
-    @AndroidFindBy(id = AndroidElements.TITLE_ARTICLE)
-    private MobileElement title_article;
-
-    @iOSXCUITFindBy(accessibility = IOSElements.LOGIN_CONTINUE_LABEL)
-    @AndroidFindBy(xpath = AndroidElements.LATEST_TAB)
-    private MobileElement latest_tab;
     
     @iOSXCUITFindBy(accessibility = IOSElements.LOGIN_CONTINUE_LABEL)
     @AndroidFindBy(xpath = AndroidElements.LOGOUT_BUTTON)
-    private MobileElement logout_button;
-
-    @iOSXCUITFindBy(accessibility = IOSElements.NAVIGATION_TITLE)
-    //@AndroidFindBy(xpath = AndroidElements.LOGOUT_BUTTON)
-    private MobileElement navigation_title;
+    private MobileElement logoutButton;
 
     @iOSXCUITFindBy(xpath = "//XCUIElementTypeImage[@name=\"" + IOSElements.ST_ICON_ID + "\"]/following-sibling::XCUIElementTypeStaticText")
 	@AndroidFindBy(id =  AndroidElements.LOGGED_IN_USER_ID)
 	private MobileElement loggedInUser;
 	
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeImage[@name=\"" + IOSElements.ST_ICON_ID + "\"]/following-sibling::XCUIElementTypeStaticText")
+    @iOSXCUITFindBy(accessibility = IOSElements.ACCOUNT_LOGOUT_ID)
 	@AndroidFindBy(id =  AndroidElements.LOGOUT_BUTTON)
 	private MobileElement logoutMenu;
+	
+	@iOSXCUITFindBy(id = IOSElements.SETTINGS_MENU_ID)
+	@AndroidFindBy(id = AndroidElements.SETTINGS_MENU_ID)
+	private MobileElement settingsMenu;
+	
+	@iOSXCUITFindBy(id = IOSElements.ACCOUNT_SETTINGS_ID)
+	@AndroidFindBy(id = AndroidElements.ACCOUNT_SETTINGS_ID)
+	private MobileElement accountSettings;
 	
     private WebDriver driver;
     private WebDriverWait wait;
 
     public Mobile(WebDriver driver) throws MalformedURLException {
         this.driver = driver;
-        this.wait = new WebDriverWait(this.driver, 10);
+        this.wait = new WebDriverWait(this.driver, 30);
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
     }
 
     public Mobile accept_terms_and_conditions() throws InterruptedException, MalformedURLException {
         System.out.println("Browser is " + browserName);
         if (browserName.equalsIgnoreCase("IOSREMOTE")||browserName.equalsIgnoreCase("IOSLOCAL")) {
-            try {
-                if (!terms_conditions.isDisplayed()) {
-                    try {
-                        if (!hamburger_menu.isDisplayed()) {
-                            driver.switchTo().alert().accept();
-                            logger.info("Allowed the Permissions for ST App Default Notification");
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        System.out.println("Hamburger menu not found");
-                    }
-                }
-            }
-            catch(Exception e)
-            {
-                System.out.println("Not found");
+        		try {
+//	        		driver.switchTo().alert().accept();
+	            logger.info("Allowed the Permissions for ST App Default Notification");
+        		}catch (Exception e){
+                System.out.println("Alert to allow notification not show");
             }
         }
         try {
@@ -158,27 +145,35 @@ public class Mobile {
         return this;
     }
     public Mobile click_hamburger_menu() throws InterruptedException {
-        try {
-            if (close_ad.isDisplayed()) {
-                close_ad.click();
-            }
+    		hamburger_menu.click();
+    		try {
+        		if (browserName.equalsIgnoreCase("ANDROIDREMOTE")||browserName.equalsIgnoreCase("ANDROIDLOCAL")) {
+	            if (close_ad.isDisplayed()) {
+	                close_ad.click();
+	            }
+        		}
         }
         catch (Exception e)
         {
             System.out.printf("Element Not Present");
         }
-
-        hamburger_menu.click();
+    		System.out.printf("Hamburger Menu is clicked");
         logger.info("Hamburger Menu is clicked");
         return this;
     }
 
-    public Mobile enter_Login_Credentials(String username, String password) throws InterruptedException {
-        try {
+    public Mobile enter_Login_Credentials(String username, String password) throws InterruptedException {		
+    		System.out.printf("Click on Login Button");
+    		try {
+    			if(!(log_in.isDisplayed())) {
+    				hamburger_menu.click();
+    			}
             if (log_in.isDisplayed()) {
             		log_in.click();
+            		
 	            userName.sendKeys(username);
 	            passWord.sendKeys(password);
+	            continue_button.click();
             }
         }
         catch (Exception e)
@@ -187,13 +182,14 @@ public class Mobile {
         }
         return this;
     }
-    public Mobile click_continue_button() throws InterruptedException {
-        continue_button.click();
-        return this;
-    }
     
     public Mobile verifyLoggedInUser(String username)  throws InterruptedException {
-    		hamburger_menu.click();
+    		Capabilities capabilities = ((RemoteWebDriver) driver).getCapabilities();
+    		
+    		if(capabilities.getCapability("platformName").toString().equalsIgnoreCase("Android")) {
+    			hamburger_menu.click();
+    		}
+    		
     		String loggedInText = "";
     		try {
             if (loggedInUser.isDisplayed()) {
@@ -207,17 +203,35 @@ public class Mobile {
         }
         return this;
 	}
-
-    public Mobile read_title_article_on_home_page() throws InterruptedException {
-        System.out.println("Today's main article at home page is: "+title_article.getText());
-        return this;
+    
+    public Mobile gotoSettingsMenu()  throws InterruptedException {
+		Capabilities capabilities = ((RemoteWebDriver) driver).getCapabilities();
+		
+		try{
+			if(capabilities.getCapability("platformName").toString().equalsIgnoreCase("iOS")) {
+				settingsMenu.click();
+			}
+		}catch(Exception e)
+	    {
+	        System.out.println("Can't be navigated to Settings Menu");
+	    }
+		return this;
     }
-
-    public Mobile navigate_to_latest_tab() throws InterruptedException {
-        latest_tab.click();
-        System.out.println("Today's main article at latest tab is: "+title_article.getText());
-        return this;
+    
+    public Mobile gotoAccountSettings()  throws InterruptedException {
+		Capabilities capabilities = ((RemoteWebDriver) driver).getCapabilities();
+		
+		try{
+			if(capabilities.getCapability("platformName").toString().equalsIgnoreCase("iOS")) {
+				accountSettings.click();
+			}
+		}catch(Exception e)
+	    {
+	        System.out.println("Can't be navigated to Account Settings");
+	    }
+		return this;
     }
+    
 
     public Mobile logout_app() throws InterruptedException {
         logoutMenu.click();

@@ -7,7 +7,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 import com.sph.driverFactory.DriverManager;
-import com.sph.pageObjects.Web;
+import com.sph.pageObjects.web.Web;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;

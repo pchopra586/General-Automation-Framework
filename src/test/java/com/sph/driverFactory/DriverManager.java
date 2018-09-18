@@ -4,7 +4,10 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import io.appium.java_client.MobileDriver;
+
 import java.net.MalformedURLException;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -29,7 +32,7 @@ public class DriverManager {
     public static WebDriver getDriver() throws MalformedURLException {
         if (driver.get() == null) {
             // this is need when running tests from IDE
-            log.info("Thread has no WedDriver, creating new one");
+            log.info("Thread has no WebDriver, creating new one");
             setWebDriver(LocalDriverFactory.createInstance(null,null,null, null,null,null,null,null,null,null,null,null,null,null));
         }
         log.debug("Getting instance of remote driver" + driver.get().getClass());
@@ -37,7 +40,7 @@ public class DriverManager {
     }
 
     public static void setWebDriver(WebDriver driver) {
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+//        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         DriverManager.driver.set(driver);
     }
 

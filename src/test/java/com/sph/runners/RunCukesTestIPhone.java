@@ -27,14 +27,14 @@ import static com.sph.driverFactory.LocalWebDriverListener.browserName;
  */
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        features = "src/test/resources/features/mobile",
-        glue = {"com.sph/stepDefinitions/mobile"},
+        features = "src/test/resources/features/mobile/iphone",
+        glue = {"com.sph.stepDefinitions.mobile"},
         format = {"pretty","rerun:target/cucumber-reports/rerun.txt",
                 "html:target/cucumber-report/android/cucumber-pretty",
                 "json:target/cucumber-report/android/cucumber.json",
                 "junit:target/cucumber-report/android/cucumber.xml"},
         plugin = {"com.vimalselvam.cucumber.listener.ExtentCucumberFormatter:"})
-public class RunCukesTestInMobile extends AbstractTestNGCucumberTests {
+public class RunCukesTestIPhone extends AbstractTestNGCucumberTests {
     private TestNGCucumberRunner testNGCucumberRunner;
 
     @BeforeClass(alwaysRun = true)
