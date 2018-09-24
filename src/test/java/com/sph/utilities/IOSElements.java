@@ -42,7 +42,6 @@ public class IOSElements {
 	public static final String TERMS_AND_CONDITIONS_SETTINGS_ID = "Terms & Conditions";
 	public static final String VERSION_SETTINGS_ID = "VERSION";
 	
-	
 	public static final String SUBSCRIBE_MENU_ID = "SUBSCRIBE";
 	public static final String LOGIN_MENU_ID = "LOG IN";
 	public static final String HOME_PAGE_MENU_ID = "home menu";
@@ -52,12 +51,10 @@ public class IOSElements {
 	public static final String SETTINGS_MENU_ID = "setting menu";
 	public static final String MORE_FROM_ST_MENU_ID = "st+menu";
 	
-	
 	public static final String REMOVE_FROM_HOME_BTN_LABEL = "remove from home";
 	public static final String REMOVE_FROM_HOME_BTN_NAME = "add_to_home";
 	
 	public static final String SETTINGS_MENU_BACK_BTN = "back";
-	
 	
 	//ACCOUNT PAGE VIEW
 	public static final String ACCOUNT_PAGE_TITLE_ID = "ACCOUNT";
@@ -107,5 +104,7 @@ public class IOSElements {
 	
 	public static final String ARTICLE_LIST_NATIVE_VIEW = "XCUIElementTypeCell"; 
 	public static final String BACK_BTN_ID = "back"; 
+	
+	public static final String TAB_TITLE_XPATH = "//XCUIElementTypeScrollView//XCUIElementTypeButton";
 }
 

@@ -3,7 +3,7 @@ package com.sph.pageObjects.web;
 import com.sph.driverFactory.LocalWebDriverListener;
 import com.sph.utilities.WebElements;
 
-import org.openqa.selenium.JavascriptExecutor;
+//import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -48,12 +48,20 @@ public class Web {
     @FindBy(xpath = WebElements.STORY_HEADLINE)
     private WebElement story_headline;
 
+    @FindBy(xpath = WebElements.READ_HEADLINE)
+    private WebElement read_headline;
+
     @FindBy(xpath = WebElements.MAIN_ARTICLE_HEADING)
     private WebElement main_article_heading;
 
     @FindBy(xpath = WebElements.LOG_OUT)
     private WebElement log_out;
 
+    @FindBy(className = WebElements.HAMBURGER_MENU_MOBILE_WEB)
+    private WebElement hamburger_menu_mobile_web;
+
+    @FindBy(xpath = WebElements.USER_MENU_MOBILE_WEB)
+    private WebElement user_menu_mobile_web;
 
     public Web(WebDriver driver) {
         this.driver = driver;
@@ -63,13 +71,19 @@ public class Web {
 
     public void launch_Strait_Times() throws InterruptedException {
         this.driver.get("https://www.straitstimes.com");
-        if(browserName.equalsIgnoreCase("CHROMELOCAL")) {
-            this.driver.manage().window().maximize();
+        try {
+            if (browserName.equalsIgnoreCase("CHROMELOCAL") || browserName.equalsIgnoreCase("SAFARILOCAL")) {
+                this.driver.manage().window().maximize();
+            }
+        }
+        catch(Exception e)
+        {
+            System.out.println("Maximize not required");
         }
     }
 
     public void login_StraitTimes() throws InterruptedException {
-        Thread.sleep(10000);
+        Thread.sleep(5000);
         //driver.switchTo().frame(0);
         try {
             if (iframe.isDisplayed()) {
@@ -80,9 +94,17 @@ public class Web {
         }
         try {
             if (close_ad.isDisplayed()) {
-                ((JavascriptExecutor) driver).executeScript("arguments[0].click();", close_ad);
+                //((JavascriptExecutor) driver).executeScript("arguments[0].click();", close_ad);
                 close_ad.click();
-               // driver.switchTo().defaultContent();
+                try {
+                    if (browserName.equalsIgnoreCase("SAFARILOCAL")||browserName.equalsIgnoreCase("CHROMELOCAL")) {
+                        driver.switchTo().defaultContent();
+                    }
+                }
+                catch (Exception e)
+                {
+                    System.out.println("Element Not found");
+                }
             }
         } catch (Exception e) {
             System.out.println("Ad is not displayed");
@@ -90,29 +112,47 @@ public class Web {
 
             /*Actions actions = new Actions(driver);
             actions.moveToElement(login_link).click().build().perform();*/
-            Thread.sleep(5000);
+            Thread.sleep(3000);
+            try {
+                if (browserName.equalsIgnoreCase("ANDROIDREMOTEBROWSER") || browserName.equalsIgnoreCase("ANDROIDLOCALBROWSER") || browserName.equalsIgnoreCase("IOSREMOTEBROWSER"))
+                    ;
+                {
+                    hamburger_menu_mobile_web.click();
+                    Thread.sleep(5000);
+                    user_menu_mobile_web.click();
+                }
+            }
+            catch (Exception e)
+            {
+                System.out.println("Element not found");
+            }
+        Thread.sleep(2000);
+        
             login_link.click();
 
 
     }
 
+
     public void enter_Login_Credentials(String UserName, String Password) throws IOException, InterruptedException {
-        Thread.sleep(3000);
+        Thread.sleep(5000);
         login_id.sendKeys(UserName);
         password.sendKeys(Password);
         signIn_button.click();
     }
 
     public void user_logged_in(String UserName) throws InterruptedException {
-        Thread.sleep(8000);
-//        String Verify_User_Name = verify_username.getText();
-//        Assert.assertEquals(UserName, Verify_User_Name);
+        Thread.sleep(5000);
+        String Verify_User_Name = verify_username.getText();
+        Assert.assertEquals(UserName, Verify_User_Name);
 
     }
 
     public void read_main_artcle() throws InterruptedException {
-        Read_Story_Headline = story_headline.getText();
+        Thread.sleep(5000);
+        Read_Story_Headline = read_headline.getText();
         System.out.println("Story Headline is: " + Read_Story_Headline);
+        Thread.sleep(5000);
         story_headline.click();
 
     }
@@ -131,4 +171,3 @@ public class Web {
         log_out.click();
     }
 }
-

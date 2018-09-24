@@ -61,6 +61,9 @@ public class Constant {
 	public static final String ACCOUNT_PAGE_TITLE = "ACCOUNT";
 	public static final String PRINT_EDITION_PAGE_TITLE = "PRINT EDITION";
 	public static final String COMMON_NAVIGATION_BAR_TITLE = "THE STRAITS TIMES";
+	public static final String BOOKMARK = "BOOKMARK";
+	public static final String DIRECTION = "direction";
+	public static final String SEARCH_PLACEHOLDER = "Search Topics";
 	
 	/*Alert and pop-ups*/
 	public static final String PRINT_EDITION_ALERT_TITLE = "Get your Print Edition instantly"; 
@@ -112,6 +115,27 @@ public class Constant {
 	public static final String EDUCATION_TAB_LABEL = "EDUCATION";
 	public static final String INVEST_TAB_LABEL = "INVEST";
 	public static final String INSIGHT_TAB_LABEL = "INSIGHT";
+	
+	/* Html Entities */
+	public static final String NON_BREAKING_SPACE = "&nbsp;";
+	public static final String LESS_THAN = "&lt;";
+	public static final String GREATER_THAN = "&gt;";
+	public static final String AMPERSAND = "&amp;";
+	public static final String DOUBLE_QUOTATION_MARK = "&quot;";
+	public static final String APOSTROPHE = "&apos;";
+	public static final String COPYRIGHT = "&copy;";
+	public static final String REGISTERED_TRADEMARK = "&reg;";
+	public static final String TRADEMARK = "&trade;";
+
+	/* Search Keyword/text */
+	public static final String SEARCH_RELATED_ARTICLE = "Parliament: More than one qualified prime minister candidate, says PM Lee";
+	public static final String SEARCH_ARTICLE = "a TEST FOR POLITICS IN INDONESIA";
+	public static final String EPAPER_SEARCH_KEYWORD = "North";
+	
+
+	/* Flag value */
+	public static final String BOOKMARK_FLAG_YES = "YES";
+	public static final String BOOKMARK_FLAG_NO = "NO";
 	
 	public enum TAB {
 		ST_NOW, LATEST, HOME, SINGAPORE, POLITICS, ASIA, WORLD, LIFESTYLE, FOOD, FORUM, VIDEOS, OPINION, BUSINESS, SPORT, TECH, 

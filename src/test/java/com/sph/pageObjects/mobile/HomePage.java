@@ -1,5 +1,6 @@
 package com.sph.pageObjects.mobile;
 
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -35,6 +36,8 @@ import io.appium.java_client.MobileDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
+import io.appium.java_client.pagefactory.HowToUseLocators;
+import io.appium.java_client.pagefactory.LocatorGroupStrategy;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class HomePage{
@@ -130,9 +133,50 @@ public class HomePage{
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name=\"" + Constant.TECH_TAB_LABEL + "\"]")
 	private MobileElement techTab;
 	
-	public HomePage(WebDriver driver) {
+	@iOSXCUITFindBy(className = "XCUIElementTypeOther")
+	@AndroidFindBy(id = "article_image_back")
+	private MobileElement infoScreen;
+	
+	@iOSXCUITFindBy(accessibility = "TOP STORIES")
+	@AndroidFindBy(id = "tv_title")
+	private MobileElement topStoriesHeading;
+	
+	@AndroidFindBy(id = "article_image")
+	private MobileElement articleWithImage;
+	
+	@AndroidFindBy(id = "article_title")
+	@iOSXCUITFindBy(xpath = "//*[@name='article_title']")
+	private MobileElement topStory;
+	
+	@iOSXCUITFindBy(accessibility = "add_to_home")
+	private MobileElement addToHomeButton;
+	
+	// To Do: check for unique locator for free articles
+	@HowToUseLocators(androidAutomation = LocatorGroupStrategy.ALL_POSSIBLE, iOSXCUITAutomation = LocatorGroupStrategy.ALL_POSSIBLE)
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther/child::XCUIElementTypeStaticText[@name='article_title']")
+	@AndroidFindBy(xpath = "//*[@resource-id='com.buuuk.st:id/article_title']/../android.widget.TextView[@index='0']")
+	@AndroidFindBy(xpath = "//*[@resource-id='com.buuuk.st:id/imageLayout']//following-sibling::android.widget.TextView[@resource-id='com.buuuk.st:id/article_title']")
+	private MobileElement freeArticleTitle;
+
+	@iOSXCUITFindBy(xpath = "//*[@name='premium']//following-sibling::XCUIElementTypeStaticText[@name='article_title']")
+	@AndroidFindBy(xpath = "//*[@resource-id='com.buuuk.st:id/imgPremium']//following-sibling::android.widget.TextView[@resource-id='com.buuuk.st:id/article_title']")
+	private MobileElement premiumArticleTitle;
+
+	@iOSXCUITFindBy(xpath = "//*[@name='video_icon']//preceding-sibling::XCUIElementTypeStaticText[@name='article_title']")
+	@HowToUseLocators(androidAutomation = LocatorGroupStrategy.ALL_POSSIBLE)
+	@AndroidFindBy(xpath = "//*[@resource-id='com.buuuk.st:id/iv_play_button']//parent::android.widget.RelativeLayout/following-sibling::android.widget.LinearLayout//descendant::android.widget.TextView")
+	@AndroidFindBy(xpath = "//*[@resource-id='com.buuuk.st:id/iv_play_button']//parent::android.widget.RelativeLayout/following-sibling::android.widget.TextView")
+	@AndroidFindBy(xpath = "//*[@resource-id='com.buuuk.st:id/iv_play_button']//parent::android.widget.RelativeLayout/parent::android.widget.FrameLayout/following-sibling::android.widget.LinearLayout//descendant::android.widget.TextView")
+	private MobileElement videoIcon;
+
+	@iOSXCUITFindBy(xpath = "//*[@name='video_icon']//following-sibling::XCUIElementTypeStaticText[@name='article_title']")
+	private List<MobileElement> webviewArticles;
+
+	@iOSXCUITFindBy(xpath = "//*[@name='article']/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeImage")
+	private MobileElement topStoryImage;
+	
+	public HomePage(WebDriver driver) throws MalformedURLException {
 		this.driver = driver;
-//        this.wait = new WebDriverWait(this.driver, 10);
         this.capabilities = ((RemoteWebDriver) driver).getCapabilities();
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
 		resetRemoveFromHomeBtnDimension = true;
@@ -167,21 +211,25 @@ public class HomePage{
 	public HomePage gotoHomePage() {
 		methodName = "gotoHomePage";
 		logger.info("Entering Method: " + methodName);
-		GenericNavigator navigator = new GenericNavigator(driver);
-		
-		if(!navigator.preConfigured()) {
-			navigator.completeBasicInstallConfig();
+		try {
+			GenericNavigator navigator = new GenericNavigator(driver);
+			
+			if(!navigator.preConfigured()) {
+				navigator.completeBasicInstallConfig();
+			}
+			
+			int trial = 0;
+			boolean onHomePage = false;
+			while(trial < 2 && !onHomePage) {
+				trial++;
+				onHomePage = onHomePage();
+			}
+			
+			Assert.assertTrue(onHomePage,"Unexpectedly not on Home Page");
+			logger.info("Successfully exiting from method: " + methodName);
+		}catch(Exception ex) {
+			logger.error("Unable to goto Home Page due to exception: " + ex.getMessage());
 		}
-		
-		int trial = 0;
-		boolean onHomePage = false;
-		while(trial < 2 && !onHomePage) {
-			trial++;
-			onHomePage = onHomePage();
-		}
-		
-		Assert.assertTrue(onHomePage,"Unexpectedly not on Home Page");
-		logger.info("Successfully exiting from method: " + methodName);
 		return this;
 	}
 	
@@ -223,151 +271,6 @@ public class HomePage{
 		logger.info("Logo is inconsistent with expected");
 		return validated;
 	}
-	
-//	public boolean tabAccessibilityValidation() {
-//		methodName = "basicTabAccessibilityValidation";
-//		logger.info("Entering Method: " + methodName);
-//		logger.log(Status.INFO, "Entering Method: " + methodName);
-//		
-//		MobileElement tabButton = null; 
-//		boolean success = true;
-//		List<Map<String , String>> tabs  = new ArrayList<Map<String,String>>();
-//		
-//		Map<String,String> stNowTab = new HashMap<String,String>();
-//		stNowTab.put("name", "ST Now");
-//		stNowTab.put("label", "ST NOW");
-//		stNowTab.put("enabled", "true");
-//		stNowTab.put("visible", "true");
-//		tabs.add(stNowTab);
-//		
-//		Map<String,String> homeTab = new HashMap<String,String>();
-//		homeTab.put("name", "Home");
-//		homeTab.put("label", "HOME");
-//		homeTab.put("enabled", "true");
-//		homeTab.put("visible", "true");
-//		tabs.add(homeTab);
-//		
-//		Map<String,String> latestTab = new HashMap<String,String>();
-//		latestTab.put("name", "Latest");
-//		latestTab.put("label", "LATEST");
-//		latestTab.put("enabled", "true");
-//		latestTab.put("visible", "true");
-//		tabs.add(latestTab);
-//		
-//		Map<String,String> singaporeTab = new HashMap<String,String>();
-//		singaporeTab.put("name", "Singapore");
-//		singaporeTab.put("label", "SINGAPORE");
-//		singaporeTab.put("enabled", "true");
-//		singaporeTab.put("visible", "true");
-//		tabs.add(singaporeTab);
-//		
-//		Map<String,String> politicsTab = new HashMap<String,String>();
-//		politicsTab.put("name", "Politics");
-//		politicsTab.put("label", "POLITICS");
-//		politicsTab.put("enabled", "true");
-//		politicsTab.put("visible", "false");
-//		tabs.add(politicsTab);
-//		
-//		Map<String,String> asiaTab = new HashMap<String,String>();
-//		asiaTab.put("name", "Asia");
-//		asiaTab.put("label", "ASIA");
-//		asiaTab.put("enabled", "true");
-//		asiaTab.put("visible", "false");
-//		tabs.add(asiaTab);
-//		
-//		Map<String,String> worldTab = new HashMap<String,String>();
-//		worldTab.put("name", "World");
-//		worldTab.put("label", "WORLD");
-//		worldTab.put("enabled", "true");
-//		worldTab.put("visible", "false");
-//		tabs.add(worldTab);
-//		
-//		Map<String,String> lifestyleTab = new HashMap<String,String>();
-//		lifestyleTab.put("name", "Lifestyle");
-//		lifestyleTab.put("label", "LIFESTYLE");
-//		lifestyleTab.put("enabled", "true");
-//		lifestyleTab.put("visible", "false");
-//		tabs.add(lifestyleTab);
-//		
-//		Map<String,String> foodTab = new HashMap<String,String>();
-//		foodTab.put("name", "Food");
-//		foodTab.put("label", "FOOD");
-//		foodTab.put("enabled", "true");
-//		foodTab.put("visible", "false");
-//		tabs.add(foodTab);
-//		
-//		Map<String,String> forumTab = new HashMap<String,String>();
-//		forumTab.put("name", "Forum");
-//		forumTab.put("label", "FORUM");
-//		forumTab.put("enabled", "true");
-//		forumTab.put("visible", "false");
-//		tabs.add(forumTab);
-//		
-//		Map<String,String> videosTab = new HashMap<String,String>();
-//		videosTab.put("name", "Videos");
-//		videosTab.put("label", "VIDEOS");
-//		videosTab.put("enabled", "true");
-//		videosTab.put("visible", "false");
-//		tabs.add(videosTab);
-//		
-//		Map<String,String> opinionTab = new HashMap<String,String>();
-//		opinionTab.put("name", "Opinion");
-//		opinionTab.put("label", "OPINION");
-//		opinionTab.put("enabled", "true");
-//		opinionTab.put("visible", "false");
-//		tabs.add(opinionTab);
-//		
-//		Map<String,String> businessTab = new HashMap();
-//		businessTab.put("name", "Business");
-//		businessTab.put("label", "BUSINESS");
-//		businessTab.put("enabled", "true");
-//		businessTab.put("visible", "false");
-//		tabs.add(businessTab);
-//
-//		Map<String,String> sportTab = new HashMap<String,String>();
-//		sportTab.put("name", "Sport");
-//		sportTab.put("label", "SPORT");
-//		sportTab.put("enabled", "true");
-//		sportTab.put("visible", "false");
-//		tabs.add(sportTab);
-//
-//		Map<String,String> techTab = new HashMap<String,String>();
-//		techTab.put("name", "Tech");
-//		techTab.put("label", "TECH");
-//		techTab.put("enabled", "true");
-//		techTab.put("visible", "false");
-//		tabs.add(techTab);
-//		
-//		int prevTabYAxis = 0;
-//		int prevTabHeight = 0;
-//		if(capabilities.getCapability("platformName").toString().equalsIgnoreCase("iOS")) {
-//			for(Map<String,String> tab : tabs) {
-//				tabButton = ((MobileElement) driver.findElement(By.xpath("//XCUIElementTypeButton[@name=\"" + tab.get("name") + "\"]");
-//				
-//				if(tabButton.equals(null)) {
-//					logger.log(Status.ERROR, "Expected Tab: \"" + tab + "\" is missing from Home Page View");
-//					success = false;
-//				}
-//				else {
-//					Assert.assertEquals(tab.get("label"), tabButton.getAttribute("label"));
-//					Assert.assertEquals(tab.get("type"), tabButton.getAttribute("type"));
-//					Assert.assertEquals(tab.get("enabled"), tabButton.getAttribute("enabled").toString());
-//					Assert.assertEquals(tab.get("visible"), tabButton.getAttribute("visible").toString());
-//
-//					if(prevTabYAxis == 0 && prevTabHeight == 0) {
-//						prevTabYAxis = tabButton.getCoordinates().onPage().getY();
-//						prevTabHeight = tabButton.getSize().getHeight();
-//					}else {
-//						Assert.assertEquals(tabButton.getCoordinates().onPage().getY(), prevTabYAxis);
-//						Assert.assertEquals(tabButton.getSize().getHeight(), prevTabHeight);
-//					}
-//					logger.log(Status.INFO, "Tab: \"" + tab + "\" is consistent with expected view");
-//				}
-//			}
-//		}
-//		logger.info("Successfully exiting from method: " + methodName);
-//		return success;
-//	}
 	
 	public boolean tabAccessibilityValidation() {
 		methodName = "tabAccessibilityValidation";
@@ -828,7 +731,7 @@ public class HomePage{
 			
 			//To handle cases, where the button is not in view yet
 			if(moreIconButton.getAttribute("visible").equals("false")) {
-				util.swipeVerticle("Up");
+				util.swipeVertical("Up");
 			}
 			moreIconButton.click();
 			//Tab title validation
@@ -1012,7 +915,7 @@ public class HomePage{
 			}
 
 			if(!reachedEndOfSection) {
-				util.swipeVerticle("Up");
+				util.swipeVertical("Up");
 				afterSwipeView = true;
 			}
 			else if(reachedEndOfSection && followedByAd) {
@@ -1088,7 +991,7 @@ public class HomePage{
 						break;
 					}
 					this.util = new DeviceActions(driver);		
-					util.swipeVerticle(navigationDirection);
+					util.swipeVertical(navigationDirection);
 				}
 			}
 		}
@@ -1145,5 +1048,355 @@ public class HomePage{
 		
 		return (MobileDriver) driver;
     }
+
+	//Cybage libraries
+	public HomePage isInfoScreenPresent() {
+		logger.info("Verifying if Information screen is displayed on the tab ");
+		boolean flag = util.isElementPresent(infoScreen, Constant.SHORT_TIMEOUT);
+		if (flag) {
+			infoScreen.click();
+			logger.info("Information screen is displayed, clicked on 'GOT IT' button, now on selected tab");
+		}
+
+		return this;
+	}
+
+	public HomePage navigateToTab(Constant.TAB tabName, String direction) {
+		logger.info("Navigating to " + tabName + " Tab");
+		switch (tabName) {
+		
+		case ST_NOW:
+			switchTab(stNowTab, tabName, 14, direction);
+			break;
+			
+		case HOME:
+			switchTab(homeTab, tabName, 14, direction);
+			break;
+
+		case LATEST:
+			switchTab(latestTab, tabName, 14, direction);
+			break;
+
+		case SINGAPORE:
+			switchTab(singaporeTab, tabName, 14, direction);
+			break;
+		case POLITICS:
+			switchTab(politicsTab, tabName, 14, direction);
+			break;
+		case ASIA:
+			switchTab(asiaTab, tabName, 14, direction);
+			break;
+		case WORLD:
+			switchTab(worldTab, tabName, 14, direction);
+			break;
+		case LIFESTYLE:
+			switchTab(lifestyleTab, tabName, 14, direction);
+			break;
+		case FOOD:
+			switchTab(foodTab, tabName, 14, direction);
+			break;
+		case FORUM:
+			switchTab(forumTab, tabName, 14, direction);
+			break;
+		case VIDEOS:
+			switchTab(videosTab, tabName, 14, direction);
+			break;
+		case OPINION:
+			switchTab(opinionTab, tabName, 14, direction);
+			break;
+		case BUSINESS:
+			switchTab(businessTab, tabName, 14, direction);
+			break;
+		case SPORT:
+			switchTab(sportTab, tabName, 14, direction);
+			break;
+
+		case TECH:
+			switchTab(techTab, tabName, 14, direction);
+			break;
+
+		default:
+			logger.info("Please provide valid tab name");
+			break;
+
+		}
+		return this;
+	}
+
+	/*
+	 * Commented section is present in below method purposely, as it is
+	 * dependent on one of issues which developer needs to fix it, once fixed
+	 * will remove comments, also commented section is required for Android as
+	 * well. For android it works, for iOS issue is already raised
+	 */
+
+	public HomePage switchTab(MobileElement tab, Constant.TAB tabName, int swipe, String direction) {
+		logger.info("Checking visibility of the tab :" + tabName + "and navigating to  " + tabName);
+		if (swipe > 0) {
+			if (util.isElementPresent(tab, Constant.SHORT_TIMEOUT)) {
+				util.clickifClickable(tab, Constant.SHORT_TIMEOUT);
+				try {
+					// WebDriverWait wait=new WebDriverWait(driver, 15);
+					// boolean
+					// flag=wait.until(ExpectedConditions.elementSelectionStateToBe(tab,true));
+					// Assert.assertTrue(tab.isSelected());
+					logger.info("Tab is visible! and tab title verified :Navigated to desired tab " + tabName);
+				} catch (AssertionError er) {
+					logger.error("Required tab not found!" + tabName);
+					Assert.fail(
+							"Assertion Failed , Tab title doesn't match: Navigated to incorrect tab" + er.getMessage());
+				}
+				return this;
+			}
+			util.swipeHorizontal(direction);
+			swipe--;
+			return switchTab(tab, tabName, swipe, direction);
+
+		}
+
+		logger.error("Required tab not found!" + tabName);
+		Assert.fail("Required tab not found!");
+
+		return this;
+	}
+
+	public LoginPage openLoginControl() {
+		logger.info("Opening login page/Drawer menu");
+		try{
+			util.clickifClickable(menu, Constant.SHORT_TIMEOUT);
+			return new LoginPage(driver);
+		}catch(Exception ex) {
+			logger.error("Cannot open Login Control");
+			return null;
+		}
+	}
+	
+	public HomePage isOnHomePage() {
+		logger.error("Verifying if on home page");
+		if (capabilities.getCapability("platformName").toString().equalsIgnoreCase("ios")) {
+			util.clickUsingCoordinates(menu);
+		}
+		return this;
+	}
+
+	public ArticlePage verifyNavigatedToTopStoriesPage() {
+		try{
+			util.isElementPresent(topStoriesHeading, Constant.SHORT_TIMEOUT, "Top stories heading");
+			logger.info("Top Stories page is displayed to the user");
+			return new ArticlePage(driver);
+		}catch(Exception ex) {
+			logger.error("Cannot navigate to Top Stories page");
+			return null;
+		}
+		
+	}
+
+	public HomePage assertOnMediaDisplayed() {
+		util.isElementPresent(articleWithImage, Constant.SHORT_TIMEOUT, "Article with Image");
+		return this;
+	}
+
+	public ArticlePage navigateToTopStoryOftheHomePage() {
+		try {
+			logger.info("Navigating to main article of home page");
+			String headline = topStory.getText();
+			util.clickifClickable(topStory, Constant.SHORT_TIMEOUT);
+			switchCall();
+			logger.info("Verifying main article headline");
+			
+			assertHeadingOfArticle(headline);
+			return new ArticlePage(driver);
+		}catch(Exception ex) {
+			logger.error("Cannot navigate to Top Story of Home Page");
+			return null;
+		}
+	}
+
+	public LoginPage returnLoginPage() {
+		try {
+			return new LoginPage(driver);
+		}catch(Exception ex) {
+			logger.error("Cannot return to Login Page");
+			return null;
+		}
+	}
+
+	public STNowPage returnSTNowPage() {
+		try {
+			return new STNowPage(driver);
+		}catch(Exception ex) {
+			logger.error("Cannot go to STNow Page");
+			return null;
+		}
+	}
+	
+	public HomePage verifyVisibilityOfAddToHomeButton() {
+		logger.info("Verifying if 'Add To Home' Button is displayed on the tab ");
+		boolean flag = util.isElementPresent(addToHomeButton, Constant.SHORT_TIMEOUT);
+		if (flag) {
+			logger.info("'Add To Home' Button is displayed on the tab");
+		} else {
+			logger.info("'Add To Home' Button is not displayed on the tab");
+		}
+
+		return this;
+	}
+
+	public ArticlePage openArticle(int maxSwipe, String articleType) {
+		try {
+			if (articleType == Constant.PREMIUM) {
+				navigateToArticle(premiumArticleTitle, maxSwipe, articleType);
+			} else if (articleType == Constant.FREE) {
+				navigateToArticle(freeArticleTitle, maxSwipe, articleType);
+			}
+			return new ArticlePage(driver);
+		}catch(Exception ex) {
+			logger.error("Cannot open Article");
+			return null;
+		}
+	}
+
+	public ArticlePage navigateToArticle(MobileElement element, int maxSwipe, String articleType) {
+		logger.info("Searching for " + articleType + " article..");
+		boolean flag = util.swipeVerticalUntilElementIsFound(element, maxSwipe, Constant.UP);
+		try {
+			if (flag) {
+				String headline;
+				headline = element.getText();
+				logger.info("Article found! Now navigating to " + articleType + " article..");
+				logger.info("Article heading is " + headline);
+				util.clickifClickable(element, Constant.SHORT_TIMEOUT);
+				switchCall();
+				logger.info(" Opened article, verifying article headline of " + articleType + " article..");
+				assertHeadingOfArticle(headline);
+
+				logger.info(headline);
+				logger.info("Article headline matches! we have been navigated to selected article..");
+			}
+			return new ArticlePage(driver);
+
+		} catch (Exception ex) {
+			logger.error(articleType + " article you are looking for is not present");
+			Assert.fail(articleType + "article is not found!");
+			return null;
+		}
+		
+	}
+
+	public ArticlePage switchCall() {
+		try {
+			return new ArticlePage(driver).switchToMainArticle();
+		}catch (Exception ex) {
+			logger.error("Unable to switch to Main Article");
+			return null;
+		}
+	}
+
+	public ArticlePage assertHeadingOfArticle(String headline) {
+		try {
+			return new ArticlePage(driver).assertArticleHeading(headline);
+		}catch (Exception ex) {
+			logger.error("Heading of Article is inconsistent");
+			return null;
+		}
+	}
+
+	public HomePage verifyMainArticleOnHomePage() {
+		try {
+			String articleHeadline = topStory.getText();
+			logger.info("Verifying main article at home page : ");
+			logger.info("Article heading is " + articleHeadline);
+			util.isElementPresent(topStory, Constant.SHORT_TIMEOUT, "Article headline");
+			logger.info("Article headline is displayed!");
+			util.isElementPresent(topStoryImage, Constant.SHORT_TIMEOUT, "Article Image");
+			logger.info("Top story image is displayed!");
+			logger.info("Article headline is displayed!");
+		} catch (Exception er) {
+			logger.error("Article headline is missing");
+			Assert.fail("Article headline is missing");
+		}
+
+		return this;
+	}
+
+	public BookmarkPage returnBookmarkPage() {
+		try {
+			return new BookmarkPage(driver);
+		}catch (Exception ex) {
+			logger.error("Unable to return to Bookmark page");
+			return null;
+		}
+	}
+
+	public ArticlePage openAndVerifyArticle(List<String> list, int index, int maxSwipe) {
+		try {
+			if (maxSwipe > 0 && list.size() > 0) {
+				if (list.get(index).equals(topStory.getText())) {
+					topStory.click();
+					logger.info("Article headline of article is :" + list.get(index));
+					return new ArticlePage(driver);
+				}
+				util.swipeVertical(Constant.UP);
+				maxSwipe--;
+				return openAndVerifyArticle(list, index, maxSwipe);
+	
+			}
+			return new ArticlePage(driver);
+		}catch (Exception ex) {
+			logger.error("Unable to open and verify article");
+			return null;
+		}
+	}
+
+	public ArticlePage openArticleContainingWebview(int maxSwipe, String articleType) {
+		try {
+			navigateToArticle(videoIcon, maxSwipe, articleType);
+			return new ArticlePage(driver);
+		}catch (Exception ex) {
+			logger.error("Unable to open article having webview");
+			return null;
+		}
+	}
+
+	// below i was trying to validate all VISIBLE web view articles
+	public ArticlePage verifyArticleContent() {
+		try {
+			return new ArticlePage(driver).verifyArticleContentForHtmlEntities();
+		}catch (Exception ex) {
+			logger.error("Unable to open and verify article");
+			return null;
+		}
+	}
+
+	public HomePage clickOnBackIcon() {
+		try {
+			return new ArticlePage(driver).clickOnBackButton(1);
+		}catch (Exception ex) {
+			logger.error("Unable to click On back icon");
+			return null;
+		}
+	}
+
+	public ArticlePage verifyAllArticleContainingWebview(int maxSwipe, String articleType) {
+		try {
+			List<String> list = new ArrayList<String>();
+	
+			for (int i = 0; i < webviewArticles.size(); i++) {
+				logger.info("Web Articles are" + webviewArticles.size());
+				list.add(webviewArticles.get(i).getText());
+				logger.info("The list elements are " + list);
+			}
+			for (int i = 0; i < list.size(); i++) {
+				logger.info("value of i " + i);
+				openAndVerifyArticle(list, i, 4);// top story will always consider 1st Occurrence of article title, therefore seems not feasible
+				verifyArticleContent();
+				clickOnBackIcon();
+			}
+			return new ArticlePage(driver);
+		}catch (Exception ex) {
+			logger.error("Unable to open and verify article");
+			return null;
+		}
+	}
 }
 	

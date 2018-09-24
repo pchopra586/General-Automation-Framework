@@ -1,5 +1,6 @@
 package com.sph.utilities;
 
+import java.net.MalformedURLException;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.Capabilities;
@@ -11,6 +12,7 @@ import org.testng.log4testng.Logger;
 
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
+import com.sph.driverFactory.DriverManager;
 import com.sph.driverFactory.LocalWebDriverListener;
 import com.sph.pageObjects.mobile.AccountPage;
 import com.sph.pageObjects.mobile.HomePage;
@@ -48,15 +50,19 @@ public class GenericNavigator{
 		methodName = "preConfigured";
 		logger.info("Entering Method: " + methodName);
 		boolean isPreConfigured = false;
-		HomePage home = new HomePage(driver);
-		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-		isPreConfigured = home.onHomePage();
-		
+		try{
+			HomePage home = new HomePage(driver);
+			driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+			isPreConfigured = home.onHomePage();
+		}catch(Exception e) {
+			logger.error("Exception raised: " + e);
+			driver.quit();
+		}
 		logger.info("Exiting Method" + methodName);
 		return isPreConfigured;
 	}
 	
-	public boolean completeBasicInstallConfig() {
+	public boolean completeBasicInstallConfig() throws MalformedURLException{
 		methodName = "completeBasicInstallConfig";
 		logger.info("Entering Method: " + methodName);
 		boolean completedBasicInstallConfig = false;
@@ -66,18 +72,19 @@ public class GenericNavigator{
 		DeviceActions util;
 		
 		notify = new NotificationsPage(driver);
-		util = new DeviceActions(driver);		
+		
 		intro = new IntroductionPage(driver);
 		license = new LicensePage(driver);
 		
 		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		notify.acceptNotificationAfterInstall();
 		license.acceptAgreement();
-		
+		driver = DriverManager.getDriver();
+		util = new DeviceActions(driver);		
+		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		util.swipeHorizontal("left");
-		intro.skipIntro();
-		
 		driver.getPageSource();
+		intro.skipIntro();
 		
 		//for now the Ad is not shown on iOS, hence, the check is only for Android
 		try {

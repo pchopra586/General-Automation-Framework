@@ -13,6 +13,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.log4testng.Logger;
 
+import com.sph.driverFactory.DriverManager;
 import com.sph.driverFactory.LocalWebDriverListener;
 import com.sph.utilities.Constant;
 import com.sph.utilities.DeviceActions;
@@ -45,11 +46,11 @@ public class LicensePage{
 	@AndroidFindBy(id = "tv_sign_in")
 	private MobileElement logOut;
 	
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[2]")
+	@iOSXCUITFindBy(id = "accept")
 	@AndroidFindBy(id = "btn_tnc_ok")
 	private MobileElement accept;
 	
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[1]")
+	@iOSXCUITFindBy(id = "decline")
 	@AndroidFindBy(id = "btn_tnc_cancel")
 	private MobileElement decline;
 	
@@ -85,7 +86,6 @@ public class LicensePage{
 				String title = driver.getTitle();
 				String url = driver.getCurrentUrl();
 				
-				//title = driver.findElementByXPath("//title[@text()='App For Non-iOS - Singapore Press Holdings']");
 				if(!(title.equals("App For Non-iOS - Singapore Press Holdings"))) {
 					logger.error("Title is missing");
 				}
@@ -108,8 +108,6 @@ public class LicensePage{
 		MobileElement accept = null;
 		
 		if(capabilities.getCapability("platformName").toString().equalsIgnoreCase("iOS")) {
-//			decline = driver.findElementByXPath("//XCUIElementTypeButton[1]");
-//			accept = driver.findElementByXPath("//XCUIElementTypeButton[2]");
 			
 			if(decline.getAttribute("enabled").equalsIgnoreCase("false") || decline.getAttribute("visible").equalsIgnoreCase("false")) {
 				logger.error("License Decline Button is disabled or invisible");
@@ -121,8 +119,6 @@ public class LicensePage{
 			}
 		}
 		else if(capabilities.getCapability("platformName").toString().equalsIgnoreCase("Android")) {
-//			decline = driver.findElementById("btn_tnc_cancel");
-//			accept = driver.findElementById("btn_tnc_ok");
 			
 			if(!decline.getText().equals("Close App") || !decline.isEnabled() || !decline.isDisplayed()) {
 				logger.error("License Decline Button is disabled or invisible");
@@ -147,21 +143,21 @@ public class LicensePage{
 		driver.getPageSource(); 
 		
 		//Validate the upward scroll
-		utils.swipeVerticle("Up");
+		utils.swipeVertical("Up");
 		
 		//Validate the Upward Arrow button to take the control back to License's first page
 		utils.goToFirstPage();
 		
 		//Validate the Scroll action is able to navigate till end of the license
 		while(whetherReachedEndOfLicense()) {
-			utils.swipeVerticle("Up");
+			utils.swipeVertical("Up");
 			logger.info("Keep scrolling until the End of Agreement is reached");
 			licenseAcceptDeclineButtonsValidation();
 		}
 		logger.info("Navigated the License till end");
 		
 		//Validate the downward scroll
-		utils.swipeVerticle("Down");
+		utils.swipeVertical("Down");
 		logger.info("Exiting Method: " + methodName);
 	}
 	
@@ -171,6 +167,7 @@ public class LicensePage{
 		util.clickifClickable(accept, Constant.LONG_TIMEOUT);
 		logger.info("Accepted the License Agreement");
 		logger.info("Exiting Method: " + methodName);
+		DriverManager.setWebDriver(driver);
 	}
 	
 	public void declineAgreement() {

@@ -41,8 +41,7 @@ public class Mobile {
     @AndroidFindBy(id = AndroidElements.WELCOME_TEXT)
     private MobileElement welcome_text;
 
-    
-    @AndroidFindBy(className = AndroidElements.CLOSE_AD)
+    @AndroidFindBy(xpath = AndroidElements.CLOSE_AD)
     private MobileElement close_ad;
 
     @iOSXCUITFindBy(accessibility = IOSElements.HAMBURGER_MENU)
@@ -95,15 +94,8 @@ public class Mobile {
     }
 
     public Mobile accept_terms_and_conditions() throws InterruptedException, MalformedURLException {
-        System.out.println("Browser is " + browserName);
-        if (browserName.equalsIgnoreCase("IOSREMOTE")||browserName.equalsIgnoreCase("IOSLOCAL")) {
-        		try {
-//	        		driver.switchTo().alert().accept();
-	            logger.info("Allowed the Permissions for ST App Default Notification");
-        		}catch (Exception e){
-                System.out.println("Alert to allow notification not show");
-            }
-        }
+//    		driver.switchTo().alert().accept();
+    		System.out.println("Browser is " + browserName);
         try {
             if (terms_conditions.isDisplayed()) {
                 terms_conditions.click();
@@ -165,8 +157,20 @@ public class Mobile {
     public Mobile enter_Login_Credentials(String username, String password) throws InterruptedException {		
     		System.out.printf("Click on Login Button");
     		try {
-    			if(!(log_in.isDisplayed())) {
-    				hamburger_menu.click();
+    			int trial = 1;
+    			Boolean loginFound = false;
+    			while(trial < 4 && !loginFound) {
+    				try {
+    					if(log_in.isDisplayed()) {
+		    				loginFound = true;
+    						break;
+    					}
+	    			}
+				catch (Exception e)
+		        {
+					hamburger_menu.click();
+    					trial = trial + 1;
+		        }
     			}
             if (log_in.isDisplayed()) {
             		log_in.click();
@@ -176,10 +180,11 @@ public class Mobile {
 	            continue_button.click();
             }
         }
-        catch (Exception e)
+    		catch (Exception e)
         {
-            System.out.println("User is already logged in");
+    			System.out.printf("Element Not Found");
         }
+        
         return this;
     }
     

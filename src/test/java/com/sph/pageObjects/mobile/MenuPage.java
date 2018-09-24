@@ -142,11 +142,11 @@ public class MenuPage{
 				Assert.assertTrue(bookmarkMenu.isDisplayed(), "Not on Menu Page: as missing bookmark Menu");
 			}
 			onMenuPage = true;
-		}catch(Exception e){
-			//Log.INFO("Not on Menu Page");
+		}catch(Exception e) {
+			logger.error("Exception raised: " + e);
+			driver.quit();
 		}
 		
-		//Log.INFO("Exiting Method: " + methodName);
 		logger.info("Exiting Method: " + methodName);
 		return onMenuPage;
 	}
@@ -163,7 +163,6 @@ public class MenuPage{
 			driver.quit();
 		}
 		
-		//Log.INFO("Exiting Method: " + methodName);
 		logger.info("Exiting Method: " + methodName);
 		return this;
 	}
@@ -174,32 +173,27 @@ public class MenuPage{
 		
 		try {
 			switch(menu) {
-			case LOGOUT: 
-				util.clickifClickable(logoutMenu, Constant.LONG_TIMEOUT);
-			case SUBSCRIBE: 
-				util.clickifClickable(subscribeMenu, Constant.LONG_TIMEOUT);
-			case LOGIN: 
-				util.clickifClickable(loginMenu, Constant.LONG_TIMEOUT);
-			case HOME_PAGE: 
-				util.clickifClickable(homePageMenu, Constant.LONG_TIMEOUT);
-			case EPAPER: 
-				util.clickifClickable(ePaperMenu, Constant.LONG_TIMEOUT);
-				//return new EpaperPage(driver);
-			case BOOKMARK: 
-				util.clickifClickable(bookmarkMenu, Constant.LONG_TIMEOUT);
-				//return new BookmarkPage(driver);
-			case PRINT_EDITION: 
-				util.clickifClickable(printEditionMenu, Constant.LONG_TIMEOUT);
-				//return new PrintEditionPage(driver);
-			case SETTINGS: 
-				util.clickifClickable(settingsMenu, Constant.LONG_TIMEOUT);
-				//return new SettingsPage(driver);
-			case MORE_FROM_ST: 
-				util.clickifClickable(moreFromSTMenu, Constant.LONG_TIMEOUT);
-				//return new MoreFromSTPage(driver);
-			default:
-				logger.error("Please provide valid Menu Title");
-				break;	
+				case LOGOUT: 
+					util.clickifClickable(logoutMenu, Constant.LONG_TIMEOUT);
+				case SUBSCRIBE: 
+					util.clickifClickable(subscribeMenu, Constant.LONG_TIMEOUT);
+				case LOGIN: 
+					util.clickifClickable(loginMenu, Constant.LONG_TIMEOUT);
+				case HOME_PAGE: 
+					util.clickifClickable(homePageMenu, Constant.LONG_TIMEOUT);
+				case EPAPER: 
+					util.clickifClickable(ePaperMenu, Constant.LONG_TIMEOUT);
+				case BOOKMARK: 
+					util.clickifClickable(bookmarkMenu, Constant.LONG_TIMEOUT);
+				case PRINT_EDITION: 
+					util.clickifClickable(printEditionMenu, Constant.LONG_TIMEOUT);
+				case SETTINGS: 
+					util.clickifClickable(settingsMenu, Constant.LONG_TIMEOUT);
+				case MORE_FROM_ST: 
+					util.clickifClickable(moreFromSTMenu, Constant.LONG_TIMEOUT);
+				default:
+					logger.error("Please provide valid Menu Title");
+					break;	
 			}
 		}catch(Exception e) {
 			logger.error("Exception raised: " + e);
@@ -261,15 +255,12 @@ public class MenuPage{
 	
 	public MenuPage verifyLoggedInUser(String verifyUser) {
 		methodName = "verifyLoggedInUser";
-		//Log.INFO("Entering Method: " + methodName);
 		logger.info("Entering Method: " + methodName);
 		String loggedInText = "";
 		try {
-			//Log.INFO("Exiting Method: " + methodName);
 			driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 			loggedInText = loggedInUser.getText();
 			
-			//Log.INFO("Logged In User text: " + loggedInText);
 			logger.info("Logged In User text: " + loggedInText);
 		}catch(Exception e) {
 			logger.error("Exception raised: " + e);
@@ -283,13 +274,10 @@ public class MenuPage{
 	
 	public MenuPage verifyLogoutLinkDisplayed() {
 		methodName = "verifyLoggedInUser";
-		//Log.INFO("Entering Method: " + methodName);
 		logger.info("Entering Method: " + methodName);
 		
-		//Log.INFO("Exiting Method: " + methodName);
 		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		
-		//Log.INFO("Exiting Method: " + methodName);
 		logger.info("Exiting Method: " + methodName);
 		return this;
 	}

@@ -1,14 +1,26 @@
 package com.sph.utilities;
 
+import static io.appium.java_client.touch.TapOptions.tapOptions;
+import static io.appium.java_client.touch.offset.PointOption.point;
+
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -16,10 +28,10 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.log4testng.Logger;
 
-import com.aventstack.extentreports.Status;
 import com.sph.driverFactory.DriverManager;
 import com.sph.driverFactory.LocalWebDriverListener;
 
+import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.PerformsTouchActions;
@@ -33,7 +45,6 @@ import io.appium.java_client.touch.offset.PointOption;
 
 public class DeviceActions{
 	private WebDriver driver;
-    private WebDriverWait wait;
 	
 	private String methodName = null;
 	private Capabilities capabilities;
@@ -91,8 +102,8 @@ public class DeviceActions{
         }
 	}
 	
-	public void swipeVerticle(String direction) {
-		methodName = "swipeVerticle";
+	public void swipeVertical(String direction) {
+		methodName = "swipeVertical";
 		logger.info("Entering Method: " + methodName);
 		PointOption start = new PointOption();
 		PointOption end = new PointOption();
@@ -151,6 +162,21 @@ public class DeviceActions{
 		}
 	}
 	
+	@SuppressWarnings("rawtypes")
+	public void clickUsingCoordinates(MobileElement el) {
+		try {
+
+			TouchAction touchAction = new TouchAction<>((MobileDriver)driver);
+			int xPoint = el.getCenter().getX();
+			int yPoint = el.getCenter().getY();
+			touchAction.tap(tapOptions().withPosition(point(xPoint, yPoint))).perform();
+			logger.info("Performing click on mobile element using it's co-ordinates");
+
+		} catch (Exception ex) {
+			logger.info("Error occured during click event using co-ordinates " + ex.getMessage());
+		}
+	}
+	
 	public void verifyMobileElements(String screenName, MobileElement... mobileElements) {
 		methodName = "verifyMobileElements: " + screenName;
 		logger.info("Entering Method: " + methodName);
@@ -158,6 +184,21 @@ public class DeviceActions{
 			Assert.assertTrue(isElementPresent(list, Constant.SHORT_TIMEOUT, screenName));
 		}
 		logger.info("Exiting Method: " + methodName);
+	}
+	
+	public void verifyUnwantedTextElements(String bodyText, String... htmlEntities) {
+		logger.info("Verifying text on article details for presence of html entities  ");
+
+		for (String list : htmlEntities) {
+			logger.info("verifying if \"" + list + "\" is present");
+			boolean flag = bodyText.contains(list);
+			if (flag) {
+				logger.info("Following Unwanted text present \"" + list + "\"");
+			} else {
+				logger.info("Following text is not present \"" + list + "\"");
+			}
+		}
+
 	}
 	
 	public boolean isElementPresent(MobileElement element, int timeOut, String elementName) {
@@ -219,7 +260,7 @@ public class DeviceActions{
 //	public void isElementClickable(MobileElement element) {
 //		try {
 //			Assert.assertTrue(element.isDisplayed());
-//			Log.INFO(element + " is displayed/visible on the screen");
+//			logger.info(element + " is displayed/visible on the screen");
 //		} catch (AssertionError er) {
 //			Log.ERROR(element + " is not displayed.");
 //			Assert.fail("Assertion Failed : " + er.getMessage());
@@ -305,4 +346,174 @@ public class DeviceActions{
 		return closedAdFound;
 	}
 	
+	public void switchContextToView(WebDriver driver, String view) {
+
+		try {
+			Set<String> contextNames = ((AppiumDriver)driver).getContextHandles();
+			for (String contextName : contextNames) {
+
+				if (contextName.contains(view)) {
+					logger.info(contextName);
+					((AppiumDriver)driver).context(contextName);
+					logger.info("Switched context to : " + contextName);
+					logger.info(driver.getPageSource());
+
+				}
+
+			} // driver.context(contextNames.toArray()[1].toString());//Purposely not removed comment
+		} catch (Exception ex) {
+			logger.error("Error occured during switching context to " + view);
+			Assert.fail("Unable to switch view to -- " + view + ex.getMessage());
+		}
+
+	}
+
+	public void verifyBrokenLinks(List<WebElement> articleLinks) {
+
+		int invalidLinksCount = 0;
+		ArrayList<String> brokenLinks = new ArrayList<String>();
+
+		logger.info("Total links count : " + articleLinks.size());
+
+		for (int i = 0; i < articleLinks.size(); i++) {
+
+			String url = articleLinks.get(i).getAttribute("href");
+			if (url != null) {
+				int status = getResponseCode(url);
+				if (status == 200) {
+					logger.info(url + " is Valid Link  with Response code :" + status);
+
+				} else if (status == 403) {
+					invalidLinksCount++;
+					brokenLinks.add(url);
+					logger.error(
+							url + " Forbidden error, user might not have necessary permissions for a resource,Response code is :"
+									+ status);
+				} else if (status != 200) {
+					invalidLinksCount++;
+					brokenLinks.add(url);
+					logger.error(url + " is Invalid Link  with Response code :" + status);
+				}
+
+			}
+
+		}
+		logger.info("No. of broken links are :" + invalidLinksCount);
+		for (Object link : brokenLinks) {
+
+			logger.error("failed links are " + link.toString());
+		}
+	}
+
+	public void verifyBrokenImages(List<WebElement> articleImages) {
+
+		int brokenImageCount = 0;
+		ArrayList<String> brokenImages = new ArrayList<String>();
+
+		logger.info("Total image link count : " + articleImages.size());
+
+		for (int i = 0; i < articleImages.size(); i++) {
+
+			String url = articleImages.get(i).getAttribute("src");
+			if (url != null) {
+				int status = getResponseCode(url);
+				if (status == 200) {
+					logger.info(url + " is valid image with Response code :" + status);
+
+				} else if (status == 403) {
+					brokenImageCount++;
+					brokenImages.add(url);
+					logger.error(
+							url + " Forbidden error, user might not have necessary permissions for a resource,Response code is :"
+									+ status);
+				} else if (status != 200) {
+					brokenImageCount++;
+					brokenImages.add(url);
+					logger.error(url + " image is broken,  Response code is :" + status);
+				}
+
+			}
+
+		}
+		logger.info("No. of broken image url are :" + brokenImageCount);
+		for (Object link : brokenImages) {
+
+			logger.error("failed image links are " + link.toString());
+		}
+
+	}
+
+	public int getResponseCode(String url) {
+		int responseCode = 0;
+		HttpClient client = HttpClientBuilder.create().build();
+		HttpGet request = new HttpGet(url);
+		try {
+			HttpResponse response = client.execute(request);
+			responseCode = response.getStatusLine().getStatusCode();
+
+		} catch (Exception ex) {
+
+			logger.info("Exception in getting response.." + ex.getMessage());
+		}
+		return responseCode;
+	}
+	
+	public boolean swipeVerticalUntilElementIsFound(MobileElement element, int maxSwipe, String direction) {
+		try {
+			if (maxSwipe > 0) {
+				if (isElementPresent(element, Constant.SHORT_TIMEOUT)) {
+
+					return true;
+				}
+				swipeVertical(direction);
+				maxSwipe--;
+				return swipeVerticalUntilElementIsFound(element, maxSwipe, direction);
+			}
+
+		} catch (Exception er) {
+			logger.error("Element is not present : " + element);
+		}
+		Assert.fail(element + "element is not found!");
+		return false;
+	}
+
+	public boolean swipeHorizontalUntilElementIsFound(MobileElement element, int maxSwipe, String direction) {
+		try {
+			if (maxSwipe > 0) {
+				if (isElementPresent(element, Constant.SHORT_TIMEOUT)) {
+
+					return true;
+				}
+				swipeHorizontal(direction);
+				maxSwipe--;
+				return swipeHorizontalUntilElementIsFound(element, maxSwipe, direction);
+			}
+
+		} catch (Exception er) {
+			logger.error("Element is not present : " + element);
+		}
+		Assert.fail(element + "element is not found!");
+		return false;
+	}
+	
+	public boolean swipeSpecificElement(MobileElement element, String direction) {
+		try {
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			HashMap<String, String> swipeObject = new HashMap<String, String>();
+			if (direction.equals(Constant.DOWN)) {
+				swipeObject.put(Constant.DIRECTION, Constant.DOWN);
+			} else if (direction.equals(Constant.UP)) {
+				swipeObject.put(Constant.DIRECTION, Constant.UP);
+			} else if (direction.equals(Constant.LEFT)) {
+				swipeObject.put(Constant.DIRECTION, Constant.LEFT);
+			} else if (direction.equals(Constant.RIGHT)) {
+				swipeObject.put(Constant.DIRECTION, Constant.RIGHT);
+			}
+			swipeObject.put("element", element.getId());
+			js.executeScript("mobile:swipe", swipeObject);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
 }

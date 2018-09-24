@@ -10,7 +10,8 @@ public class AndroidElements {
    
  public static final String HAMBURGER_MENU = "android.widget.ImageButton";
  
- public static final String CLOSE_AD ="android.widget.ImageButton";
+// public static final String CLOSE_AD ="android.widget.ImageButton";
+ public static final String CLOSE_AD ="//android.widget.ImageButton[@content-desc=\"Interstitial close button\"]";
 
  public static final String LOG_IN ="com.buuuk.st:id/tv_login";
 

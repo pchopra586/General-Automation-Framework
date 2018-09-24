@@ -16,9 +16,15 @@ public class WebElements {
 
     public static final String VERIFY_USERNAME= "//li[@class='nav-user']/a";
 
-    public static final String STORY_HEADLINE= "//span[@class='story-headline']/a";
+    public static final String READ_HEADLINE = "//h3[@class='story-title']/span/a";
+
+    public static final String STORY_HEADLINE= "//div[4]/div/div/div/div[5]/div/div/div/div/a";
 
     public static final String LOG_OUT= "//li[@class='nav-logout']/a";
 
     public static final String MAIN_ARTICLE_HEADING = "//h1[@class='headline node-title']";
+
+    public static final String HAMBURGER_MENU_MOBILE_WEB = "navbar-toggle collapsed";
+
+    public static final String USER_MENU_MOBILE_WEB = "//button[@class='navbar-toggle-user']";
 }
