@@ -155,7 +155,7 @@ public class HomePage{
 	@HowToUseLocators(androidAutomation = LocatorGroupStrategy.ALL_POSSIBLE, iOSXCUITAutomation = LocatorGroupStrategy.ALL_POSSIBLE)
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther/child::XCUIElementTypeStaticText[@name='article_title']")
 	@AndroidFindBy(xpath = "//*[@resource-id='com.buuuk.st:id/article_title']/../android.widget.TextView[@index='0']")
-	@AndroidFindBy(xpath = "//*[@resource-id='com.buuuk.st:id/imageLayout']//following-sibling::android.widget.TextView[@resource-id='com.buuuk.st:id/article_title']")
+	//@AndroidFindBy(xpath = "//*[@resource-id='com.buuuk.st:id/imageLayout']//following-sibling::android.widget.TextView[@resource-id='com.buuuk.st:id/article_title']")
 	private MobileElement freeArticleTitle;
 
 	@iOSXCUITFindBy(xpath = "//*[@name='premium']//following-sibling::XCUIElementTypeStaticText[@name='article_title']")
@@ -165,8 +165,8 @@ public class HomePage{
 	@iOSXCUITFindBy(xpath = "//*[@name='video_icon']//preceding-sibling::XCUIElementTypeStaticText[@name='article_title']")
 	@HowToUseLocators(androidAutomation = LocatorGroupStrategy.ALL_POSSIBLE)
 	@AndroidFindBy(xpath = "//*[@resource-id='com.buuuk.st:id/iv_play_button']//parent::android.widget.RelativeLayout/following-sibling::android.widget.LinearLayout//descendant::android.widget.TextView")
-	@AndroidFindBy(xpath = "//*[@resource-id='com.buuuk.st:id/iv_play_button']//parent::android.widget.RelativeLayout/following-sibling::android.widget.TextView")
-	@AndroidFindBy(xpath = "//*[@resource-id='com.buuuk.st:id/iv_play_button']//parent::android.widget.RelativeLayout/parent::android.widget.FrameLayout/following-sibling::android.widget.LinearLayout//descendant::android.widget.TextView")
+//	@AndroidFindBy(xpath = "//*[@resource-id='com.buuuk.st:id/iv_play_button']//parent::android.widget.RelativeLayout/following-sibling::android.widget.TextView")
+//	@AndroidFindBy(xpath = "//*[@resource-id='com.buuuk.st:id/iv_play_button']//parent::android.widget.RelativeLayout/parent::android.widget.FrameLayout/following-sibling::android.widget.LinearLayout//descendant::android.widget.TextView")
 	private MobileElement videoIcon;
 
 	@iOSXCUITFindBy(xpath = "//*[@name='video_icon']//following-sibling::XCUIElementTypeStaticText[@name='article_title']")

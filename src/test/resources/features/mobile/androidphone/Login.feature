@@ -10,4 +10,4 @@ Feature: Login into Straits Time Mobile App
 	
 	Examples:
     |UserName     |Password   |LoggedInUser	|
-    |Premium_Smartphone1 |Mango123|Premium_Smartphone1	|
+    |Premium_Access1 |Password123|Premium_Access1	|
