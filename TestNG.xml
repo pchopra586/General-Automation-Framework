@@ -31,22 +31,22 @@
 			<class name="com.sph.runners.RunCukesTestInWeb"/>
 		</classes>
 	</test>
-	<test name="Tests Safari browser in Local">
-		<parameter name="browserName" value="safarilocal"/>
-		<classes>
-			<class name="com.sph.runners.RunCukesTestInWeb"/>
-		</classes>
-	</test>
-	<!-- <test name="Tests iOS in Remote">
-		<parameter name="browserName" value="iosremote" />
-		<parameter name="driverHost" value="demo.experitest.com" />
-		<parameter name="driverPort" value="443" />
-		<parameter name="accessKey"
-			value="eyJ4cC51IjoxNTI2OTIsInhwLnAiOjE1MjM4MCwieHAubSI6Ik1UVXpORGMxT0RRd056UTBOZyIsImFsZyI6IkhTMjU2In0.eyJleHAiOjE4NTAxMTg0MDcsImlzcyI6ImNvbS5leHBlcml0ZXN0In0.XrzUScUdZTbBgEsVMlDc7fwjXmvgqCqEBeUv9f1BSW4" />
-		<parameter name="projectName" value="SPH_POC" />
-		<parameter name="appPath" value="cloud:com.sph.stiPhone" />
-		<classes>
-			<class name="com.sph.runners.RunCukesTestIPhone" />
-		</classes>
-	</test> -->
+	<!--	<test name="Tests Safari browser in Local">
+            <parameter name="browserName" value="safarilocal"/>
+            <classes>
+                <class name="com.sph.runners.RunCukesTestInWeb"/>
+            </classes>
+        </test>
+         <test name="Tests iOS in Remote">
+            <parameter name="browserName" value="iosremote" />
+            <parameter name="driverHost" value="demo.experitest.com" />
+            <parameter name="driverPort" value="443" />
+            <parameter name="accessKey"
+                value="eyJ4cC51IjoxNTI2OTIsInhwLnAiOjE1MjM4MCwieHAubSI6Ik1UVXpORGMxT0RRd056UTBOZyIsImFsZyI6IkhTMjU2In0.eyJleHAiOjE4NTAxMTg0MDcsImlzcyI6ImNvbS5leHBlcml0ZXN0In0.XrzUScUdZTbBgEsVMlDc7fwjXmvgqCqEBeUv9f1BSW4" />
+            <parameter name="projectName" value="SPH_POC" />
+            <parameter name="appPath" value="cloud:com.sph.stiPhone" />
+            <classes>
+                <class name="com.sph.runners.RunCukesTestIPhone" />
+            </classes>
+        </test> -->
 </suite>

@@ -19,7 +19,7 @@ import com.sph.utilities.GenericNavigator;
 import com.sph.utilities.Constant.MENU;
 import com.sph.utilities.Constant.SETTINGS_MENU;
 import com.sph.utilities.Constant.TAB;
-import com.vimalselvam.cucumber.listener.Reporter;
+import com.sph.listeners.Reporter;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;

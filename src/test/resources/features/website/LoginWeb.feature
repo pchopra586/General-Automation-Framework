@@ -10,4 +10,4 @@ Feature: Login into Straits Time Website
 
     Examples:
       |UserName     |Password   |
-      |Premium_access2 |Password123|
+      |Premium_Access4 |Password123|
