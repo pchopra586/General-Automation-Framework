@@ -39,6 +39,7 @@
 		<ul id='slide-out' class='side-nav fixed hide-on-med-and-down'>
 			<li class='waves-effect active'><a href='#!' view='test-view' onclick="configureView(0);chartsView('test');"><i class='material-icons'>dashboard</i></a></li>
 						<li class='waves-effect'><a href='#!' view='category-view' onclick="configureView(1)"><i class='material-icons'>label_outline</i></a></li>
+			<li class='waves-effect'><a href='#!' view='exception-view' onclick="configureView(2)"><i class='material-icons'>bug_report</i></a></li>
 			<li class='waves-effect'><a href='#!' onclick="configureView(-1);chartsView('dashboard');" view='dashboard-view'><i class='material-icons'>track_changes</i></i></a></li>
 			<li class='waves-effect'><a href='#!' onclick="configureView(-1)" view='testrunner-logs-view'><i class='material-icons'>note</i></a></li>
 		</ul>
@@ -53,7 +54,7 @@
 		<ul id='nav-mobile' class='right hide-on-med-and-down nav-right'>
 			<li>
                 <a href='#!'>
-                    <span class='label suite-start-time blue darken-3'>Sep 24, 2018 10:54:43 AM</span>
+                    <span class='label suite-start-time blue darken-3'>Sep 26, 2018 04:32:31 PM</span>
 				</a>
 			</li>
 			<li>
@@ -79,6 +80,8 @@
 				</a>
 				<ul id='tests-toggle' class='dropdown-content'>
 											<li status='pass'><a href='#!'>Pass <i class='material-icons green-text'>check_circle</i></a></li>
+						<li status='fail'><a href='#!'>Fail <i class='material-icons red-text'>cancel</i></a></li>
+						<li status='skip'><a href='#!'>Skip <i class='material-icons cyan-text'>redo</i></a></li>
 					<li class='divider'></li>
 					<li status='clear' clear='true'><a href='#!'>Clear Filters <i class='material-icons'>clear</i></a></li>
 				</ul>
@@ -91,6 +94,7 @@
 					<i class='material-icons'>local_offer</i> Category
 				</a>
 				<ul id='category-toggle' class='dropdown-content'>
+					<li><a href='#'>@loginWeb</a></li>
 					<li><a href='#'>@mobileApp</a></li>
 					<li class='divider'></li>
 					<li class='clear'><a href='#!' clear='true'>Clear Filters</a></li>
@@ -139,10 +143,10 @@
 					<canvas id='parent-analysis' width='100' height='80'></canvas>
 				</div>
 				<div class='block text-small'>
-					<span class='tooltipped' data-position='top' data-tooltip='100%'><span class='strong'>2</span> feature(s) passed</span>
+					<span class='tooltipped' data-position='top' data-tooltip='0%'><span class='strong'>0</span> feature(s) passed</span>
 				</div>
 				<div class='block text-small'>
-					<span class='strong tooltipped' data-position='top' data-tooltip='0%'>0</span> feature(s) failed, <span class='strong tooltipped' data-position='top' data-tooltip='0%'>0</span> others
+					<span class='strong tooltipped' data-position='top' data-tooltip='100%'>3</span> feature(s) failed, <span class='strong tooltipped' data-position='top' data-tooltip='0%'>0</span> others
 				</div>
 			</div>
 		</div>
@@ -154,10 +158,10 @@
 					<canvas id='child-analysis' width='100' height='80'></canvas>
 				</div>
 				<div class='block text-small'>
-					<span class='tooltipped' data-position='top' data-tooltip='100%'><span class='strong'>2</span> scenario(s) passed</span>
+					<span class='tooltipped' data-position='top' data-tooltip='0%'><span class='strong'>0</span> scenario(s) passed</span>
 				</div>
 				<div class='block text-small'>
-					<span class='strong tooltipped' data-position='top' data-tooltip='0%'>0</span> scenario(s) failed, <span class='strong tooltipped' data-position='top' data-tooltip='0%'>0</span> others
+					<span class='strong tooltipped' data-position='top' data-tooltip='100%'>3</span> scenario(s) failed, <span class='strong tooltipped' data-position='top' data-tooltip='0%'>0</span> others
 				</div>
 			</div>
 		</div>
@@ -169,10 +173,10 @@
 					<canvas id='grandchild-analysis' width='100' height='80'></canvas>
 				</div>
 				<div class='block text-small'>
-					<span class='tooltipped' data-position='top' data-tooltip='100%'><span class='strong'>14</span> step(s) passed</span>
+					<span class='tooltipped' data-position='top' data-tooltip='22.222%'><span class='strong'>4</span> step(s) passed</span>
 				</div>
 				<div class='block text-small'>
-					<span class='strong tooltipped' data-position='top' data-tooltip='0%'>0</span> step(s) failed, <span class='strong tooltipped' data-position='top' data-tooltip='0%'>0</span> others
+					<span class='strong tooltipped' data-position='top' data-tooltip='16.667%'>3</span> step(s) failed, <span class='strong tooltipped' data-position='top' data-tooltip='61.111%'>11</span> others
 				</div>
 			</div>
 		</div>
@@ -186,65 +190,82 @@
 			<ul id='test-collection' class='test-collection'>
 				
 				
-				<li class='test displayed active has-leaf pass' status='pass' bdd='true' test-id='1'>
+				<li class='test displayed active has-leaf fail' status='fail' bdd='true' test-id='1'>
 					<div class='test-heading'>
-						<span class='test-name'>Login into Straits Time Mobile App</span>
-						<span class='test-time'>Sep 24, 2018 10:54:43 AM</span>
-						<span class='test-status right pass'>pass</span>
+						<span class='test-name'>Login into Straits Time Website in browser Safari v:12.0 MAC</span>
+						<span class='test-time'>Sep 26, 2018 04:32:31 PM</span>
+						<span class='test-status right fail'>fail</span>
 					</div>
 					<div class='test-content hide'>
-<div class='scenariooutline node' test-id='2' status='pass'>
-	<span class='duration right label'>0h 1m 26s+919ms</span>
+<div class='scenariooutline node' test-id='2' status='fail'>
+	<span class='duration right label'>0h 0m 18s+154ms</span>
 	<div class='desc'>
 		<b>ScenarioOutline</b>
-		<span class="desc-text">Login into Straits Time Mobile App</span>
+		<span class="desc-text">Login into Straits Time website</span>
 	</div>
 	<ul class='steps'>
-		<li test-id='3' class='node scenario pass' status='pass'>
+		<li test-id='3' class='node scenario fail' status='fail'>
 			<div class='category-list'>
-				<span class='category label white-text'>@mobileApp</span>
+				<span class='category label white-text'>@loginWeb</span>
 			</div>
 			
 			<b>Scenario</b>
 			
-			<span class="bdd-step-name">Login into Straits Time Mobile App</span>
-				<div class='pre'>User wants to launch the Straits Time site and accept the terms and conditions</div>
-				<div class='pre'>User wants to skip the tutorials</div>
-				<div class='pre'>User wants to click the hamburger menu</div>
-				<div class='pre'>User wants to enter the login credentials</div>
-				<div class='pre'>User wants to verify the logged in user</div>
-				<div class='pre'>User wants to logout</div>
+			<span class="bdd-step-name">Login into Straits Time website</span>
+				<div class='pre'>User wants to launch the Straits Times website</div>
 			
 				<ul class='steps'>
-					<li test-id='4' class='node given pass' status='pass'><b>Given</b>
-						<span class="bdd-step-name">Given I want to launch the Straits Time site and accept the terms and conditions</span>
-							<div class='pre'>User wants to launch the Straits Time site and accept the terms and conditions</div>
+					<li test-id='7' class='node given pass' status='pass'><b>Given</b>
+						<span class="bdd-step-name">Given I want to launch the Straits Times website</span>
+							<div class='pre'>User wants to launch the Straits Times website- Thread:13</div>
 							<div class='pre'>passed</div>
 					</li>
-					<li test-id='5' class='node when pass' status='pass'><b>When</b>
-						<span class="bdd-step-name">When I want to skip the tutorials</span>
-							<div class='pre'>User wants to skip the tutorials</div>
-							<div class='pre'>passed</div>
+					<li test-id='9' class='node when fail' status='fail'><b>When</b>
+						<span class="bdd-step-name">When I want to click on the login link</span>
+							<div class='pre'><pre>org.openqa.selenium.NoSuchFrameException: 
+Build info: version: '3.14.0', revision: 'aacccce0', time: '2018-08-02T20:19:58.91Z'
+System info: host: 'bidigipchopra81.users.sphinet.com.sg', ip: 'fe80:0:0:0:43f:b27e:56ad:2618%en0', os.name: 'Mac OS X', os.arch: 'x86_64', os.version: '10.13.6', java.version: '1.8.0_181'
+Driver info: org.openqa.selenium.safari.SafariDriver
+Capabilities {acceptInsecureCerts: false, browserName: Safari, browserVersion: 12.0, javascriptEnabled: true, platform: MAC, platformName: MAC, setWindowRect: true}
+Session ID: 2DFCD58A-7F1F-4882-B974-9D8CEA72C21E
+*** Element info: {Using=xpath, value=//li[@class='nav-login']/a}
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at org.openqa.selenium.remote.http.W3CHttpResponseCodec.createException(W3CHttpResponseCodec.java:187)
+	at org.openqa.selenium.remote.http.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:122)
+	at org.openqa.selenium.remote.http.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:49)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:158)
+	at org.openqa.selenium.remote.service.DriverCommandExecutor.execute(DriverCommandExecutor.java:83)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:548)
+	at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:322)
+	at org.openqa.selenium.remote.RemoteWebDriver.findElementByXPath(RemoteWebDriver.java:424)
+	at org.openqa.selenium.By$ByXPath.findElement(By.java:353)
+	at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:314)
+	at org.openqa.selenium.support.pagefactory.DefaultElementLocator.findElement(DefaultElementLocator.java:69)
+	at org.openqa.selenium.support.pagefactory.internal.LocatingElementHandler.invoke(LocatingElementHandler.java:38)
+	at com.sun.proxy.$Proxy20.click(Unknown Source)
+	at com.sph.pageObjects.web.Web.login_StraitTimes(Web.java:131)
+	at com.sph.stepDefinitions.web.StepDefsWeb.i_want_to_click_the_login_link(StepDefsWeb.java:54)
+	at ✽.When I want to click on the login link(LoginWeb.feature:5)
+</pre></div>
 					</li>
-					<li test-id='6' class='node and pass' status='pass'><b>And</b>
-						<span class="bdd-step-name">And I want to click the hamburger menu</span>
-							<div class='pre'>User wants to click the hamburger menu</div>
-							<div class='pre'>passed</div>
+					<li test-id='11' class='node and skip' status='skip'><b>And</b>
+						<span class="bdd-step-name">And I want to login the straits time site as Premium_access2 and Password123</span>
+							<div class='pre'>skipped</div>
 					</li>
-					<li test-id='7' class='node and pass' status='pass'><b>And</b>
-						<span class="bdd-step-name">And I want to enter the login credentials as "Premium_Smartphone1" and "Mango123"</span>
-							<div class='pre'>User wants to enter the login credentials</div>
-							<div class='pre'>passed</div>
+					<li test-id='12' class='node and skip' status='skip'><b>And</b>
+						<span class="bdd-step-name">And I want to verify the user has been logged in as Premium_access2</span>
+							<div class='pre'>skipped</div>
 					</li>
-					<li test-id='8' class='node then pass' status='pass'><b>Then</b>
-						<span class="bdd-step-name">Then I want to verify the logged-in user as "Premium_Smartphone1"</span>
-							<div class='pre'>User wants to verify the logged in user</div>
-							<div class='pre'>passed</div>
+					<li test-id='13' class='node then skip' status='skip'><b>Then</b>
+						<span class="bdd-step-name">Then I want to verify the main article page</span>
+							<div class='pre'>skipped</div>
 					</li>
-					<li test-id='9' class='node then pass' status='pass'><b>Then</b>
-						<span class="bdd-step-name">Then I want to logout the user</span>
-							<div class='pre'>User wants to logout</div>
-							<div class='pre'>passed</div>
+					<li test-id='14' class='node then skip' status='skip'><b>Then</b>
+						<span class="bdd-step-name">Then I want to logout StraiTimes app</span>
+							<div class='pre'>skipped</div>
 					</li>
 				</ul>
 		</li>
@@ -254,21 +275,92 @@
 				</li>
 				
 				
-				<li class='test displayed active has-leaf pass' status='pass' bdd='true' test-id='10'>
+				<li class='test displayed active has-leaf fail' status='fail' bdd='true' test-id='4'>
 					<div class='test-heading'>
-						<span class='test-name'>Login into Straits Time Mobile App</span>
-						<span class='test-time'>Sep 24, 2018 10:57:20 AM</span>
-						<span class='test-status right pass'>pass</span>
+						<span class='test-name'>Login into Straits Time Website in browser chrome v:69.0.3497.100 MAC</span>
+						<span class='test-time'>Sep 26, 2018 04:32:31 PM</span>
+						<span class='test-status right fail'>fail</span>
 					</div>
 					<div class='test-content hide'>
-<div class='scenariooutline node' test-id='11' status='pass'>
-	<span class='duration right label'>0h 1m 12s+259ms</span>
+<div class='scenariooutline node' test-id='5' status='fail'>
+	<span class='duration right label'>0h 0m 45s+174ms</span>
+	<div class='desc'>
+		<b>ScenarioOutline</b>
+		<span class="desc-text">Login into Straits Time website</span>
+	</div>
+	<ul class='steps'>
+		<li test-id='6' class='node scenario fail' status='fail'>
+			<div class='category-list'>
+				<span class='category label white-text'>@loginWeb</span>
+			</div>
+			
+			<b>Scenario</b>
+			
+			<span class="bdd-step-name">Login into Straits Time website</span>
+				<div class='pre'>User wants to launch the Straits Times website</div>
+				<div class='pre'>User wants to click on the login link</div>
+				<div class='pre'>User wants to login the straits time site</div>
+			
+				<ul class='steps'>
+					<li test-id='8' class='node given pass' status='pass'><b>Given</b>
+						<span class="bdd-step-name">Given I want to launch the Straits Times website</span>
+							<div class='pre'>User wants to launch the Straits Times website- Thread:12</div>
+							<div class='pre'>passed</div>
+					</li>
+					<li test-id='10' class='node when pass' status='pass'><b>When</b>
+						<span class="bdd-step-name">When I want to click on the login link</span>
+							<div class='pre'>User wants to click on the login link-Thread:12</div>
+							<div class='pre'>passed</div>
+					</li>
+					<li test-id='15' class='node and pass' status='pass'><b>And</b>
+						<span class="bdd-step-name">And I want to login the straits time site as Premium_access2 and Password123</span>
+							<div class='pre'>User wants to login the straits time site</div>
+							<div class='pre'>passed</div>
+					</li>
+					<li test-id='20' class='node and fail' status='fail'><b>And</b>
+						<span class="bdd-step-name">And I want to verify the user has been logged in as Premium_access2</span>
+							<div class='pre'><pre>java.lang.AssertionError: expected [Premium_Access2] but found [Premium_access2]
+	at org.testng.Assert.fail(Assert.java:94)
+	at org.testng.Assert.failNotEquals(Assert.java:494)
+	at org.testng.Assert.assertEquals(Assert.java:123)
+	at org.testng.Assert.assertEquals(Assert.java:176)
+	at org.testng.Assert.assertEquals(Assert.java:186)
+	at com.sph.pageObjects.web.Web.user_logged_in(Web.java:147)
+	at com.sph.stepDefinitions.web.StepDefsWeb.i_want_to_verify_that_the_user_is_logged_in(StepDefsWeb.java:68)
+	at ✽.And I want to verify the user has been logged in as Premium_access2(LoginWeb.feature:7)
+</pre></div>
+					</li>
+					<li test-id='21' class='node then skip' status='skip'><b>Then</b>
+						<span class="bdd-step-name">Then I want to verify the main article page</span>
+							<div class='pre'>skipped</div>
+					</li>
+					<li test-id='22' class='node then skip' status='skip'><b>Then</b>
+						<span class="bdd-step-name">Then I want to logout StraiTimes app</span>
+							<div class='pre'>skipped</div>
+					</li>
+				</ul>
+		</li>
+	</ul>
+</div>
+					</div>
+				</li>
+				
+				
+				<li class='test displayed active has-leaf fail' status='fail' bdd='true' test-id='16'>
+					<div class='test-heading'>
+						<span class='test-name'>Login into Straits Time Mobile App in browser android v: ANDROID</span>
+						<span class='test-time'>Sep 26, 2018 04:33:08 PM</span>
+						<span class='test-status right fail'>fail</span>
+					</div>
+					<div class='test-content hide'>
+<div class='scenariooutline node' test-id='17' status='fail'>
+	<span class='duration right label'>0h 0m 8s+81ms</span>
 	<div class='desc'>
 		<b>ScenarioOutline</b>
 		<span class="desc-text">Login into Straits Time Mobile App</span>
 	</div>
 	<ul class='steps'>
-		<li test-id='12' class='node scenario pass' status='pass'>
+		<li test-id='18' class='node scenario fail' status='fail'>
 			<div class='category-list'>
 				<span class='category label white-text'>@mobileApp</span>
 			</div>
@@ -276,55 +368,35 @@
 			<b>Scenario</b>
 			
 			<span class="bdd-step-name">Login into Straits Time Mobile App</span>
-				<div class='pre'>User wants to launch the Straits Time site and accept the terms and conditions</div>
-				<div class='pre'>User wants to skip the tutorials</div>
-				<div class='pre'>User wants to click the hamburger menu</div>
-				<div class='pre'>User wants to enter the login credentials</div>
-				<div class='pre'>User wants to verify the logged in user</div>
-				<div class='pre'>User wants to goto Settings Menu</div>
-				<div class='pre'>User wants to goto Account Settings</div>
-				<div class='pre'>User wants to logout</div>
 			
 				<ul class='steps'>
-					<li test-id='13' class='node given pass' status='pass'><b>Given</b>
+					<li test-id='19' class='node given fail' status='fail'><b>Given</b>
 						<span class="bdd-step-name">Given I want to launch the Straits Time site and accept the terms and conditions</span>
-							<div class='pre'>User wants to launch the Straits Time site and accept the terms and conditions</div>
-							<div class='pre'>passed</div>
+							<div class='pre'><pre>java.lang.NullPointerException
+	at com.vimalselvam.cucumber.listener.Reporter.addStepLog(Reporter.java:75)
+	at com.sph.stepDefinitions.mobile.LoginLifecycleValidation.i_want_to_accept_the_terms_and_conditions(LoginLifecycleValidation.java:57)
+	at ✽.Given I want to launch the Straits Time site and accept the terms and conditions(Login.feature:4)
+</pre></div>
 					</li>
-					<li test-id='14' class='node when pass' status='pass'><b>When</b>
+					<li test-id='23' class='node when skip' status='skip'><b>When</b>
 						<span class="bdd-step-name">When I want to skip the tutorials</span>
-							<div class='pre'>User wants to skip the tutorials</div>
-							<div class='pre'>passed</div>
+							<div class='pre'>skipped</div>
 					</li>
-					<li test-id='15' class='node and pass' status='pass'><b>And</b>
+					<li test-id='24' class='node and skip' status='skip'><b>And</b>
 						<span class="bdd-step-name">And I want to click the hamburger menu</span>
-							<div class='pre'>User wants to click the hamburger menu</div>
-							<div class='pre'>passed</div>
+							<div class='pre'>skipped</div>
 					</li>
-					<li test-id='16' class='node and pass' status='pass'><b>And</b>
+					<li test-id='25' class='node and skip' status='skip'><b>And</b>
 						<span class="bdd-step-name">And I want to enter the login credentials as "Premium_Access1" and "Password123"</span>
-							<div class='pre'>User wants to enter the login credentials</div>
-							<div class='pre'>passed</div>
+							<div class='pre'>skipped</div>
 					</li>
-					<li test-id='17' class='node then pass' status='pass'><b>Then</b>
+					<li test-id='26' class='node then skip' status='skip'><b>Then</b>
 						<span class="bdd-step-name">Then I want to verify the logged-in user as "Premium_Access1"</span>
-							<div class='pre'>User wants to verify the logged in user</div>
-							<div class='pre'>passed</div>
+							<div class='pre'>skipped</div>
 					</li>
-					<li test-id='18' class='node then pass' status='pass'><b>Then</b>
-						<span class="bdd-step-name">Then I want to goto Settings menu</span>
-							<div class='pre'>User wants to goto Settings Menu</div>
-							<div class='pre'>passed</div>
-					</li>
-					<li test-id='19' class='node then pass' status='pass'><b>Then</b>
-						<span class="bdd-step-name">Then I want to goto Account Settings</span>
-							<div class='pre'>User wants to goto Account Settings</div>
-							<div class='pre'>passed</div>
-					</li>
-					<li test-id='20' class='node then pass' status='pass'><b>Then</b>
+					<li test-id='27' class='node then skip' status='skip'><b>Then</b>
 						<span class="bdd-step-name">Then I want to logout the user</span>
-							<div class='pre'>User wants to logout</div>
-							<div class='pre'>passed</div>
+							<div class='pre'>skipped</div>
 					</li>
 				</ul>
 		</li>
@@ -384,15 +456,15 @@
 				
 				<li class='category displayed active'>
 					<div class='category-heading'>
-						<span class='category-name'>@mobileApp</span>
+						<span class='category-name'>@loginWeb</span>
 						<span class='category-status right'>
-							<span class='label pass'>2</span>
+							<span class='label fail'>2</span>
 						</span>
 					</div>
 					<div class='category-content hide'>
 						<div class='category-status-counts'>
-							<span class='label green accent-4 white-text'>Passed: 2</span>
 							
+							<span class='label red lighten-1 white-text'>Failed: 2</span>
 							
 						</div>
 					
@@ -407,14 +479,48 @@
 								</thead>
 								<tbody>
 									<tr>
-										<td>Sep 24, 2018 10:54:43 AM</td>
-										<td class='linked' test-id='3'>Login into Straits Time Mobile App.Login into Straits Time Mobile App.Login into Straits Time Mobile App</td>
-										<td><span class='test-status pass'>pass</span></td>
+										<td>Sep 26, 2018 04:32:31 PM</td>
+										<td class='linked' test-id='3'>Login into Straits Time Website in browser Safari v:12.0 MAC.Login into Straits Time website.Login into Straits Time website</td>
+										<td><span class='test-status fail'>fail</span></td>
 									</tr>
 									<tr>
-										<td>Sep 24, 2018 10:57:20 AM</td>
-										<td class='linked' test-id='12'>Login into Straits Time Mobile App.Login into Straits Time Mobile App.Login into Straits Time Mobile App</td>
-										<td><span class='test-status pass'>pass</span></td>
+										<td>Sep 26, 2018 04:32:31 PM</td>
+										<td class='linked' test-id='6'>Login into Straits Time Website in browser chrome v:69.0.3497.100 MAC.Login into Straits Time website.Login into Straits Time website</td>
+										<td><span class='test-status fail'>fail</span></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</li>
+				<li class='category displayed active'>
+					<div class='category-heading'>
+						<span class='category-name'>@mobileApp</span>
+						<span class='category-status right'>
+							<span class='label fail'>1</span>
+						</span>
+					</div>
+					<div class='category-content hide'>
+						<div class='category-status-counts'>
+							
+							<span class='label red lighten-1 white-text'>Failed: 1</span>
+							
+						</div>
+					
+						<div class='category-tests'>
+							<table class='bordered table-results'>
+								<thead>
+									<tr>
+										<th>Timestamp</th>
+										<th>TestName</th>
+										<th>Status</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>Sep 26, 2018 04:33:08 PM</td>
+										<td class='linked' test-id='18'>Login into Straits Time Mobile App in browser android v: ANDROID.Login into Straits Time Mobile App.Login into Straits Time Mobile App</td>
+										<td><span class='test-status fail'>fail</span></td>
 									</tr>
 								</tbody>
 							</table>
@@ -433,6 +539,159 @@
 	</div>
 </div>
 <!-- category view -->
+<div id='exception-view' class='view hide'>
+
+    <section id='controls'>
+        <div class='controls grey lighten-4'>
+            <!-- search -->
+            <div class='chip transparent' alt='Search Tests' title='Search Tests'>
+                <a href="#" class='search-div'>
+                    <i class='material-icons'>search</i> Search
+                </a>
+
+                <div class='input-field left hide'>
+                    <input id='search-tests' type='text' class='validate browser-default' placeholder='Search Tests...'>
+                </div>
+
+            </div>
+            <!-- search -->
+        </div>
+    </section>
+
+    <div class='subview-left left'>
+
+        <div class='view-summary'>
+            <h5>Exceptions</h3>
+                <ul id='exception-collection' class='exception-collection'>
+
+                        <li class='exception displayed active'>
+                            <div class='exception-heading'>
+                                <span class='exception-name'>org.openqa.selenium.NoSuchFrameException</span>
+                                <span class='exception-count right'><span class='label red lighten-1 white-text'>1</span></span>
+                            </div>
+                            <div class='exception-content hide'>
+                                <div class='exception-tests'>
+                                    <table class='bordered table-results'>
+                                        <thead>
+                                        <tr>
+                                            <th>Timestamp</th>
+                                            <th>TestName</th>
+                                            <th>Status</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                                    <tr>
+                                                        <td>Sep 26, 2018 04:32:39 PM</td>
+                                                        <td class='linked' test-id='9'>Login into Straits Time Website in browser Safari v:12.0 MAC.Login into Straits Time website.Login into Straits Time website.When I want to click on the login link</td>
+                                                        <td><pre><pre>org.openqa.selenium.NoSuchFrameException: 
+Build info: version: '3.14.0', revision: 'aacccce0', time: '2018-08-02T20:19:58.91Z'
+System info: host: 'bidigipchopra81.users.sphinet.com.sg', ip: 'fe80:0:0:0:43f:b27e:56ad:2618%en0', os.name: 'Mac OS X', os.arch: 'x86_64', os.version: '10.13.6', java.version: '1.8.0_181'
+Driver info: org.openqa.selenium.safari.SafariDriver
+Capabilities {acceptInsecureCerts: false, browserName: Safari, browserVersion: 12.0, javascriptEnabled: true, platform: MAC, platformName: MAC, setWindowRect: true}
+Session ID: 2DFCD58A-7F1F-4882-B974-9D8CEA72C21E
+*** Element info: {Using=xpath, value=//li[@class='nav-login']/a}
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at org.openqa.selenium.remote.http.W3CHttpResponseCodec.createException(W3CHttpResponseCodec.java:187)
+	at org.openqa.selenium.remote.http.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:122)
+	at org.openqa.selenium.remote.http.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:49)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:158)
+	at org.openqa.selenium.remote.service.DriverCommandExecutor.execute(DriverCommandExecutor.java:83)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:548)
+	at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:322)
+	at org.openqa.selenium.remote.RemoteWebDriver.findElementByXPath(RemoteWebDriver.java:424)
+	at org.openqa.selenium.By$ByXPath.findElement(By.java:353)
+	at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:314)
+	at org.openqa.selenium.support.pagefactory.DefaultElementLocator.findElement(DefaultElementLocator.java:69)
+	at org.openqa.selenium.support.pagefactory.internal.LocatingElementHandler.invoke(LocatingElementHandler.java:38)
+	at com.sun.proxy.$Proxy20.click(Unknown Source)
+	at com.sph.pageObjects.web.Web.login_StraitTimes(Web.java:131)
+	at com.sph.stepDefinitions.web.StepDefsWeb.i_want_to_click_the_login_link(StepDefsWeb.java:54)
+	at ✽.When I want to click on the login link(LoginWeb.feature:5)
+</pre></pre></td>
+                                                    </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </li>
+                        <li class='exception displayed active'>
+                            <div class='exception-heading'>
+                                <span class='exception-name'>java.lang.AssertionError</span>
+                                <span class='exception-count right'><span class='label red lighten-1 white-text'>1</span></span>
+                            </div>
+                            <div class='exception-content hide'>
+                                <div class='exception-tests'>
+                                    <table class='bordered table-results'>
+                                        <thead>
+                                        <tr>
+                                            <th>Timestamp</th>
+                                            <th>TestName</th>
+                                            <th>Status</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                                    <tr>
+                                                        <td>Sep 26, 2018 04:33:11 PM</td>
+                                                        <td class='linked' test-id='20'>Login into Straits Time Website in browser chrome v:69.0.3497.100 MAC.Login into Straits Time website.Login into Straits Time website.And I want to verify the user has been logged in as Premium_access2</td>
+                                                        <td><pre><pre>java.lang.AssertionError: expected [Premium_Access2] but found [Premium_access2]
+	at org.testng.Assert.fail(Assert.java:94)
+	at org.testng.Assert.failNotEquals(Assert.java:494)
+	at org.testng.Assert.assertEquals(Assert.java:123)
+	at org.testng.Assert.assertEquals(Assert.java:176)
+	at org.testng.Assert.assertEquals(Assert.java:186)
+	at com.sph.pageObjects.web.Web.user_logged_in(Web.java:147)
+	at com.sph.stepDefinitions.web.StepDefsWeb.i_want_to_verify_that_the_user_is_logged_in(StepDefsWeb.java:68)
+	at ✽.And I want to verify the user has been logged in as Premium_access2(LoginWeb.feature:7)
+</pre></pre></td>
+                                                    </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </li>
+                        <li class='exception displayed active'>
+                            <div class='exception-heading'>
+                                <span class='exception-name'>java.lang.NullPointerException</span>
+                                <span class='exception-count right'><span class='label red lighten-1 white-text'>1</span></span>
+                            </div>
+                            <div class='exception-content hide'>
+                                <div class='exception-tests'>
+                                    <table class='bordered table-results'>
+                                        <thead>
+                                        <tr>
+                                            <th>Timestamp</th>
+                                            <th>TestName</th>
+                                            <th>Status</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                                    <tr>
+                                                        <td>Sep 26, 2018 04:33:08 PM</td>
+                                                        <td class='linked' test-id='19'>Login into Straits Time Mobile App in browser android v: ANDROID.Login into Straits Time Mobile App.Login into Straits Time Mobile App.Given I want to launch the Straits Time site and accept the terms and conditions</td>
+                                                        <td><pre><pre>java.lang.NullPointerException
+	at com.vimalselvam.cucumber.listener.Reporter.addStepLog(Reporter.java:75)
+	at com.sph.stepDefinitions.mobile.LoginLifecycleValidation.i_want_to_accept_the_terms_and_conditions(LoginLifecycleValidation.java:57)
+	at ✽.Given I want to launch the Straits Time site and accept the terms and conditions(Login.feature:4)
+</pre></pre></td>
+                                                    </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </li>
+                </ul>
+        </div>
+    </div>
+
+    <div class='subview-right left'>
+        <div class='view-summary'>
+            <h5 class='exception-name'></h5>
+        </div>
+    </div>
+</div>
 <!-- exception view -->
 <div id='dashboard-view' class='view hide'>
 	<div class='card-panel transparent np-v'>
@@ -442,37 +701,37 @@
 			<div class='col s2'>
 				<div class='card-panel r'>
 					Features
-					<div class='panel-lead'>2</div>
+					<div class='panel-lead'>3</div>
 				</div>
 			</div>
 			<div class='col s2'>
 				<div class='card-panel r'>
 					Scenarios
-					<div class='panel-lead'>2</div>
+					<div class='panel-lead'>3</div>
 				</div>
 			</div>
 			<div class='col s2'>
 				<div class='card-panel r'>
 					Steps
-					<div class='panel-lead'>14</div>
+					<div class='panel-lead'>18</div>
 				</div>
 			</div>
 			<div class='col s2'>
 				<div class='card-panel r'>
 					Start
-					<div class='panel-lead'>Sep 24, 2018 10:54:43 AM</div>
+					<div class='panel-lead'>Sep 26, 2018 04:32:31 PM</div>
 				</div>
 			</div>
 			<div class='col s2'>
 				<div class='card-panel r'>
 			 		End
-			 		<div class='panel-lead'>Sep 24, 2018 10:58:37 AM</div>
+			 		<div class='panel-lead'>Sep 26, 2018 04:33:22 PM</div>
 				</div>
 			</div>
 			<div class='col s2'>
 				<div class='card-panel r'>
 					Time Taken
-					<div class='panel-lead'>233,979ms</div>
+					<div class='panel-lead'>51,615ms</div>
 				</div>
 			</div>
 			<div class='col s4'>
@@ -490,7 +749,7 @@
 							</tr>
 							<tr>
 								<td>user</td>
-								<td>madhu</td>
+								<td>pchopra</td>
 							</tr>
 							<tr>
 								<td>os</td>
@@ -511,9 +770,15 @@
 							<th>Others</th>
 						</tr>
 						<tr>
-							<td>@mobileApp</td>
+							<td>@loginWeb</td>
+							<td>0</td>
 							<td>2</td>
 							<td>0</td>
+						</tr>
+						<tr>
+							<td>@mobileApp</td>
+							<td>0</td>
+							<td>1</td>
 							<td>0</td>
 						</tr>
 					</table>
@@ -530,6 +795,7 @@
 		<div class='card-panel'>
 				Sample test runner output message
 				Sample test runner output message
+				Sample test runner output message
 		</div>
 	</div>
 </div>
@@ -539,31 +805,31 @@
 
 		<script>
 			var statusGroup = {
-				passParent: 2,
-				failParent: 0,
+				passParent: 0,
+				failParent: 3,
 				fatalParent: 0,
 				errorParent: 0,
 				warningParent: 0,
 				skipParent: 0,
-				exceptionsParent: 0,
+				exceptionsParent: 3,
 				
-				passChild: 2,
-				failChild: 0,
+				passChild: 0,
+				failChild: 3,
 				fatalChild: 0,
 				errorChild: 0,
 				warningChild: 0,
 				skipChild: 0,
 				infoChild: 0,
-				exceptionsChild: 0,
+				exceptionsChild: 3,
 				
-				passGrandChild: 14,
-				failGrandChild: 0,
+				passGrandChild: 4,
+				failGrandChild: 3,
 				fatalGrandChild: 0,
 				errorGrandChild: 0,
 				warningGrandChild: 0,
-				skipGrandChild: 0,
+				skipGrandChild: 11,
 				infoGrandChild: 0,
-				exceptionsGrandChild: 0,
+				exceptionsGrandChild: 14,
 			};
 		</script>
 		

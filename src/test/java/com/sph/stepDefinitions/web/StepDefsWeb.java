@@ -1,6 +1,7 @@
 package com.sph.stepDefinitions.web;
 
-import com.vimalselvam.cucumber.listener.Reporter;
+
+import com.sph.listeners.Reporter;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;

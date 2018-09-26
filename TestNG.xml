@@ -24,7 +24,19 @@
 		<classes>
 			<class name="com.sph.runners.RunCukesTestAndroidPhone" />
 		</classes>
-	</test> 
+	</test>
+	<test name="Tests Chrome browser in Local">
+		<parameter name="browserName" value="chromelocal"/>
+		<classes>
+			<class name="com.sph.runners.RunCukesTestInWeb"/>
+		</classes>
+	</test>
+	<test name="Tests Safari browser in Local">
+		<parameter name="browserName" value="safarilocal"/>
+		<classes>
+			<class name="com.sph.runners.RunCukesTestInWeb"/>
+		</classes>
+	</test>
 	<!-- <test name="Tests iOS in Remote">
 		<parameter name="browserName" value="iosremote" />
 		<parameter name="driverHost" value="demo.experitest.com" />

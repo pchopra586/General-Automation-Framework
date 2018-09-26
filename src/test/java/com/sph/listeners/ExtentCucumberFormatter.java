@@ -1,24 +1,29 @@
-package listeners;
+package com.sph.listeners;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.GherkinKeyword;
+import com.aventstack.extentreports.Status;
+import com.aventstack.extentreports.markuputils.ExtentColor;
 import com.aventstack.extentreports.markuputils.Markup;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import com.aventstack.extentreports.reporter.ExtentXReporter;
 import com.aventstack.extentreports.reporter.KlovReporter;
 import com.mongodb.MongoClientURI;
+import com.sph.driverFactory.LocalWebDriverListener;
 import gherkin.formatter.Formatter;
 import gherkin.formatter.Reporter;
 import gherkin.formatter.model.*;
-import org.testng.ITestContext;
 
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import static com.sph.driverFactory.DriverManager.getBrowserInfo;
+
 
 /**
  * A cucumber based reporting liistener which generates the Extent Report
@@ -27,12 +32,14 @@ public class ExtentCucumberFormatter implements Reporter, Formatter {
     public static ExtentReports extentReports;
     private static ExtentHtmlReporter htmlReporter;
     private static KlovReporter klovReporter;
-    private static ThreadLocal<ExtentTest> featureTestThreadLocal = new InheritableThreadLocal<>();
+
+    public static ThreadLocal<ExtentTest> featureTestThreadLocal = new InheritableThreadLocal<>();
     private static ThreadLocal<ExtentTest> scenarioOutlineThreadLocal = new InheritableThreadLocal<>();
     static ThreadLocal<ExtentTest> scenarioThreadLocal = new InheritableThreadLocal<>();
     private static ThreadLocal<LinkedList<Step>> stepListThreadLocal = new InheritableThreadLocal<>();
     static ThreadLocal<ExtentTest> stepTestThreadLocal = new InheritableThreadLocal<>();
     private boolean scenarioOutlineFlag;
+
 
     public ExtentCucumberFormatter(File file) {
         setExtentHtmlReport(file);
@@ -59,7 +66,10 @@ public class ExtentCucumberFormatter implements Reporter, Formatter {
         return htmlReporter;
     }
 
+
+
     private static void setExtentReport() {
+        ExtentTest test = null;
         if (extentReports != null) {
             return;
         }
@@ -74,6 +84,8 @@ public class ExtentCucumberFormatter implements Reporter, Formatter {
                 ExtentXReporter xReporter = new ExtentXReporter(url.getHost());
                 xReporter.config().setServerUrl(extentXServerUrl);
                 xReporter.config().setProjectName(extentProperties.getProjectName());
+                //test.assignCategory(browserName);
+                //test.info(MarkupHelper.createLabel(getBrowserInfo(),ExtentColor.RED));
                 extentReports.attachReporter(htmlReporter, xReporter);
                 return;
             } catch (MalformedURLException e) {
@@ -152,13 +164,17 @@ public class ExtentCucumberFormatter implements Reporter, Formatter {
     }
 
     public void feature(Feature feature) {
-        featureTestThreadLocal.set(getExtentReport().createTest(com.aventstack.extentreports.gherkin.model.Feature.class, feature.getName()));
-
+        try {
+            featureTestThreadLocal.set(getExtentReport().createTest(com.aventstack.extentreports.gherkin.model.Feature.class, feature.getName()+ " in browser "+getBrowserInfo()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         ExtentTest test = featureTestThreadLocal.get();
-
         for (Tag tag : feature.getTags()) {
             test.assignCategory(tag.getName());
+            //test.assignCategory(browserName);
         }
+
     }
 
     public void scenarioOutline(ScenarioOutline scenarioOutline) {
@@ -166,7 +182,9 @@ public class ExtentCucumberFormatter implements Reporter, Formatter {
         ExtentTest node = featureTestThreadLocal.get()
                 .createNode(com.aventstack.extentreports.gherkin.model.ScenarioOutline.class, scenarioOutline.getName());
         scenarioOutlineThreadLocal.set(node);
+
     }
+
 
     public void examples(Examples examples) {
         ExtentTest test = scenarioOutlineThreadLocal.get();
@@ -186,7 +204,10 @@ public class ExtentCucumberFormatter implements Reporter, Formatter {
             }
         }
         test.info(MarkupHelper.createTable(data));
+
     }
+
+
 
     public void startOfScenarioLifeCycle(Scenario scenario) {
         if (scenarioOutlineFlag) {
@@ -205,8 +226,10 @@ public class ExtentCucumberFormatter implements Reporter, Formatter {
 
         for (Tag tag : scenario.getTags()) {
             scenarioNode.assignCategory(tag.getName());
+            //scenarioNode.assignCategory(browserName);
         }
         scenarioThreadLocal.set(scenarioNode);
+
     }
 
     public void background(Background background) {

@@ -1,8 +1,7 @@
 package com.sph.runners;
 
-
-import com.vimalselvam.cucumber.listener.ExtentProperties;
-import com.vimalselvam.cucumber.listener.Reporter;
+import com.sph.listeners.ExtentProperties;
+import com.sph.listeners.Reporter;
 import cucumber.api.CucumberOptions;
 import cucumber.api.junit.Cucumber;
 import cucumber.api.testng.AbstractTestNGCucumberTests;
@@ -33,7 +32,7 @@ import static com.sph.driverFactory.LocalWebDriverListener.browserName;
                 "html:target/cucumber-report/android/cucumber-pretty",
                 "json:target/cucumber-report/android/cucumber.json",
                 "junit:target/cucumber-report/android/cucumber.xml"},
-        plugin = {"com.vimalselvam.cucumber.listener.ExtentCucumberFormatter:"})
+        plugin = {"com.sph.listeners.ExtentCucumberFormatter:"})
 public class RunCukesTestAndroidPhone extends AbstractTestNGCucumberTests {
     private TestNGCucumberRunner testNGCucumberRunner;
 

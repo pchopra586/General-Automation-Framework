@@ -1,6 +1,5 @@
 package com.sph.driverFactory;
 
-import com.aventstack.extentreports.ExtentTest;
 import com.sph.utilities.Constant;
 
 import io.appium.java_client.AppiumDriver;
@@ -21,8 +20,6 @@ import org.openqa.selenium.safari.SafariDriver;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-
-import static listeners.ExtentCucumberFormatter.extentReports;
 
 /**
  * Based on the LocalDriverFactory found at: onrationaleemotions.wordpress.com
@@ -74,8 +71,7 @@ public class LocalDriverFactory {
 			System.out.printf("Remote Chrome Driver is returned");
 			break;
 		case CHROMELOCAL:
-			System.setProperty("webdriver.chrome.driver",
-					"/Users/madhu/git/parallel-testing-cucumber/src/test/resources/appDrivers/chromedriver");
+			System.setProperty("webdriver.chrome.driver",System.getProperty("user.dir") + "/src/test/resources/appDrivers/chromedriver");
 			driver = new ChromeDriver();
 			System.out.printf("Local Chrome Driver is returned");
 			break;
