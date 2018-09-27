@@ -151,8 +151,9 @@ public class PrintEditionPage{
 	public PrintEditionPage closePrintEditionInstantDownloadAlert() {
 		methodName = "closePrintEditionInstantDownloadAlert";
 		logger.info("Entering Method: " + methodName);
-	
-		alertAccept.click();
+		if(capabilities.getCapability("platformName").toString().equalsIgnoreCase("iOS")) {
+			alertAccept.click();
+		}
 		
 		logger.info("Exiting Method: " + methodName);
 		return this;

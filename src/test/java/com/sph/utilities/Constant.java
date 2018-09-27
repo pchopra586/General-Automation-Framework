@@ -68,7 +68,7 @@ public class Constant {
 	/*Alert and pop-ups*/
 	public static final String PRINT_EDITION_ALERT_TITLE = "Get your Print Edition instantly"; 
 	public static final String PRINT_EDITION_ALERT_MESSAGE = "Leave your device on Wi–Fi and we'll preload the Print Edition for you. You can also set your preferences later from Settings.";
-	public static final String PRINT_EDITION_ALERT_IGNORE = "No thanks!";
+	public static final String PRINT_EDITION_ALERT_IGNORE = "NO THANKS!";
 	public static final String PRINT_EDITION_ALERT_ACCEPT = "OK";
 	public static final String PRINT_EDITION_ENABLE_PUSH_NOTIFICATION_ALERT_TITLE = "Please enable push notifications";
 	public static final String PRINT_EDITION_ENABLE_PUSH_NOTIFICATION_ALERT_MSG = "To let us preload the Print Edition, please enable push notifications for the ST app in your device's Settings > Notifications";

@@ -89,11 +89,13 @@ public class DeviceActions{
             TouchAction action = new TouchAction ((PerformsTouchActions) driver);
             
             if (direction.equalsIgnoreCase("Left")) {
-				action.press(start.point(startPoint, anchor)).waitAction(waitTime.withDuration(Duration.ofMillis(0))).moveTo(end.point(endPoint-startPoint, 0))
+//				action.press(start.point(startPoint, anchor)).waitAction(waitTime.withDuration(Duration.ofMillis(0))).moveTo(end.point(endPoint-startPoint, 0))
+//				.release().perform();
+            		action.press(start.point(startPoint, anchor)).waitAction(waitTime.withDuration(Duration.ofMillis(0))).moveTo(end.point(endPoint, anchor))
 				.release().perform();
 				logger.info("Perform Swipe to Left Direction");
 			} else if (direction.equalsIgnoreCase("Right")) {
-				action.press(start.point(endPoint, anchor)).waitAction(waitTime.withDuration(Duration.ofMillis(0))).moveTo(end.point(startPoint - endPoint, 0))
+				action.press(start.point(endPoint, anchor)).waitAction(waitTime.withDuration(Duration.ofMillis(0))).moveTo(end.point(startPoint, anchor))
 						.release().perform();
 				logger.info("Perform Swipe to Right Direction");
 			}
