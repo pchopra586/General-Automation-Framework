@@ -7,9 +7,11 @@ import org.openqa.selenium.WebDriver;
 
 import com.sph.driverFactory.DriverManager;
 import com.sph.pageObjects.mobile.Mobile;
+import com.sph.pageObjects.mobile.PrintEditionCalendar;
 import com.sph.pageObjects.mobile.PrintEditionPage;
 import com.sph.utilities.GenericNavigator;
 
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -65,5 +67,17 @@ public class PrintEditionPageValidation {
     public void i_validate_the_default_view_of_Print_Edition_Page() throws Throwable {
         printEditionPage.verifyDefaultView();
     }
+    
+    @And("^I click on Calendar icon in the view$")
+    public void i_click_on_Calendar_icon_in_the_view() throws Throwable {
+        printEditionPage.openCalendarView();
+    }
+
+    @Then("^I verify the Archived Print Edition dates from Calendar$")
+    public void i_verify_the_Archived_Print_Edition_dates_from_Calendar() throws Throwable {
+    		PrintEditionCalendar calendar = new PrintEditionCalendar(this.driver);
+    		calendar.verifyCalendarView();
+    }
+
 
 }

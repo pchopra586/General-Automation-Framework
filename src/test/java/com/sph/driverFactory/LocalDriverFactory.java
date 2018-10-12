@@ -71,7 +71,8 @@ public class LocalDriverFactory {
 			System.out.printf("Remote Chrome Driver is returned");
 			break;
 		case CHROMELOCAL:
-			System.setProperty("webdriver.chrome.driver",System.getProperty("user.dir") + "/src/test/resources/appDrivers/chromedriver");
+			System.setProperty("webdriver.chrome.driver",
+					System.getProperty("user.dir") + "/src/test/resources/appDrivers/chromedriver");
 			driver = new ChromeDriver();
 			System.out.printf("Local Chrome Driver is returned");
 			break;
@@ -146,6 +147,7 @@ public class LocalDriverFactory {
 		case IOSLOCAL:
 			capability = DesiredCapabilities.iphone();
 			capability.setCapability(MobileCapabilityType.PLATFORM_NAME, "iOS");
+			capability.setCapability("testName", "Quick Start iOS Application Demo on local Simulator");
 			// capability.setCapability(IOSMobileCapabilityType.BUNDLE_ID, bundleID);
 			// capability.setCapability(MobileCapabilityType.FULL_RESET, true);
 			capability.setCapability(MobileCapabilityType.APP, appPath);

@@ -62,6 +62,9 @@ public class Web {
 
     @FindBy(xpath = WebElements.USER_MENU_MOBILE_WEB)
     private WebElement user_menu_mobile_web;
+    
+    @FindBy(className = WebElements.PRINT_EDITION)
+    private WebElement printEdition; 
 
     public Web(WebDriver driver) {
         this.driver = driver;
@@ -70,7 +73,7 @@ public class Web {
     }
 
     public void launch_Strait_Times() throws InterruptedException {
-        this.driver.get("https://www.straitstimes.com");
+        this.driver.get("https://www.straitstimes.com/?adbypass=topspecial_skinning_topoverlay");
         try {
             if (browserName.equalsIgnoreCase("CHROMELOCAL") || browserName.equalsIgnoreCase("SAFARILOCAL")) {
                 this.driver.manage().window().maximize();
@@ -80,6 +83,7 @@ public class Web {
         {
             System.out.println("Maximize not required");
         }
+        //this.driver.get("https://www.straitstimes.com");
     }
 
     public void login_StraitTimes() throws InterruptedException {
@@ -129,8 +133,26 @@ public class Web {
         Thread.sleep(2000);
         
             login_link.click();
-
-
+    }
+    
+    public void closeAd() throws InterruptedException {
+	    	try {
+	            if (close_ad.isDisplayed()) {
+	                //((JavascriptExecutor) driver).executeScript("arguments[0].click();", close_ad);
+	                close_ad.click();
+	                try {
+	                    if (browserName.equalsIgnoreCase("SAFARILOCAL")||browserName.equalsIgnoreCase("CHROMELOCAL")) {
+	                        driver.switchTo().defaultContent();
+	                    }
+	                }
+	                catch (Exception e)
+	                {
+	                    System.out.println("Element Not found");
+	                }
+	            }
+	        } catch (Exception e) {
+	            System.out.println("Ad is not displayed");
+	        }
     }
 
 
@@ -166,8 +188,12 @@ public class Web {
     }
 
     public void logout() throws InterruptedException {
-
         Thread.sleep(5000);
         log_out.click();
+    }
+    
+    public void gotoPrintEdition() throws InterruptedException {	
+        Thread.sleep(5000);
+        printEdition.click();
     }
 }

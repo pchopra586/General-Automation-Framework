@@ -51,19 +51,22 @@ public class PrintEditionPage{
 	@AndroidFindBy(id = AndroidElements.TAB_TITLE_ID)
 	private List<MobileElement> tabInView;
 	
-	@iOSXCUITFindBy(accessibility = Constant.PRINT_EDITION_ALERT_TITLE)
+	//TODO: Add id in iOS
+	@iOSXCUITFindBy(accessibility = Constant.PRINT_EDITION_INSTANT_DOWNLOAD_TITLE)
 	@AndroidFindBy(id = AndroidElements.ALERT_TITLE_ID)
 	private MobileElement alertTitle;
 	
-	@iOSXCUITFindBy(accessibility = Constant.PRINT_EDITION_ALERT_MESSAGE)
+	//TODO: Add id in iOS
+	//@iOSXCUITFindBy(accessibility = Constant.PRINT_EDITION_INSTANT_DOWNLOAD_MESSAGE)
+	@iOSXCUITFindBy(xpath="//XCUIElementTypeStaticText[@name=\"" + Constant.PRINT_EDITION_INSTANT_DOWNLOAD_TITLE + "\"]//following-sibling::XCUIElementTypeStaticText")
 	@AndroidFindBy(id = AndroidElements.ALERT_MSG_ID)
 	private MobileElement alertMsg;
 	
-	@iOSXCUITFindBy(accessibility = Constant.PRINT_EDITION_ALERT_IGNORE)
+	@iOSXCUITFindBy(accessibility = IOSElements.ALERT_IGNORE_ID)
 	@AndroidFindBy(id = AndroidElements.ALERT_IGNORE_ID)
 	private MobileElement alertIgnore;
 	
-	@iOSXCUITFindBy(accessibility = Constant.PRINT_EDITION_ALERT_ACCEPT)
+	@iOSXCUITFindBy(accessibility = IOSElements.ALERT_ACCEPT_ID)
 	@AndroidFindBy(id = AndroidElements.ALERT_ACCEPT_ID)
 	private MobileElement alertAccept;
 	
@@ -75,6 +78,15 @@ public class PrintEditionPage{
 	
 	@iOSXCUITFindBy(accessibility = Constant.PRINT_EDITION_ENABLE_PUSH_NOTIFICATION_ALERT_MSG)
 	private MobileElement pushNotifyAlertMsg;
+	
+	@iOSXCUITFindBy(accessibility =  IOSElements.TAB_TITLE_XPATH)
+	@AndroidFindBy(id = AndroidElements.TAB_TITLE_ID)
+	private List<MobileElement> articlesInView;
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeTable/XCUIElementTypeCell/XCUIElementTypeStaticText")
+	@AndroidFindBy(id = AndroidElements.TAB_TITLE_ID)
+	private List<MobileElement> weekdaysDisplayedInCalendar;
+	
 
 	public PrintEditionPage(WebDriver driver) throws MalformedURLException {
 		this.driver = driver;
@@ -105,11 +117,13 @@ public class PrintEditionPage{
 		logger.info("Entering Method: " + methodName);
 		Boolean firstTimeVisitPopUpFound = false;
 		
+		String alertMsgReceived = alertMsg.getText().trim().replaceAll("( )+", " ");
+		
 		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-		Assert.assertEquals(alertTitle.getText(), Constant.PRINT_EDITION_ALERT_TITLE,"Inconsistent Print Edition Alert Title");
-		//Assert.assertEquals(alertMsg.getText(), Constant.PRINT_EDITION_ALERT_MESSAGE, "Inconsistent Print Edition Alert Message");
-		Assert.assertEquals(alertIgnore.getText(), Constant.PRINT_EDITION_ALERT_IGNORE, "Inconsistent Print Edition Alert Ignore Button");
-		Assert.assertEquals(alertAccept.getText(), Constant.PRINT_EDITION_ALERT_ACCEPT, "Inconsistent Print Edition Alert Accept Button");
+		Assert.assertEquals(alertTitle.getText(), Constant.PRINT_EDITION_INSTANT_DOWNLOAD_TITLE,"Inconsistent Print Edition Alert Title");
+		Assert.assertEquals(alertMsgReceived, Constant.PRINT_EDITION_INSTANT_DOWNLOAD_MESSAGE, "Inconsistent Print Edition Alert Message");
+		Assert.assertEquals(alertIgnore.getText(), Constant.PRINT_EDITION_INSTANT_DOWNLOAD_IGNORE, "Inconsistent Print Edition Alert Ignore Button");
+		Assert.assertEquals(alertAccept.getText(), Constant.PRINT_EDITION_INSTANT_DOWNLOAD_ACCEPT, "Inconsistent Print Edition Alert Accept Button");
 		firstTimeVisitPopUpFound = true;
 //		try {
 //			Assert.assertEquals(alertTitle.getText(), Constant.PRINT_EDITION_ALERT_TITLE,"Inconsistent Print Edition Alert Title");
@@ -135,7 +149,7 @@ public class PrintEditionPage{
 		try {
 			if(capabilities.getCapability("platformName").toString().equalsIgnoreCase("iOS")) {
 				Assert.assertEquals(pushNotifyAlertTitle.getText(), Constant.PRINT_EDITION_ENABLE_PUSH_NOTIFICATION_ALERT_TITLE,"Inconsistent Print Edition Push Notification Title");
-				Assert.assertEquals(pushNotifyAlertMsg.getText(), Constant.PRINT_EDITION_ENABLE_PUSH_NOTIFICATION_ALERT_MSG, "Inconsistent Print Edition Push Notification Message");
+				Assert.assertEquals(pushNotifyAlertMsg.getText().trim(), Constant.PRINT_EDITION_ENABLE_PUSH_NOTIFICATION_ALERT_MSG.trim(), "Inconsistent Print Edition Push Notification Message");
 				Assert.assertEquals(pushNotifyAlertClose.getText(), Constant.PRINT_EDITION_ENABLE_PUSH_NOTIFICATION_ALERT_CLOSE, "Inconsistent Push Notification Close Button");
 				pushNotifyPopUpFound = true;
 			}
@@ -171,7 +185,7 @@ public class PrintEditionPage{
 	}
 	
 	public PrintEditionPage verifyDefaultView() {
-		methodName = "verifyPageTitleContent";
+		methodName = "verifyDefaultView";
 		logger.info("Entering Method: " + methodName);
 		
 		List<String> expectedTabInView = new ArrayList<String>();
@@ -210,4 +224,26 @@ public class PrintEditionPage{
 		logger.info("Exiting Method: " + methodName);
 		return this;
 	}
+
+	public PrintEditionPage verifySectionsLayout(String sectionName) {
+		//Track and Verify image dimension
+		
+		//Track first and Verify article caption
+		
+		//Ensure timing elements are shown for every article
+		
+		return this;
+	}
+	
+	public PrintEditionPage openCalendarView() {
+		methodName = "openCalendarView";
+		logger.info("Entering Method: " + methodName);
+		
+		calendar.click();
+		
+		logger.info("Exiting Method: " + methodName);
+		return this;
+	}
+
+	
 }

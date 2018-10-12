@@ -88,10 +88,15 @@ public class DeviceActions{
             int endPoint = (int) (size.width * 0.05);
             TouchAction action = new TouchAction ((PerformsTouchActions) driver);
             
+        
+//            TouchAction action = new TouchAction ((PerformsTouchActions) driver);
+//            action.press(PointOption.point(startX,startY)).waitAction(WaitOptions.waitOptions(Duration.ofMillis(1000)))
+//                    .moveTo(PointOption.point(endX, startY)).release().perform();
+            
             if (direction.equalsIgnoreCase("Left")) {
 //				action.press(start.point(startPoint, anchor)).waitAction(waitTime.withDuration(Duration.ofMillis(0))).moveTo(end.point(endPoint-startPoint, 0))
 //				.release().perform();
-            		action.press(start.point(startPoint, anchor)).waitAction(waitTime.withDuration(Duration.ofMillis(0))).moveTo(end.point(endPoint, anchor))
+            		action.press(start.point(startPoint, anchor)).waitAction(waitTime.withDuration(Duration.ofMillis(1000))).moveTo(end.point(endPoint, anchor))
 				.release().perform();
 				logger.info("Perform Swipe to Left Direction");
 			} else if (direction.equalsIgnoreCase("Right")) {

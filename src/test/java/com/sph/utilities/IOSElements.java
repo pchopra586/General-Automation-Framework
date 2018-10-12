@@ -106,5 +106,8 @@ public class IOSElements {
 	public static final String BACK_BTN_ID = "back"; 
 	
 	public static final String TAB_TITLE_XPATH = "//XCUIElementTypeScrollView//XCUIElementTypeButton";
+
+	public static final String ALERT_IGNORE_ID = "alert_button_option_two";
+	public static final String ALERT_ACCEPT_ID = "OK";
 }
 

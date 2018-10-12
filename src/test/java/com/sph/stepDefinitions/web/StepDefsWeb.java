@@ -41,13 +41,12 @@ public class StepDefsWeb {
 
 
     @Given("^I want to launch the Straits Times website$")
-    public void givenISearchFor() throws InterruptedException {
+    public WebDriver givenISearchFor() throws InterruptedException {
         loginPage = new Web(this.driver);
         loginPage.launch_Strait_Times();
         Reporter.addStepLog("User wants to launch the Straits Times website- Thread:" +Thread.currentThread().getId());
         Reporter.addScenarioLog("User wants to launch the Straits Times website");
-
-
+        return this.driver;
     }
     @When("^I want to click on the login link$")
     public void i_want_to_click_the_login_link() throws IOException, InterruptedException {
@@ -87,4 +86,6 @@ public class StepDefsWeb {
         Reporter.addScenarioLog("User wants to logout StraiTimes app");
 
     }
+    
+
 }

@@ -72,7 +72,6 @@ public class Reporter {
      * @param message The message to be logged to the current step
      */
     public static void addStepLog(String message) {
-    		message = message.replace("Mango123", "*****");
         getCurrentStep().info(message);
     }
 

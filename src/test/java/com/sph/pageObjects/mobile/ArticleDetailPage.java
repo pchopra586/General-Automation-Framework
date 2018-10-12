@@ -44,7 +44,6 @@ public class ArticleDetailPage {
     @iOSXCUITFindBy(id = IOSElements.BACK_BTN_ID)
 	private MobileElement backToPreviousView;
     
-    
     public boolean verifyArticleTitle(String expectedArticleTitle) {
 		methodName = "verifyArticleTitle";
 		logger.info("Entering Method: " + methodName);
