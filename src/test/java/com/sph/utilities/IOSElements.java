@@ -84,8 +84,7 @@ public class IOSElements {
 	
 	public static final String PRINT_EDITION_CALENDAR = "print edition calendar";
 	
-	//Tabs on Home Page View [ST_NOW, LATEST, HOME, SINGAPORE, POLITICS, ASIA, WORLD, LIFESTYLE, FOOD, FORUM, VIDEOS, 
-	//OPINION, BUSINESS, SPORT, TECH]
+	//Home Page Tab ids
 	public static final String ST_NOW_TAB_ID = "ST Now";
 	public static final String HOME_TAB_ID = "Home";
 	public static final String LATEST_TAB_ID = "Latest";
@@ -107,6 +106,9 @@ public class IOSElements {
 	
 	public static final String TAB_TITLE_XPATH = "//XCUIElementTypeScrollView//XCUIElementTypeButton";
 
+	public static final String PRINT_EDITION_ARTICLES_INVIEW_XPATH = "//XCUIElementTypeCell";
+
+	
 	public static final String ALERT_IGNORE_ID = "alert_button_option_two";
 	public static final String ALERT_ACCEPT_ID = "OK";
 }

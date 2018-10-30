@@ -2,8 +2,10 @@ package com.sph.pageObjects.mobile;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.Capabilities;
@@ -13,15 +15,14 @@ import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import org.testng.log4testng.Logger;
 
-import com.aventstack.extentreports.ExtentTest;
-import com.aventstack.extentreports.Status;
 import com.sph.driverFactory.LocalWebDriverListener;
 import com.sph.utilities.AndroidElements;
 import com.sph.utilities.Constant;
+import com.sph.utilities.DeviceActions;
 import com.sph.utilities.GenericNavigator;
 import com.sph.utilities.IOSElements;
 
-import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.MobileDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -34,6 +35,15 @@ public class PrintEditionPage{
     Logger logger = Logger.getLogger(PrintEditionPage.class);
 	private WebDriver driver;
     private Capabilities capabilities;
+    private DeviceActions util;
+    
+    private Map<String, HashMap<String, Integer>> expectedDim = new HashMap<String, HashMap<String,Integer>>();
+    
+//    private HashMap<String, Integer> expectedArticleDim = new HashMap<String,Integer>();
+//    
+//    private HashMap<String, Integer> expectedTimeDim = new HashMap<String, Integer>();
+//    
+//    private HashMap<String, Integer> expectedArticleTitleDim = new HashMap<String, Integer>();
 	
 	@iOSXCUITFindBy(id = IOSElements.NAVIGATION_TITLE_ID)
 	@AndroidFindBy(id = AndroidElements.TOOL_BAR_TITLE_ID)
@@ -47,7 +57,7 @@ public class PrintEditionPage{
 	@AndroidFindBy(accessibility =  AndroidElements.HAMBURGER_MENU_LOCATOR)
 	private MobileElement hamburgerMenu;
 	
-	@iOSXCUITFindBy(accessibility =  IOSElements.TAB_TITLE_XPATH)
+	@iOSXCUITFindBy(xpath =  IOSElements.TAB_TITLE_XPATH)
 	@AndroidFindBy(id = AndroidElements.TAB_TITLE_ID)
 	private List<MobileElement> tabInView;
 	
@@ -79,7 +89,7 @@ public class PrintEditionPage{
 	@iOSXCUITFindBy(accessibility = Constant.PRINT_EDITION_ENABLE_PUSH_NOTIFICATION_ALERT_MSG)
 	private MobileElement pushNotifyAlertMsg;
 	
-	@iOSXCUITFindBy(accessibility =  IOSElements.TAB_TITLE_XPATH)
+	@iOSXCUITFindBy(xpath =  IOSElements.PRINT_EDITION_ARTICLES_INVIEW_XPATH)
 	@AndroidFindBy(id = AndroidElements.TAB_TITLE_ID)
 	private List<MobileElement> articlesInView;
 	
@@ -87,11 +97,20 @@ public class PrintEditionPage{
 	@AndroidFindBy(id = AndroidElements.TAB_TITLE_ID)
 	private List<MobileElement> weekdaysDisplayedInCalendar;
 	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeScrollView/XCUIElementTypeOther[2]")
+	private MobileElement activeTabPointer;
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeImage[not(@name)]")
+	private List<MobileElement> articleImagesInView;
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name=\"article_title\"]")
+	private List<MobileElement> articleTitlesInView;
 
 	public PrintEditionPage(WebDriver driver) throws MalformedURLException {
 		this.driver = driver;
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
         this.capabilities = ((RemoteWebDriver) driver).getCapabilities();
+        util = new DeviceActions(driver);
 	}
 	
 	public PrintEditionPage gotoPrintEditionPage() {
@@ -208,16 +227,13 @@ public class PrintEditionPage{
 			Assert.assertTrue(calendar.getAttribute("clickable").equals("true"), "Calendar option to switch print edition to other dates is unexpectedly non-clickable");
 		}
 		
-		String tabSelected = "true";
 		for(MobileElement currentTab:tabInView) {
 			if(currentTab.getAttribute("visible").equalsIgnoreCase("true")) {
 				String currentTabLabel = currentTab.getText();
 				String expectedTabLabel = expectedTabList.next();
 				
 				Assert.assertTrue(currentTab.getAttribute("enabled").equals("true"), "TAB: " + currentTabLabel + " is unexpectedly disabled");
-				Assert.assertEquals(currentTab.getAttribute("selected"),tabSelected, "TAB: " + currentTabLabel + " is unexpectedly not selected in default view");
 				Assert.assertTrue(currentTabLabel.equals(expectedTabLabel), "Tab title doesn't match for CURRENT TAB: " + currentTabLabel + ", whereas EXPECTED TAB: " + expectedTabLabel);
-				tabSelected = "false";
 			}
 		}
 		
@@ -225,14 +241,98 @@ public class PrintEditionPage{
 		return this;
 	}
 
-	public PrintEditionPage verifySectionsLayout(String sectionName) {
-		//Track and Verify image dimension
+	public PrintEditionPage verifyTabLayout(String sectionName) {
+		//TODO: Section Name not yet used
+		
+		List<MobileElement> tabsValidated = new ArrayList<MobileElement>();
+		for(MobileElement currentTab:tabInView) {
+			while(currentTab.getAttribute("visible").equalsIgnoreCase("false")) {
+				util = new DeviceActions(driver);
+				util.swipeHorizontal("left");
+			}
+			currentTab.click();
+			//Track and Verify image dimension
+			validateArticlesInView();
+			
+			
+			tabsValidated.add(currentTab);
+		}
+		
 		
 		//Track first and Verify article caption
 		
 		//Ensure timing elements are shown for every article
 		
 		return this;
+	}
+	
+	public PrintEditionPage validateArticlesInView() {
+		List<String> articleTitles = new ArrayList<String>();
+		HashMap<String, Integer> actualImageDim = new HashMap<String, Integer>();
+		String lastArticleValidated = "";
+		String currentArticleTitle;
+		int articleInViewCount = 0;
+		while(true) {
+			int count = 0;
+			for(MobileElement currentArticle:articlesInView) {
+				currentArticleTitle = articleTitlesInView.get(count).getAttribute("label");
+				System.out.println("Starting validation of: " + currentArticleTitle);
+				if(articleTitles.contains(currentArticleTitle)) {
+					continue;
+				}
+				
+				//Validate Article Cell Dimension
+				
+				//Validate Article Image Dimension
+				actualImageDim.put("xStart", articleTitlesInView.get(count).getLocation().getX());
+				actualImageDim.put("yStart", articleTitlesInView.get(count).getLocation().getY());
+				actualImageDim.put("width", articleTitlesInView.get(count).getSize().width);
+				actualImageDim.put("height", articleTitlesInView.get(count).getSize().height);
+				
+				if(!expectedDim.containsKey("imageDim")) {
+					expectedDim.put("imageDim", actualImageDim);
+				}
+				else {	
+					validateElementDimension(actualImageDim, expectedDim.get("imageDim"));
+//					Assert.assertEquals(xStart, expectedArticleImageDim.get("xStart"), "X-Axis Start of article image is inconsistent");
+//					Assert.assertEquals(yStart, expectedArticleImageDim.get("yStart"), "Y-Axis Start of article image is inconsistent");
+//					Assert.assertEquals(width, expectedArticleImageDim.get("width"), "Width of article image is inconsistent");
+//					Assert.assertEquals(height, expectedArticleImageDim.get("height"), "Height of article image is inconsistent");
+				}
+				
+				//Validate Article Title Dimension
+				System.out.println("Validated: " + currentArticleTitle);
+				//Validate Article Time Dimension
+				
+				articleTitles.add(currentArticleTitle);
+				count = count + 1;
+				lastArticleValidated = currentArticleTitle;
+			}
+			
+			//util = new DeviceActions(driver);
+			util.swipeVertical("Up");
+			articleInViewCount = articlesInView.size();
+			String lastArticleTitleInView = articleTitlesInView.get(articleInViewCount - 1).getAttribute("label");
+			if(lastArticleTitleInView.equals(lastArticleValidated)) {
+				break;
+			}
+			
+		}
+		return this;
+	}
+	
+	public Boolean validateElementDimension(HashMap<String,Integer> actualDim, HashMap<String,Integer> expectedDim) {
+		methodName = "validateAlignment";
+		logger.info("Entering Method: " + methodName);
+		Boolean validated = false;
+					
+		Assert.assertEquals(actualDim.get("xStart"),expectedDim.get("xStart"), "X-Axis Start of article image is inconsistent");
+		Assert.assertEquals(actualDim.get("yStart"),expectedDim.get("yStart"), "Y-Axis Start of article image is inconsistent");
+		Assert.assertEquals(actualDim.get("width"),expectedDim.get("width"), "Width of article image is inconsistent");
+		Assert.assertEquals(actualDim.get("height"),expectedDim.get("height"), "Height of article image is inconsistent");
+		validated = true;
+		logger.info("Exiting Method: " + methodName);
+		return validated;
 	}
 	
 	public PrintEditionPage openCalendarView() {

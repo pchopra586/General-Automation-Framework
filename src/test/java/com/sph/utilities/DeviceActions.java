@@ -124,8 +124,10 @@ public class DeviceActions{
             TouchAction action = new TouchAction ((PerformsTouchActions) driver);
             
             if (direction.equalsIgnoreCase("Up")) {
-				action.press(start.point(anchor,startPoint)).waitAction(waitTime.withDuration(Duration.ofMillis(0))).moveTo(end.point(0, endPoint-startPoint))
+            		action.press(start.point(anchor,startPoint)).waitAction(waitTime.withDuration(Duration.ofMillis(1000))).moveTo(end.point(anchor, endPoint))
 				.release().perform();
+//				action.press(start.point(anchor,startPoint)).waitAction(waitTime.withDuration(Duration.ofMillis(0))).moveTo(end.point(0, endPoint-startPoint))
+//				.release().perform();
 				logger.info("Perform Upwards Scroll operation");
 			} else if (direction.equalsIgnoreCase("Down")) {
 				action.press(start.point(anchor,endPoint)).waitAction(waitTime.withDuration(Duration.ofMillis(0))).moveTo(end.point(0, startPoint - endPoint))

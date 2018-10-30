@@ -22,6 +22,7 @@ public class PrintEditionValidationSteps {
     WebDriver driver = DriverManager.getDriver();
     private Web stWeb;
     private PrintEditionPage printEditionPage;
+    private String currentUrl;
 
     static {
         log = Logger.getLogger(PrintEditionValidationSteps.class);

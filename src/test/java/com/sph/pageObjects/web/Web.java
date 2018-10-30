@@ -1,6 +1,7 @@
 package com.sph.pageObjects.web;
 
 import com.sph.driverFactory.LocalWebDriverListener;
+import com.sph.utilities.Constant;
 import com.sph.utilities.WebElements;
 
 //import org.openqa.selenium.JavascriptExecutor;
@@ -8,6 +9,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
@@ -23,6 +25,7 @@ public class Web {
     private WebDriverWait wait;
     private String Read_Story_Headline;
     String browserName = LocalWebDriverListener.browserName;
+    String stWebURL = "https://www.straitstimes.com/?adbypass=topspecial_skinning_topoverlay";
 
     @FindBy(xpath = "//div[contains(@id,'ebAd')]/iframe")
     private WebElement iframe;
@@ -73,7 +76,7 @@ public class Web {
     }
 
     public void launch_Strait_Times() throws InterruptedException {
-        this.driver.get("https://www.straitstimes.com/?adbypass=topspecial_skinning_topoverlay");
+        this.driver.get(stWebURL);
         try {
             if (browserName.equalsIgnoreCase("CHROMELOCAL") || browserName.equalsIgnoreCase("SAFARILOCAL")) {
                 this.driver.manage().window().maximize();
@@ -195,5 +198,24 @@ public class Web {
     public void gotoPrintEdition() throws InterruptedException {	
         Thread.sleep(5000);
         printEdition.click();
+        
+        String currentUrl = getCurrentPageURL();
+		loadAdFreeURL(currentUrl);	
+    }
+    
+    public String getCurrentPageURL() throws InterruptedException {	
+        Thread.sleep(5000);
+        ExpectedCondition e = new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+              return (d.getCurrentUrl() != stWebURL);
+            }
+          };
+         wait.until(e);
+	     return(driver.getCurrentUrl());
+    }
+    
+    public void loadAdFreeURL(String url) throws InterruptedException {	
+        String adFreeURL = url + Constant.AD_SKIP_STRING;
+        this.driver.get(adFreeURL);
     }
 }

@@ -27,4 +27,8 @@ public class WebElements {
     public static final String HAMBURGER_MENU_MOBILE_WEB = "navbar-toggle collapsed";
 
     public static final String USER_MENU_MOBILE_WEB = "//button[@class='navbar-toggle-user']";
+    
+    public static final String PRINT_EDITION = "nav-print-edition";
+    
+    public static final String STORY_TITLE = "story-title";
 }

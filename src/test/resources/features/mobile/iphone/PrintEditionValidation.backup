@@ -10,4 +10,17 @@ Feature: Validate Print Edition View
     Then I validate the default view of Print Edition Page
     And I click on Calendar icon in the view
     Then I verify the Archived Print Edition dates from Calendar
+    Then Goto Today's Print Edition
+    Then I validate the Tab View and image dimension
+    
+  #Scenario: Validate Print Edition View 2nd time
+    #Given I am on Home Page
+    #When I goto Print Edition Page
+    #Then I validate the default view of Print Edition Page without pop-up
+    #And I click on Calendar icon in the view
+    #Then I verify the Archived Print Edition dates from Calendar
+    
+  #Scenario: Validate Print Edition View 2nd time
+    #Given Goto Today's Print Edition
+    #Then I validate the Tab View and image dimension
 	

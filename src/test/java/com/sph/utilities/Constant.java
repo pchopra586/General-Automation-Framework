@@ -137,6 +137,8 @@ public class Constant {
 	public static final String BOOKMARK_FLAG_YES = "YES";
 	public static final String BOOKMARK_FLAG_NO = "NO";
 	
+	public static final String AD_SKIP_STRING = "/?adbypass=topspecial_skinning_topoverlay";
+	
 	public enum TAB {
 		ST_NOW, LATEST, HOME, SINGAPORE, POLITICS, ASIA, WORLD, LIFESTYLE, FOOD, FORUM, VIDEOS, OPINION, BUSINESS, SPORT, TECH, 
 		TOP_OF_THE_NEWS, HOME_WRAP, LIFE, CLASSIFIEDS, SCIENCE, COMMUNITY, MIND_AND_BODY,EDUCATION, INSIGHT,INVEST,RECRUIT,

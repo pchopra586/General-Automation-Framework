@@ -53,7 +53,7 @@ public class LoginLifecycleValidation {
     public void i_want_to_accept_the_terms_and_conditions() throws IOException, InterruptedException {
         mobileApp = new Mobile(this.driver);
         mobileApp.accept_terms_and_conditions();
-		
+		System.out.println("Test Started");
         Reporter.addStepLog("User wants to launch the Straits Time site and accept the terms and conditions");
         Reporter.addScenarioLog("User wants to launch the Straits Time site and accept the terms and conditions");
 
