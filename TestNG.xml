@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="run tests in parallel" parallel="tests" verbose="1"
-	configfailurepolicy="continue" thread-count="5">
+	configfailurepolicy="continue" thread-count="2">
 	 <listeners>
 		<!--This TestNG listener takes care of setting up and tearing down the 
 			Local Selenium driver, and it also changes test names in the final TestNG 
@@ -9,7 +9,7 @@
 		<listener
 			class-name="com.sph.driverFactory.LocalWebDriverListener" />
 	</listeners> 
-	  <!-- <test name="Tests Android in Remote">
+	   <test name="Tests Android in Remote">
 		<parameter name="browserName" value="androidremote" />
 		<parameter name="driverHost" value="demo.experitest.com" />
 		<parameter name="driverPort" value="443" />
@@ -24,7 +24,7 @@
 		<classes>
 			<class name="com.sph.runners.RunCukesTestAndroidPhone" />
 		</classes>
-	</test>  -->
+	</test>  
 	 <!-- <test name="Tests Chrome browser in Local">
 		<parameter name="browserName" value="chromelocal"/>
 		<classes>
@@ -37,7 +37,7 @@
                 <class name="com.sph.runners.RunCukesTestInWeb"/>
             </classes>
         </test>  -->
-           <test name="Tests iOS in Remote">
+            <test name="Tests iOS in Remote">
             <parameter name="browserName" value="iosremote" />
             <parameter name="driverHost" value="demo.experitest.com" />
             <parameter name="driverPort" value="443" />
