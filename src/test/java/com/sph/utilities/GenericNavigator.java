@@ -39,6 +39,10 @@ public class GenericNavigator{
     @iOSXCUITFindBy(accessibility = IOSElements.CLOSE_INTERSTITIAL_AD_ID)
     @AndroidFindBy(className = AndroidElements.CLOSE_AD)
     private MobileElement close_ad;
+    
+    @iOSXCUITFindBy(accessibility = IOSElements.MAIN_NAVIGATION_BAR_NAME)
+	@AndroidFindBy(id = AndroidElements.MAIN_NAVIGATION_BAR_NAME)
+	private MobileElement logo;
 	
 	public GenericNavigator(WebDriver driver) {
 		this.driver = driver;
@@ -53,7 +57,7 @@ public class GenericNavigator{
 		try{
 			HomePage home = new HomePage(driver);
 			driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-			isPreConfigured = home.onHomePage();
+			isPreConfigured = logo.isEnabled();
 		}catch(Exception e) {
 			logger.error("Exception raised: " + e);
 			driver.quit();

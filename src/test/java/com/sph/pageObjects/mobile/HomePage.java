@@ -87,50 +87,50 @@ public class HomePage{
 	@AndroidFindBy(xpath = AndroidElements.HAMBURGER_MENU_LOCATOR)
 	private MobileElement menu;
 	
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name=\"" + Constant.ST_NOW_TAB_LABEL + "\"]")
+	@iOSXCUITFindBy(accessibility = IOSElements.ST_NOW_TAB_ID)
 	private MobileElement stNowTab;
 	
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name=\"" + Constant.HOME_TAB_LABEL + "\"]")
+	@iOSXCUITFindBy(xpath = IOSElements.HOME_TAB_ID)
 	private MobileElement homeTab;
 	
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name=\"" + Constant.LATEST_TAB_LABEL + "\"]")
+	@iOSXCUITFindBy(xpath = IOSElements.LATEST_TAB_ID)
 	private MobileElement latestTab;
 	
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name=\"" + Constant.SINGAPORE_TAB_LABEL + "\"]")
+	@iOSXCUITFindBy(xpath = IOSElements.SINGAPORE_TAB_ID)
 	@AndroidFindBy(xpath = "//android.widget.TextView[@text=\"" + Constant.SINGAPORE_TAB_LABEL + "\"]")
 	private MobileElement singaporeTab;
 	
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name=\"" + Constant.POLITICS_TAB_LABEL + "\"]")
+	@iOSXCUITFindBy(xpath = IOSElements.POLITICS_TAB_ID)
 	private MobileElement politicsTab;
 	
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name=\"" + Constant.ASIA_TAB_LABEL + "\"]")
+	@iOSXCUITFindBy(xpath = IOSElements.ASIA_TAB_ID)
 	private MobileElement asiaTab;
 	
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name=\"" + Constant.WORLD_TAB_LABEL + "\"]")
+	@iOSXCUITFindBy(xpath = IOSElements.WORLD_TAB_ID)
 	private MobileElement worldTab;
 	
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name=\"" + Constant.LIFESTYLE_TAB_LABEL + "\"]")
+	@iOSXCUITFindBy(xpath = IOSElements.LIFESTYLE_TAB_ID)
 	private MobileElement lifestyleTab;
 	
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name=\"" + Constant.FOOD_TAB_LABEL + "\"]")
+	@iOSXCUITFindBy(xpath = IOSElements.FOOD_TAB_ID)
 	private MobileElement foodTab;
 	
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name=\"" + Constant.FORUM_TAB_LABEL + "\"]")
+	@iOSXCUITFindBy(xpath = IOSElements.FORUM_TAB_ID)
 	private MobileElement forumTab;
 	
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name=\"" + Constant.VIDEOS_TAB_LABEL + "\"]")
+	@iOSXCUITFindBy(xpath = IOSElements.VIDEOS_TAB_ID)
 	private MobileElement videosTab;
 	
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name=\"" + Constant.OPINION_TAB_LABEL + "\"]")
+	@iOSXCUITFindBy(xpath = IOSElements.OPINION_TAB_ID)
 	private MobileElement opinionTab;
 	
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name=\"" + Constant.BUSINESS_TAB_LABEL + "\"]")
+	@iOSXCUITFindBy(xpath = IOSElements.BUSINESS_TAB_ID)
 	private MobileElement businessTab;
 	
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name=\"" + Constant.SPORT_TAB_LABEL + "\"]")
+	@iOSXCUITFindBy(xpath = IOSElements.SPORT_TAB_ID)
 	private MobileElement sportTab;
 	
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name=\"" + Constant.TECH_TAB_LABEL + "\"]")
+	@iOSXCUITFindBy(xpath = IOSElements.TECH_TAB_ID)
 	private MobileElement techTab;
 	
 	@iOSXCUITFindBy(className = "XCUIElementTypeOther")
@@ -188,6 +188,7 @@ public class HomePage{
 		boolean onHomePage = false;
 		try {
 			Assert.assertTrue(logo.isEnabled(), "Not on Home Page");
+			Assert.assertTrue(stNowTab.isEnabled(), "Not on Home Page");
 			onHomePage = true;
 		}catch(Exception e) {
 			try {
@@ -222,6 +223,12 @@ public class HomePage{
 			boolean onHomePage = false;
 			while(trial < 2 && !onHomePage) {
 				trial++;
+				onHomePage = onHomePage();
+			}
+			
+			if(!onHomePage) {
+				MenuPage menu = new MenuPage(driver);
+				menu.clickOnMenu().gotoMenu(Constant.MENU.HOME_PAGE);
 				onHomePage = onHomePage();
 			}
 			

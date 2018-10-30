@@ -92,7 +92,7 @@ public class MenuPage{
 	
 	public MenuPage(WebDriver driver) throws MalformedURLException {
 		this.driver = driver;
-//		this.wait = new WebDriverWait(this.driver, 10);
+		this.wait = new WebDriverWait(this.driver, 20);
 		util = new DeviceActions(this.driver);
         this.capabilities = ((RemoteWebDriver) driver).getCapabilities();
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
