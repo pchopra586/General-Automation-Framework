@@ -25,6 +25,7 @@ import org.testng.log4testng.Logger;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
 import com.sph.driverFactory.LocalWebDriverListener;
+import com.sph.listeners.Reporter;
 import com.sph.utilities.AndroidElements;
 import com.sph.utilities.Constant;
 import com.sph.utilities.Constant.TAB;
@@ -1377,21 +1378,51 @@ public class HomePage{
 		return this;
 	}
 
-	public ArticlePage navigateToTopStoryOftheHomePage() {
+/////modified this for new framework To do : remove comments
+	public void navigateToTopStoryOftheHomePage() {
 		try {
 			logger.info("Navigating to main article of home page");
-			String headline = topStory.getText();
-			util.clickifClickable(topStory, Constant.SHORT_TIMEOUT);
-			switchCall();
-			logger.info("Verifying main article headline");
+			//String headline = topStory.getText();
 			
-			assertHeadingOfArticle(headline);
-			return new ArticlePage(driver);
+			topStory.click();
+			//util.clickifClickable(topStory, Constant.SHORT_TIMEOUT);
+			//switchCall();
+//			logger.info("Verifying main article headline");
+//			
+//			assertHeadingOfArticle(headline);
+			
 		}catch(Exception ex) {
-			logger.error("Cannot navigate to Top Story of Home Page");
-			return null;
+			logger.error("Cannot navigate to Top Story of Home Page"+ex.getMessage());
+			
 		}
 	}
+	
+	/*added methods here for new framework */
+	
+	public String getHeadlineOfTheArticle() {
+		
+			logger.info("Fetching headline of the topstory");
+			Reporter.addStepLog("Fetching headline of the topstory");
+	       // Reporter.addScenarioLog("User wants to launch the Straits Time site and accept the terms and conditions");
+			String headline = topStory.getText();
+			Reporter.addStepLog("Headline of the topstory is "+headline);
+			return headline;
+		
+	}
+	
+	public void assertTitleOfTheHeadline() {
+		
+		logger.info("Assert headline of the topstory");
+		Reporter.addStepLog("Assert headline of the topstory");
+       // Reporter.addScenarioLog("User wants to launch the Straits Time site and accept the terms and conditions");
+		String headline = getHeadlineOfTheArticle();
+		assertHeadingOfArticle(headline);
+		Reporter.addStepLog("Headline matches! Navigated to the correct article! "+headline);
+		 
+	
+}
+//////////////////////////////////////////////////////////////////////
+
 
 	public LoginPage returnLoginPage() {
 		try {

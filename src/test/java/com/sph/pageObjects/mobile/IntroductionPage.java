@@ -1,23 +1,35 @@
 package com.sph.pageObjects.mobile;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.log4testng.Logger;
 
 import com.sph.driverFactory.LocalWebDriverListener;
+import com.sph.listeners.Reporter;
 import com.sph.utilities.DeviceActions;
 
 import io.appium.java_client.MobileElement;
+import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
+import io.appium.java_client.pagefactory.iOSXCUITFindBy;
+import junit.framework.Assert;
 
 public class IntroductionPage {
+	
+	@iOSXCUITFindBy(className = "XCUIElementTypeButton")
+	@AndroidFindBy(uiAutomator = "new UiSelector().resourceId(\"com.buuuk.st:id/btn_tnc_ok\")")
+	private List<MobileElement> agreeButton;
+	
 	private String methodName = null;
 
 	String browserName = LocalWebDriverListener.browserName;
@@ -25,9 +37,11 @@ public class IntroductionPage {
 	private WebDriver driver;
     private WebDriverWait wait;
     private Capabilities capabilities;
-	
+    private DeviceActions util;
+    
 	public IntroductionPage(WebDriver driver) {
 		this.driver = driver;
+		util = new DeviceActions(this.driver);
 //        this.wait = new WebDriverWait(this.driver, 30);
         this.capabilities = ((RemoteWebDriver) driver).getCapabilities();
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
@@ -142,4 +156,34 @@ public class IntroductionPage {
 		logger.info("Skipped the Introduction Page");
 		logger.info("Exiting Method: " + methodName);
 	}
+	
+	//To do : remove comment later
+	public void declineAgreement() {
+    	Reporter.addStepLog("Declining 'Terms of Use'");
+    	Reporter.addStepLog("Agreement screen is displayed, checking if cancel button is clickable or not");
+		//driver.switchTo().alert().accept();
+		if (agreeButton.size() > 0)
+			agreeButton.get(0).click();;
+		Reporter.addStepLog("clicked on decline Button");
+		try {
+			WebDriverWait wait = new WebDriverWait(driver,10);
+			wait.until(ExpectedConditions.alertIsPresent());
+			Reporter.addStepLog("Alert is displayed");
+			driver.switchTo().alert().accept();
+			Reporter.addStepLog("Accepted alert");
+	
+		} catch (TimeoutException ex) {
+			Reporter.addStepLog("Pop up is not displayed after " + "10" + ex.getMessage());
+		}
+		
+	}
+	
+	public void verifyButtonsOnTermsOfUsePage(){
+		Reporter.addStepLog("Verifying elements on 'Terms of Use' page: Accept and decline button");
+		driver.switchTo().alert().accept();
+		if (agreeButton.size() > 0)
+		util.verifyMobileElements("Terms Of Use Page", agreeButton.get(0),agreeButton.get(1));
+		
+	} 
+	
 }

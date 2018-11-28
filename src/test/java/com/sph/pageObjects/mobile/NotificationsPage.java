@@ -83,16 +83,12 @@ public class NotificationsPage{
 	public void acceptNotificationAfterInstall() {
 		methodName = "acceptNotificationAfterInstall";
 		logger.info("Entering Method: " + methodName);
-		try {
-			if(capabilities.getCapability("browserName").toString().equalsIgnoreCase("ioslocal")) {
-				driver.switchTo().alert().accept();
-				logger.info("Allowed the Permissions for ST App Default Notification");
-			}
-			else{
-				logger.info("No default Permission needed immediately after installation on " + capabilities.getCapability("platformName").toString());
-			}
-		}catch (Exception e) {
-			logger.info("No need to accept the alert");
+		if(capabilities.getCapability("platformName").toString().equalsIgnoreCase("iOS")) {
+			driver.switchTo().alert().accept();
+			logger.info("Allowed the Permissions for ST App Default Notification");
+		}
+		else{
+			logger.info("No default Permission needed immediately after installation on " + capabilities.getCapability("platformName").toString());
 		}
 		logger.info("Exiting Method: " + methodName);
 	}
