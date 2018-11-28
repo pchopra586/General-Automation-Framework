@@ -14,6 +14,7 @@ import org.testng.Assert;
 import org.testng.log4testng.Logger;
 
 import com.sph.driverFactory.LocalWebDriverListener;
+import com.sph.listeners.Reporter;
 import com.sph.utilities.Constant;
 import com.sph.utilities.DeviceActions;
 
@@ -477,4 +478,22 @@ public class ArticlePage {
 		}
 		
 	}
+	
+	/*new framework changes*/
+	public void assertOnDetailsPage() {
+		logger.info("Verifying on details page");
+		Reporter.addStepLog("Verifying on details page");
+		boolean flag = util.isElementPresent(articleHeadline, Constant.SHORT_TIMEOUT, "Article Heading");
+
+		if (flag) {
+			logger.info("Navigated to details page and article headline is displayed");
+			Reporter.addStepLog("Navigated to details page and article headline is displayed");	
+			
+		}else{
+			logger.error("error while Navigation to details");
+					
+		}
+		
+	}
+	
 }

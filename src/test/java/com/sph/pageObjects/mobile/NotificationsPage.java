@@ -83,7 +83,7 @@ public class NotificationsPage{
 	public void acceptNotificationAfterInstall() {
 		methodName = "acceptNotificationAfterInstall";
 		logger.info("Entering Method: " + methodName);
-		if(capabilities.getCapability("browserName").toString().equalsIgnoreCase("ioslocal")) {
+		if(capabilities.getCapability("platformName").toString().equalsIgnoreCase("iOS")) {
 			driver.switchTo().alert().accept();
 			logger.info("Allowed the Permissions for ST App Default Notification");
 		}
