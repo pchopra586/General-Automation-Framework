@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -50,34 +51,43 @@ public class HomePage{
     private Capabilities capabilities;
     private DeviceActions util;
     
+    public static Map<String,String> section = null;
+	public static List<Map<String,String>> articleDetails;
+	
+    
     @iOSXCUITFindBy(accessibility = IOSElements.CLOSE_INTERSTITIAL_AD_ID)
     @AndroidFindBy(className = AndroidElements.CLOSE_AD)
     private MobileElement close_ad;
     
-	private static Integer xRowStart = 0;
-	private static Integer xRowEnd = 0;
-	//Reset Options for alignment parameters
-	private static Boolean resetArticleWidth;
-	private static Boolean resetXAxisStart;
-	private static Boolean resetArticleImageVideoHeight;
-	private static Boolean resetRemoveFromHomeBtnDimension;
+//    public static Integer sectionLabelHeight = 0;
+//	boolean resetOption = true; //Only for first section
+//	
+//	private static Integer xRowStart = 0;
+//	private static Integer xRowEnd = 0;
+//	//Reset Options for alignment parameters
+//	private static Boolean resetArticleWidth;
+//	private static Boolean resetXAxisStart;
+//	private static Boolean resetArticleImageVideoHeight;
+//	private static Boolean resetRemoveFromHomeBtnDimension;
+//	
+//	//Parameters to capture the expected row-wise Width for articles 
+//	private static Integer firstRowArticleWidth = 0;
+//	private static Integer secondRowArticleWidth = 0;
+//	
+//	//Parameter to capture Height of Image/Video row-wise, instead of Article Height(As article height could vary based on label length)
+//	private static Integer firstRowImageVideoHeight = 0;
+//	private static Integer secondRowImageVideoHeight = 0;
+//	private static Integer thirdRowOnwardsImageVideoHeight = 0;
+//	private static Integer thirdRowOnwardsImageVideoWidth = 0;
+//	
+//	//Parameters to capture the remove from home button dimensions
+//	private static Integer removeFromHomeBtnHeight = 0;
+//	private static Integer removeFromHomeBtnWidth = 0;
+//	private static Integer removeFromHomeBtnXAxisStart = 0;
 	
-	//Parameters to capture the expected row-wise Width for articles 
-	private static Integer firstRowArticleWidth = 0;
-	private static Integer secondRowArticleWidth = 0;
 	
-	//Parameter to capture Height of Image/Video row-wise, instead of Article Height(As article height could vary based on label length)
-	private static Integer firstRowImageVideoHeight = 0;
-	private static Integer secondRowImageVideoHeight = 0;
-	private static Integer thirdRowOnwardsImageVideoHeight = 0;
-	private static Integer thirdRowOnwardsImageVideoWidth = 0;
 	
-	//Parameters to capture the remove from home button dimensions
-	private static Integer removeFromHomeBtnHeight = 0;
-	private static Integer removeFromHomeBtnWidth = 0;
-	private static Integer removeFromHomeBtnXAxisStart = 0;
-	
-	private static Set<String> defaultSubSections = new HashSet<String>(Arrays.asList(new String[]{"TOP STORIES", "MALAYSIA ELECTIONS","FAKE NEWS DEBUNKED","ST FOOD","ASIA TOP STORIES","WEB SPECIALS","ENTERTAINMENT"}));
+	private static Set<String> defaultSubSections = new HashSet<String>(Arrays.asList(new String[]{"TOP STORIES","ST FOOD","ASIA TOP STORIES","WEB SPECIALS","ENTERTAINMENT"}));
 			
 	@iOSXCUITFindBy(accessibility = IOSElements.MAIN_NAVIGATION_BAR_NAME)
 	@AndroidFindBy(id = AndroidElements.MAIN_NAVIGATION_BAR_NAME)
@@ -178,8 +188,10 @@ public class HomePage{
 	public HomePage(WebDriver driver) throws MalformedURLException {
 		this.driver = driver;
         this.capabilities = ((RemoteWebDriver) driver).getCapabilities();
+        this.wait = new WebDriverWait(this.driver, 30);
+        this.util = new DeviceActions(this.driver);
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
-		resetRemoveFromHomeBtnDimension = true;
+//		resetRemoveFromHomeBtnDimension = true;
 	}
 	
 	public boolean onHomePage() {
@@ -238,6 +250,141 @@ public class HomePage{
 			logger.error("Unable to goto Home Page due to exception: " + ex.getMessage());
 		}
 		return this;
+	}
+	
+//	public void sectionValidation() {
+//		methodName = "sectionValidation";
+//		logger.info("Entering Test Case: " + methodName);
+//		Map<String,String> sectionLabels = new LinkedHashMap<String,String>();
+//		//sectionLabels.put("TOP STORIES", "MORE HEADLINES");
+//		sectionLabels.put(IOSElements.PREMIUM_SECTION_LABEL_ID, "MORE STORIES");
+//		sectionLabels.put("VIEWPOINTS", "MORE STORIES");
+//		sectionLabels.put("ASIA TOP STORIES", "MORE ASIA STORIES");
+//		sectionLabels.put("ST FOOD", "MORE FOOD STORIES");
+//		sectionLabels.put("WEB SPECIALS", "MORE WEB SPECIALS");
+//		sectionLabels.put("ENTERTAINMENT", "MORE ENTERTAINMENT");
+//		boolean resetOption = true; //Only for first section
+//		Integer sectionSequence = 2; 
+//		boolean followedByAd = false; //Only until first three sections
+//		
+//		
+//		for(String label:sectionLabels.keySet()) {
+//			methodName = "Test section label: " + label;
+//			logger.info("Entering Test Case: " + methodName);
+//			System.out.println("Validating Section: " + label);
+//			
+//			this.gotoSection(label);
+//			
+//			if(sectionLabelHeight.equals(0) && !label.equals(IOSElements.PREMIUM_SECTION_LABEL_ID)) {
+//				sectionLabelHeight = ((MobileDriver)driver).findElementByXPath("//XCUIElementTypeStaticText[@label=\"" + label + "\"]").getSize().getHeight();
+//			}
+//			
+//			if(label.equals(IOSElements.PREMIUM_SECTION_LABEL_ID)) {
+//				section = new HashMap<String,String>();
+//				section.put("value", label);
+//				section.put("label", label);
+//				section.put("enabled", "true");
+//				Assert.assertTrue(this.premiumTitleValidation(section));
+//			}
+//			else {
+//				section = new HashMap<String,String>();
+//				section.put("label", label);
+//				section.put("enabled", "true");
+//				section.put("visible", "true");
+//				section.put("height", sectionLabelHeight.toString());
+//				Assert.assertTrue(this.sectionTitleValidation(section));
+//			}
+//			
+////			articleDetails  = new ArrayList<Map<String,String>>();
+//			
+//			//Assert.assertTrue(this.sectionTitleValidation(section));
+//			logger.info("Successfully Validated the Section title: " + label);
+//			
+//			Integer lastArticleLayoutSequence = this.sectionArticleValidation(label, resetOption, resetOption, resetOption, followedByAd, label);
+//			Assert.assertNotEquals(lastArticleLayoutSequence,0,"Section Article Validation failed");
+//			
+//			//Assert.assertTrue(this.validateMoreStoriesLink(lastArticleLayoutSequence,sectionLabels.get(label),label),"Failed to validate More Stories Link for " + label + " section");
+//			logger.info("Exiting with success method: " + methodName);
+//			
+//			//Setting resetOption to false for Following sections(As rest sections should followed first section for alignment)
+//			resetOption = false;
+//			if(sectionSequence > 2) {
+//				followedByAd = false;
+//			}
+//			//Remove after Premium section checks are implemented
+//			sectionSequence++;
+//			System.out.println("Successfully validated Section: " + label);
+//		}
+//		
+//	}
+	
+	public Map<String, Integer> sectionValidation(String sectionLabel, Map<String, Integer> sectionDimension) {
+		methodName = "sectionValidation";
+		logger.info("Entering Test Case: " + methodName);
+		sectionLabel = sectionLabel.toUpperCase();
+		Integer sectionLabelHeight = 0;
+//		Map<String,String> sectionLabels = new LinkedHashMap<String,String>();
+//		//sectionLabels.put("TOP STORIES", "MORE HEADLINES");
+//		sectionLabels.put(IOSElements.PREMIUM_SECTION_LABEL_ID, "MORE STORIES");
+//		sectionLabels.put("VIEWPOINTS", "MORE STORIES");
+//		sectionLabels.put("ASIA TOP STORIES", "MORE ASIA STORIES");
+//		sectionLabels.put("ST FOOD", "MORE FOOD STORIES");
+//		sectionLabels.put("WEB SPECIALS", "MORE WEB SPECIALS");
+//		sectionLabels.put("ENTERTAINMENT", "MORE ENTERTAINMENT");
+		
+		Integer sectionSequence = 2; 
+		boolean followedByAd = false; //Only until first three sections
+		
+		
+//		for(String label:sectionLabels.keySet()) {
+		methodName = "Test section label: " + sectionLabel;
+		logger.info("Entering Test Case: " + methodName);
+		System.out.println("Validating Section: " + sectionLabel);
+		
+		this.gotoSection(sectionLabel);
+		
+		if(sectionDimension.get("sectionLabelHeight").equals(0) && !sectionLabel.equals(IOSElements.PREMIUM_SECTION_LABEL_ID)) {
+			sectionLabelHeight = ((MobileDriver)driver).findElementByXPath("//XCUIElementTypeStaticText[@label=\"" + sectionLabel + "\"]").getSize().getHeight();
+			sectionDimension.put("sectionLabelHeight", sectionLabelHeight);
+		}
+		
+		if(sectionLabel.equals(IOSElements.PREMIUM_SECTION_LABEL_ID)) {
+			section = new HashMap<String,String>();
+			section.put("value", sectionLabel);
+			section.put("label", sectionLabel);
+			section.put("enabled", "true");
+			Assert.assertTrue(this.premiumTitleValidation(section));
+		}
+		else {
+			section = new HashMap<String,String>();
+			section.put("label", sectionLabel);
+			section.put("enabled", "true");
+			section.put("visible", "true");
+			section.put("height", sectionDimension.get("sectionLabelHeight").toString());
+			Assert.assertTrue(sectionTitleValidation(section, sectionDimension));
+		}
+		
+//			articleDetails  = new ArrayList<Map<String,String>>();
+		
+		//Assert.assertTrue(this.sectionTitleValidation(section));
+		logger.info("Successfully Validated the Section title: " + sectionLabel);
+		
+		sectionDimension = this.sectionArticleValidation(sectionLabel, followedByAd, sectionDimension);
+		Assert.assertNotEquals(sectionDimension.get("articleSeqInLayout"),0,"Section Article Validation failed");
+		
+		//Assert.assertTrue(this.validateMoreStoriesLink(lastArticleLayoutSequence,sectionLabels.get(label),label),"Failed to validate More Stories Link for " + label + " section");
+		logger.info("Exiting with success method: " + methodName);
+		
+		//Setting resetOption to false for Following sections(As rest sections should followed first section for alignment)
+//		resetOption = false;
+		if(sectionSequence > 2) {
+			followedByAd = false;
+		}
+		//Remove after Premium section checks are implemented
+//		sectionSequence++;
+		System.out.println("Successfully validated Section: " + sectionLabel);
+	
+		return sectionDimension;
 	}
 	
 	public boolean appLogoMenuValidation() {
@@ -378,7 +525,7 @@ public class HomePage{
 		return success;
 	}
 	
-	public boolean isRemoveFromHomeBtnAligned(String sectionLabel) {
+	public boolean isRemoveFromHomeBtnAligned(String sectionLabel, Map<String, Integer> removeFromHomeBtnDimension) {
 		boolean validated = false;
 		methodName = "isRemoveFromHomeBtnAligned";
 		logger.info("Entering Method: " + methodName);
@@ -389,27 +536,27 @@ public class HomePage{
 		Integer btnWidth = addToHomeButton.getSize().getWidth();
 		Integer btnXStart = addToHomeButton.getLocation().getX();
 		
-		if(resetRemoveFromHomeBtnDimension) {
-			removeFromHomeBtnHeight = btnHeight;
-			removeFromHomeBtnWidth = btnWidth;
-			removeFromHomeBtnXAxisStart = btnXStart;
+		if(removeFromHomeBtnDimension.get("resetRemoveFromHomeBtnDimension").equals(1)) {
+			removeFromHomeBtnDimension.put("btnHeight", btnHeight);
+			removeFromHomeBtnDimension.put("btnWidth", btnWidth);
+			removeFromHomeBtnDimension.put("removeFromHomeBtnXAxisStart",btnXStart);
 		}else {
 			Assert.assertEquals(addToHomeButton.getAttribute("label"), IOSElements.REMOVE_FROM_HOME_BTN_LABEL, "For section: \"" +  sectionLabel + "\", label for Remove from Home Button is inconsistent");
 			Assert.assertEquals(addToHomeButton.getAttribute("enabled"), "true", "Unexpectedly Remove from Home Button is disabled for Section: " + sectionLabel);
 			Assert.assertEquals(addToHomeButton.getAttribute("name"), IOSElements.REMOVE_FROM_HOME_BTN_NAME, "For section: \"" +  sectionLabel + "\", name for Remove from Home Button is inconsistent");
 			Assert.assertEquals(addToHomeButton.getAttribute("visible"), "true", "Unexpectedly Remove from Home Button is invisible for Section: " + sectionLabel);
-			Assert.assertEquals(btnHeight, removeFromHomeBtnHeight, "For section: \"" +  sectionLabel + "\", height for Remove from Home Button is inconsistent");
-			Assert.assertEquals(btnWidth, removeFromHomeBtnWidth, "For section: \"" +  sectionLabel + "\", width for Remove from Home Button is inconsistent");
-			Assert.assertEquals(btnXStart, removeFromHomeBtnXAxisStart, "For section: \"" +  sectionLabel + "\", x-axis start for Remove from Home Button is inconsistent");
+			Assert.assertEquals(btnHeight, removeFromHomeBtnDimension.get("removeFromHomeBtnHeight"), "For section: \"" +  sectionLabel + "\", height for Remove from Home Button is inconsistent");
+			Assert.assertEquals(btnWidth, removeFromHomeBtnDimension.get("removeFromHomeBtnWidth"), "For section: \"" +  sectionLabel + "\", width for Remove from Home Button is inconsistent");
+			Assert.assertEquals(btnXStart, removeFromHomeBtnDimension.get("removeFromHomeBtnXAxisStart"), "For section: \"" +  sectionLabel + "\", x-axis start for Remove from Home Button is inconsistent");
 		}
 		
-		resetRemoveFromHomeBtnDimension = false;
+		removeFromHomeBtnDimension.put("resetRemoveFromHomeBtnDimension", 0);
 		validated = true;
 		logger.info("Successfully exiting from method: " + methodName);
 		return validated;
 	}
 	
-	public boolean sectionTitleValidation(Map<String,String> sectionDetails) {
+	public boolean sectionTitleValidation(Map<String,String> sectionDetails, Map<String, Integer> sectionDimension) {
 		boolean validated = false;
 		String sectionTitleType;
 		String sectionTitleId;
@@ -425,7 +572,7 @@ public class HomePage{
 			section = (MobileElement) driver.findElement(By.xpath("//XCUIElementTypeStaticText[@label=\"" + sectionDetails.get("label") + "\"]"));
 			
 			if(sectionDetails.get("customSection")!= null && sectionDetails.get("customSection").equals("true")) {
-				Assert.assertEquals(isRemoveFromHomeBtnAligned(sectionDetails.get("label")), true, "For section: \"" +  sectionDetails.get("label") + "\" Remove from Home Button is misaligned");
+				Assert.assertEquals(isRemoveFromHomeBtnAligned(sectionDetails.get("label"), sectionDimension), true, "For section: \"" +  sectionDetails.get("label") + "\" Remove from Home Button is misaligned");
 			}
 			
 			Integer height = section.getSize().getHeight();
@@ -434,8 +581,10 @@ public class HomePage{
 			Assert.assertEquals(section.getAttribute("name"), sectionTitleId, "For section: \"" +  sectionDetails.get("label") + "\" Title name is inconsistent");
 			Assert.assertEquals(section.getAttribute("label"), sectionDetails.get("label"), "Section Title laebl is inconsistent");
 			Assert.assertEquals(section.getAttribute("enabled").toString(), sectionDetails.get("enabled"), "For section: \"" +  sectionDetails.get("label") + "\" Title is unexpectedly disabled");
-			Assert.assertTrue(Math.abs(height - Integer.parseInt(sectionDetails.get("height"))) < 2, "For section: \"" +  sectionDetails.get("label") + "\" Title height is inconsistent across sections");
 			
+			if(!sectionDetails.get("label").equals(IOSElements.PREMIUM_SECTION_LABEL_ID)) {
+				Assert.assertTrue(Math.abs(height - Integer.parseInt(sectionDetails.get("height"))) < 2, "For section: \"" +  sectionDetails.get("label") + "\" Title height is inconsistent across sections");
+			}
 		}
 		else if(capabilities.getCapability("platformName").toString().equalsIgnoreCase("Android")){
 			sectionTitleType = AndroidElements.SECTION_LABEL_TYPE;
@@ -471,7 +620,6 @@ public class HomePage{
 			Assert.assertEquals(premiumTag.getAttribute("name"),"premium","Premium Tag is missing for Premium articles");
 			Assert.assertEquals(sectionTitle.getAttribute("type"), sectionTitleType, "For section: \"" +  sectionDetails.get("label") + "\" Title type is inconsistent");
 			Assert.assertEquals(sectionTitle.getAttribute("value"), sectionDetails.get("value"), "For section: \"" +  sectionDetails.get("label") + "\" Title value is inconsistent");
-			Assert.assertEquals(sectionTitle.getAttribute("name"), sectionDetails.get("name"), "For section: \"" +  sectionDetails.get("label") + "\" Title name is inconsistent");
 			Assert.assertEquals(sectionTitle.getAttribute("label"), sectionDetails.get("label"), "Section Title laebl is inconsistent");
 			Assert.assertEquals(sectionTitle.getAttribute("enabled").toString(), sectionDetails.get("enabled"), "For section: \"" +  sectionDetails.get("label") + "\" Title is unexpectedly disabled");
 		}
@@ -483,7 +631,7 @@ public class HomePage{
 		return validated;
 	}
 	
-	public boolean firstRowArticleAlignmentValidation(Integer articleSeqInLayout) {
+	public boolean firstRowArticleAlignmentValidation(Integer articleSeqInLayout, Map<String, Integer> sectionDimension) {
 		methodName = "firstRowArticleAlignmentValidation";
 		logger.info("Entering Method: " + methodName);
 		Integer xArticleStart = 0;
@@ -491,45 +639,46 @@ public class HomePage{
 		Integer articleHeight = 0;
 		Integer articleWidth = 0;
 		boolean validated = false;
-		if(resetXAxisStart) {
-			xRowStart = ((MobileElement) driver.findElement(By.xpath("//XCUIElementTypeCell[" + articleSeqInLayout.toString() + "]/XCUIElementTypeOther/XCUIElementTypeOther"))).getCoordinates().onPage().getX();
-			resetXAxisStart= false;
+		if(sectionDimension.get("resetXAxisStart").equals(1)) {
+			Integer xRowStart = ((MobileElement) driver.findElement(By.xpath("//XCUIElementTypeCell[" + articleSeqInLayout.toString() + "]/XCUIElementTypeOther/XCUIElementTypeOther"))).getCoordinates().onPage().getX();
+			sectionDimension.put("xRowStart", xRowStart);
+	    		sectionDimension.put("resetXAxisStart", 0);
 		}
 		else {
 			xArticleStart = ((MobileElement) driver.findElement(By.xpath("//XCUIElementTypeCell[" + articleSeqInLayout.toString() + "]/XCUIElementTypeOther/XCUIElementTypeOther"))).getCoordinates().onPage().getX();	
-			Assert.assertEquals(xArticleStart, xRowStart, "Inconsistent x-axis placement of 1st article");
+			Assert.assertEquals(xArticleStart, sectionDimension.get("xRowStart"), "Inconsistent x-axis placement of 1st article");
 		}
 		
-		if(resetArticleWidth ){
+		if(sectionDimension.get("resetArticleWidth").equals(1)){
 			articleWidth = ((MobileElement) driver.findElement(By.xpath("//XCUIElementTypeCell[" + articleSeqInLayout.toString() + "]/XCUIElementTypeOther/XCUIElementTypeOther"))).getSize().getWidth();
-			firstRowArticleWidth = articleWidth;
-			xRowEnd = xRowStart + firstRowArticleWidth;
+			sectionDimension.put("firstRowArticleWidth", articleWidth);
+			sectionDimension.put("xRowEnd", sectionDimension.get("xRowStart") + sectionDimension.get("firstRowArticleWidth"));
 		}
 		else {
 			articleWidth = ((MobileElement) driver.findElement(By.xpath("//XCUIElementTypeCell[" + articleSeqInLayout.toString() + "]/XCUIElementTypeOther/XCUIElementTypeOther"))).getSize().getWidth();
-			Assert.assertEquals(articleWidth, firstRowArticleWidth, "Inconsistent width of 1st article");
+			Assert.assertEquals(articleWidth, sectionDimension.get("firstRowArticleWidth"), "Inconsistent width of 1st article");
 			
 			xArticleEnd = xArticleStart + articleWidth;
-			Assert.assertEquals(xArticleEnd, xRowEnd, "Inconsistent width of 1st article");
+			Assert.assertEquals(xArticleEnd, sectionDimension.get("xRowEnd"), "Inconsistent width of 1st article");
 		}
 		
-		if(resetArticleImageVideoHeight) {
+		if(sectionDimension.get("resetArticleImageVideoHeight").equals(1)) {
 			articleHeight = ((MobileElement) driver.findElement(By.xpath("//XCUIElementTypeCell[" + articleSeqInLayout.toString() + "]//XCUIElementTypeImage[1]"))).getSize().getHeight();
-			firstRowImageVideoHeight = articleHeight;
+			sectionDimension.put("firstRowImageVideoHeight", articleHeight);
 		}
 		else {
 			articleHeight = ((MobileElement) driver.findElement(By.xpath("//XCUIElementTypeCell[" + articleSeqInLayout.toString() + "]//XCUIElementTypeImage[1]"))).getSize().getHeight();
 			//logger.info(((MobileElement) driver.findElement(By.xpath("//XCUIElementTypeCell[" + articleSeqInLayout.toString() + "]//XCUIElementTypeStaticText").getAttribute("label"));
-			logger.info("********Expected Height: " + firstRowImageVideoHeight);
+			logger.info("********Expected Height: " + sectionDimension.get("firstRowImageVideoHeight"));
 			logger.info("********Actual Height: " + articleHeight);
-			Assert.assertTrue(Math.abs(articleHeight - firstRowImageVideoHeight) < 2, "Inconsistent Height of 1st article");
+			Assert.assertTrue(Math.abs(articleHeight - sectionDimension.get("firstRowImageVideoHeight")) < 2, "Inconsistent Height of 1st article");
 		}
 		validated  = true;
 		logger.info("Successfully exiting from method: " + methodName);
 		return validated;
 	}
 	
-	public boolean secondRowArticleAlignmentValidation(Integer articleSeqInLayout, boolean isRightArticle) {
+	public boolean secondRowArticleAlignmentValidation(Integer articleSeqInLayout, boolean isRightArticle, Map<String, Integer> sectionDimension) {
 		methodName = "secondRowArticleAlignmentValidation";
 		logger.info("Entering Method: " + methodName);
 		Integer xArticleStart = 0;
@@ -540,11 +689,11 @@ public class HomePage{
 		
 		xArticleStart = ((MobileElement) driver.findElement(By.xpath("//XCUIElementTypeCell[" + articleSeqInLayout.toString() + "]/XCUIElementTypeOther/XCUIElementTypeOther"))).getCoordinates().onPage().getX();
 		
-		if(resetArticleWidth && !(isRightArticle)){
-			Assert.assertEquals(xArticleStart, xRowStart, "Inconsistent x-axis placement of " + articleSeqInLayout.toString() + " article");
+		if(sectionDimension.get("resetArticleWidth").equals(1) && !(isRightArticle)){
+			Assert.assertEquals(xArticleStart, sectionDimension.get("xRowStart"), "Inconsistent x-axis placement of " + articleSeqInLayout.toString() + " article");
 			
 			articleWidth = ((MobileElement) driver.findElement(By.xpath("//XCUIElementTypeCell[" + articleSeqInLayout.toString() + "]/XCUIElementTypeOther/XCUIElementTypeOther"))).getSize().getWidth();
-			secondRowArticleWidth = articleWidth;
+			sectionDimension.put("secondRowArticleWidth", articleWidth);
 		}
 		else {
 			articleWidth = ((MobileElement) driver.findElement(By.xpath("//XCUIElementTypeCell[" + articleSeqInLayout.toString() + "]/XCUIElementTypeOther/XCUIElementTypeOther"))).getSize().getWidth();
@@ -556,18 +705,18 @@ public class HomePage{
 				articleWidth--;
 				
 				xArticleEnd = xArticleStart + articleWidth;
-				Assert.assertEquals(xArticleEnd, xRowEnd, "Misaligned End of " + articleSeqInLayout.toString() + " article");
+				Assert.assertEquals(xArticleEnd, sectionDimension.get("xRowEnd"), "Misaligned End of " + articleSeqInLayout.toString() + " article");
 			}
-			Assert.assertEquals(articleWidth, secondRowArticleWidth, "Inconsistent width of " + articleSeqInLayout.toString() + " article");
+			Assert.assertEquals(articleWidth, sectionDimension.get("secondRowArticleWidth"), "Inconsistent width of " + articleSeqInLayout.toString() + " article");
 		}
 		
-		if(resetArticleImageVideoHeight && !(isRightArticle)) {
+		if(sectionDimension.get("resetArticleImageVideoHeight").equals(1) && !(isRightArticle)) {
 			articleHeight = ((MobileElement) driver.findElement(By.xpath("//XCUIElementTypeCell[" + articleSeqInLayout.toString() + "]//XCUIElementTypeImage[1]"))).getSize().getHeight();
-			secondRowImageVideoHeight = articleHeight;
+			sectionDimension.put("secondRowImageVideoHeight", articleHeight);
 		}
 		else {
 			articleHeight = ((MobileElement) driver.findElement(By.xpath("//XCUIElementTypeCell[" + articleSeqInLayout.toString() + "]//XCUIElementTypeImage[1]"))).getSize().getHeight();
-			Assert.assertTrue(Math.abs(articleHeight - secondRowImageVideoHeight) < 2, "Inconsistent Height of " + articleSeqInLayout.toString() + " article");
+			Assert.assertTrue(Math.abs(articleHeight - sectionDimension.get("secondRowImageVideoHeight")) < 2, "Inconsistent Height of " + articleSeqInLayout.toString() + " article");
 		}
 		
 		validated = true;
@@ -591,7 +740,7 @@ public class HomePage{
 		return isPremium;
 	}
 	
-	public boolean thirdRowOnwardsArticleAlignmentValidation(Integer articleSeqInLayout) {
+	public boolean thirdRowOnwardsArticleAlignmentValidation(Integer articleSeqInLayout, Map<String, Integer> sectionDimension) {
 		methodName = "thirdRowOnwardsArticleAlignmentValidation";
 		logger.info("Entering Method: " + methodName);
 		Integer xArticleStart = 0;
@@ -602,13 +751,13 @@ public class HomePage{
 		boolean validated = false;
 		
 		xArticleStart = ((MobileElement) driver.findElement(By.xpath("//XCUIElementTypeCell[" + articleSeqInLayout.toString() + "]/XCUIElementTypeOther/XCUIElementTypeOther"))).getCoordinates().onPage().getX();
-		Assert.assertEquals(xArticleStart, xRowStart, "Inconsistent x-axis placement of " + articleSeqInLayout.toString() + " article");
+		Assert.assertEquals(xArticleStart, sectionDimension.get("xRowStart"), "Inconsistent x-axis placement of " + articleSeqInLayout.toString() + " article");
 		
 		articleWidth = ((MobileElement) driver.findElement(By.xpath("//XCUIElementTypeCell[" + articleSeqInLayout.toString() + "]/XCUIElementTypeOther/XCUIElementTypeOther"))).getSize().getWidth();
-		Assert.assertEquals(articleWidth, firstRowArticleWidth, "Inconsistent width of " + articleSeqInLayout.toString() + " article");
+		Assert.assertEquals(articleWidth, sectionDimension.get("firstRowArticleWidth"), "Inconsistent width of " + articleSeqInLayout.toString() + " article");
 		
 		xArticleEnd = xArticleStart + articleWidth;
-		Assert.assertEquals(xArticleEnd, xRowEnd, "Inconsistent width of " + articleSeqInLayout.toString() + " article");
+		Assert.assertEquals(xArticleEnd, sectionDimension.get("xRowEnd"), "Inconsistent width of " + articleSeqInLayout.toString() + " article");
 		
 		try {
 			if(isPremiumArticle(articleSeqInLayout)) {
@@ -616,24 +765,24 @@ public class HomePage{
 				imageWidth = ((MobileElement) driver.findElement(By.xpath("//XCUIElementTypeCell[" + articleSeqInLayout.toString() + "]//XCUIElementTypeImage[2]"))).getSize().getWidth();
 				mediaHeight = ((MobileElement) driver.findElement(By.xpath("//XCUIElementTypeCell[" + articleSeqInLayout.toString() + "]//XCUIElementTypeImage[2]"))).getSize().getHeight();
 				
-				if(resetArticleImageVideoHeight) {
-					thirdRowOnwardsImageVideoWidth = imageWidth;
-					thirdRowOnwardsImageVideoHeight = mediaHeight;
+				if(sectionDimension.get("resetArticleImageVideoHeight").equals(1)) {
+					sectionDimension.put("thirdRowOnwardsImageVideoWidth",imageWidth);
+					sectionDimension.put("thirdRowOnwardsImageVideoHeight", mediaHeight);
 				}
 			}
 			else {
 				imageWidth = ((MobileElement) driver.findElement(By.xpath("//XCUIElementTypeCell[" + articleSeqInLayout.toString() + "]//XCUIElementTypeImage[1]"))).getSize().getWidth();
 				mediaHeight = ((MobileElement) driver.findElement(By.xpath("//XCUIElementTypeCell[" + articleSeqInLayout.toString() + "]//XCUIElementTypeImage[1]"))).getSize().getHeight();
 				
-				if(resetArticleImageVideoHeight) {
-					thirdRowOnwardsImageVideoWidth = imageWidth;
-					thirdRowOnwardsImageVideoHeight = mediaHeight;
+				if(sectionDimension.get("resetArticleImageVideoHeight").equals(1)) {
+					sectionDimension.put("thirdRowOnwardsImageVideoWidth", imageWidth);
+					sectionDimension.put("thirdRowOnwardsImageVideoHeight", mediaHeight);
 				}
 			}
 			
-			Assert.assertTrue(Math.abs(mediaHeight - thirdRowOnwardsImageVideoHeight) < 2, "Inconsistent Height of " + articleSeqInLayout.toString() + " article");
+			Assert.assertTrue(Math.abs(mediaHeight - sectionDimension.get("thirdRowOnwardsImageVideoHeight")) < 2, "Inconsistent Height of " + articleSeqInLayout.toString() + " article");
 			
-			Assert.assertTrue(Math.abs(imageWidth - thirdRowOnwardsImageVideoWidth) < 2, "Inconsistent Width of " + articleSeqInLayout.toString() + " article, as expected is: " + thirdRowOnwardsImageVideoWidth + ". However, received image width of: " + imageWidth);
+			Assert.assertTrue(Math.abs(imageWidth - sectionDimension.get("thirdRowOnwardsImageVideoWidth")) < 2, "Inconsistent Width of " + articleSeqInLayout.toString() + " article, as expected is: " + sectionDimension.get("thirdRowOnwardsImageVideoWidth") + ". However, received image width of: " + imageWidth);
 		}catch(NoSuchElementException e) {
 			logger.warn("No image found for this article");
 		}
@@ -644,18 +793,18 @@ public class HomePage{
 		return validated;
 	}
 	
-	public boolean articleAlignmentValidation(MobileElement article, Integer articleSequence, Integer articleSeqInLayout) {
+	public boolean articleAlignmentValidation(MobileElement article, Integer articleSequence, Integer articleSeqInLayout, Map<String, Integer> sectionDimension) {
 		boolean validated = false;
 		methodName = "articleAlignmentValidation";
 		logger.info("Entering Method: " + methodName);
 		if(articleSequence.equals(1)) {
-			firstRowArticleAlignmentValidation(articleSeqInLayout);
+			firstRowArticleAlignmentValidation(articleSeqInLayout, sectionDimension);
 		}
 		else if(articleSequence.equals(2) || articleSequence.equals(3)) {
-			secondRowArticleAlignmentValidation(articleSeqInLayout,articleSequence.equals(3));
+			secondRowArticleAlignmentValidation(articleSeqInLayout,articleSequence.equals(3), sectionDimension);
 		}
 		else {
-			thirdRowOnwardsArticleAlignmentValidation(articleSeqInLayout);
+			thirdRowOnwardsArticleAlignmentValidation(articleSeqInLayout, sectionDimension);
 		}
 		validated = true;
 		String articleLabel = article.getAttribute("label");
@@ -669,9 +818,9 @@ public class HomePage{
 		logger.info("Entering Method: " + methodName);
 		boolean reachedEndOfSection = false;
 		int elementCnt = 0;
-		
-		if(defaultSubSections.contains(sectionTitle)) {
-			Integer layoutSequence = collectionViewSequence - 1;
+		Integer layoutSequence = collectionViewSequence - 1;
+//		if(defaultSubSections.contains(sectionTitle)) {
+		if(reachedEndOfSection) {
 			try {
 				MobileElement lastSectionArticle = ((MobileElement) driver.findElement(By.xpath("//XCUIElementTypeCell[" + layoutSequence.toString() + "]//XCUIElementTypeImage[@name=\"more_icn\"]")));
 				reachedEndOfSection = true;
@@ -684,8 +833,17 @@ public class HomePage{
 			for(WebElement element:collectionView) {
 				elementCnt++;
 				try {
-					if(elementCnt <= collectionViewSequence) {
+					if(elementCnt < collectionViewSequence) {
 						continue;
+					}else if(elementCnt == collectionViewSequence) {
+						try{
+							MobileElement sectionSeparator = ((MobileElement) driver.findElement(By.xpath("//XCUIElementTypeCollectionView/XCUIElementTypeCell[" + layoutSequence.toString() + "]//XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther")));
+							reachedEndOfSection = true;
+							break;
+						}catch(Exception e) {
+							reachedEndOfSection = false;
+						}
+						
 					}else if(((MobileElement)element).getAttribute("type").equals("XCUIElementTypeCell")) {
 						reachedEndOfSection = false;
 						break;
@@ -797,14 +955,16 @@ public class HomePage{
 		return articleVisibility;
 	}
 	
-	public Integer sectionArticleValidation(String sectionTitle, boolean resetWidth, boolean resetX, boolean resetHeight, boolean followedByAd, String articleType) {
-		Integer validated = 0;
+	public Map<String, Integer> sectionArticleValidation(String sectionTitle, boolean followedByAd, Map<String, Integer> sectionDimension) {
+		//Integer validated = 0;
 		methodName = "sectionArticleValidation";
 		boolean reachedEndOfSection = false;
 		logger.info("Entering Method: " + methodName);
-		resetArticleWidth = resetWidth;
-		resetXAxisStart = resetX;
-		resetArticleImageVideoHeight = resetHeight;
+//		Boolean resetDimension = sectionDimension.get("resetDimension").equals(1);
+//		Boolean resetArticleWidth = resetDimension ;
+//		Boolean resetXAxisStart = resetDimension;
+//		Boolean resetArticleImageVideoHeight = resetDimension;
+//		
 		//TODO: Find a proper to change it
 		boolean alreadyCapturedArticle = false;
 		Integer articleSequence = 0;
@@ -828,20 +988,19 @@ public class HomePage{
 			}else if(element.getAttribute("type").equals("XCUIElementTypeOther")) {
 				//collectionViewSequence++;
 				try {
-					if(articleType.equalsIgnoreCase("PREMIUM")) {
-						titleElement = (MobileElement) element.findElement(By.xpath("//XCUIElementTypeStaticText[@name=\"" + Constant.PREMIUM_SECTION_TITLE + "\"]"));	
-					}else {
-						titleElement = (MobileElement) element.findElement(By.xpath("//XCUIElementTypeStaticText[@name=\"" + Constant.SECTION_TITLE + "\"]"));	
-					}
+//					if(articleType.equalsIgnoreCase(IOSElements.PREMIUM_SECTION_LABEL_ID)) {
+//						titleElement = (MobileElement) element.findElement(By.xpath("//XCUIElementTypeStaticText[@label=\"" + IOSElements.PREMIUM_SECTION_LABEL_ID + "\"]"));	
+//					}else {
+//						titleElement = (MobileElement) element.findElement(By.xpath("//XCUIElementTypeStaticText[@name=\"" + Constant.SECTION_TITLE + "\"]"));	
+//					}
+					titleElement = (MobileElement) element.findElement(By.xpath("//XCUIElementTypeStaticText[@name=\"" + Constant.SECTION_TITLE + "\"]"));
 					if(titleElement.getAttribute("label").equals(sectionTitle)) {
 						List<WebElement> title = driver.findElements(By.xpath("//XCUIElementTypeStaticText[@name=\"article_title\"]"));
 						firstArticleOfSection = title.get(layoutSeqSectionFirstArticle).getAttribute("label");
 						break;
-					}
-					
+					}					
 				}catch(Exception e) {
-					continue;
-					
+					continue;					
 				}
 			}
 		}
@@ -852,22 +1011,29 @@ public class HomePage{
 			for(WebElement article: articleList) {		
 				articleSeqInLayout++;
 				collectionViewSequence++;
-				String currentlabel = ((MobileElement) article).getAttribute("label");
+				String currentLabel = ((MobileElement) article).getAttribute("label");
 				logger.info("********Viewing article: " + article.getAttribute("label"));
-				if(!(firstArticleOfSection.equals(currentlabel)) && articleSequence.equals(0)) {
+				if(!(firstArticleOfSection.equals(currentLabel)) && articleSequence.equals(0)) {
 					//Not yet reached the first article in the section
 					continue;
 				}
-				for(String prevLabel: articleLabels.keySet()) { 
-					if(prevLabel.equals(article.getAttribute("label"))) {
-						alreadyCapturedArticle = true;
-						break;
-					}
-					else {
-						alreadyCapturedArticle = false;
-					}
+				if(articleLabels.containsKey(currentLabel)) {
+					alreadyCapturedArticle = true;
 				}
+				else {
+					alreadyCapturedArticle = false;
+				}
+//				for(String prevLabel: articleLabels.keySet()) { //Check better way to find 
+//					if(prevLabel.equals(article.getAttribute("label"))) {
+//						alreadyCapturedArticle = true;
+//						break;
+//					}
+//					else {
+//						alreadyCapturedArticle = false;
+//					}
+//				}
 				if(!alreadyCapturedArticle) {
+					System.out.println("Validating Article labelled: " + currentLabel);
 					if(isArticleVisible(articleSeqInLayout)) {
 						if(afterSwipeView) {
 							if(isArticleFromDifferentSection(articleSeqInLayout)) {
@@ -878,7 +1044,24 @@ public class HomePage{
 						}
 						
 						alreadyCapturedArticle = false;
-						articleSequence++;
+						articleSequence++;			
+						
+						if(sectionTitle.equalsIgnoreCase(IOSElements.PREMIUM_SECTION_LABEL_ID)) {
+							MobileElement premiumTag = (MobileElement) driver.findElement(By.xpath("//XCUIElementTypeCell[" + articleSeqInLayout.toString() + "]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeImage[@name=\"premium\"]"));
+							Assert.assertEquals(premiumTag.getAttribute("enabled"),"true","Premium tag is not visible for Premium articles");
+							logger.info("Validated the Premium tag is visible for Premium article");
+						}
+						logger.info("Validating article labelled: " + currentLabel);
+						
+						if(sectionTitle.equalsIgnoreCase("VIEWPOINTS")) {
+							Assert.assertTrue(articleAlignmentValidation((MobileElement) article, Constant.VIEWPOINT_ARTICLE_LAYOUT_SEQUENCE, articleSeqInLayout, sectionDimension),"Article Alignment Validation Failed");
+						}
+						else {
+							Assert.assertTrue(articleAlignmentValidation((MobileElement) article, articleSequence,articleSeqInLayout, sectionDimension),"Article Alignment Validation Failed");
+						}
+						
+						articleLabels.put(currentLabel, articleSequence);
+						System.out.println("Successfully Validated Article labelled: " + currentLabel);
 						
 						//As this is a special case wherein second row article follows alignment rules of third row onward article(as there's only 1 last article in 2nd row)
 						if(whetherReachedLastArticleOfSection(sectionTitle, collectionViewSequence)) {
@@ -888,22 +1071,8 @@ public class HomePage{
 							}
 						}
 						
-						if(articleType.equalsIgnoreCase("PREMIUM")) {
-							MobileElement premiumTag = (MobileElement) driver.findElement(By.xpath("//XCUIElementTypeCell[" + articleSeqInLayout.toString() + "]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeImage[@name=\"premium\"]"));
-							Assert.assertEquals(premiumTag.getAttribute("enabled"),"true","Premium tag is not visible for Premium articles");
-							logger.info("Validated the Premium tag is visible for Premium article");
-						}
-						logger.info("Validating article labelled: " + currentlabel);
-						
-						if(articleType.equalsIgnoreCase("VIEWPOINTS")) {
-							Assert.assertTrue(articleAlignmentValidation((MobileElement) article, Constant.VIEWPOINT_ARTICLE_LAYOUT_SEQUENCE, articleSeqInLayout),"Article Alignment Validation Failed");
-						}
-						else {
-							Assert.assertTrue(articleAlignmentValidation((MobileElement) article, articleSequence,articleSeqInLayout),"Article Alignment Validation Failed");
-						}
-						
-						articleLabels.put(currentlabel, articleSequence);
 						if(reachedEndOfSection) {
+							System.out.println("Reached End of Section: " + sectionTitle);
 							break;
 						}
 					}
@@ -911,6 +1080,7 @@ public class HomePage{
 						//Decrementing the layout sequence of current article, as it should not be counted as not visible(thus the view is to be scrolled and re-evaluated)
 						collectionViewSequence--;
 						articleSeqInLayout--;
+						System.out.println("Need to be revalidated as article isn't visible, labelled: " + currentLabel);
 						break;
 					}
 				}
@@ -931,9 +1101,9 @@ public class HomePage{
 			collectionViewSequence = 1;
 			layoutSeqSectionFirstArticle = 0;
 		}
-		validated = articleSeqInLayout;
+		sectionDimension.put("articleSeqInLayout",articleSeqInLayout);
 		logger.info("Exiting method: " + methodName);
-		return validated;
+		return sectionDimension;
 	}
 	
 	public boolean reachedEndOfHomePage() {
@@ -975,8 +1145,8 @@ public class HomePage{
 		String navigationDirection = "Up";
 		while(!onExpectedSection) {
 			try {
-				if(label.equals("PREMIUM")){
-					MobileElement currentElement = (MobileElement) driver.findElement(By.xpath("//XCUIElementTypeStaticText[@name=\"Unique content, exclusive insights\"]"));
+				if(label.equals(IOSElements.PREMIUM_SECTION_LABEL_ID)){
+					MobileElement currentElement = (MobileElement) driver.findElement(By.xpath("//XCUIElementTypeStaticText[@name='section_title']//preceding-sibling::XCUIElementTypeImage[@name='premium']"));
 					onExpectedSection = true;
 				}else {
 					List<WebElement> currentElements = driver.findElements(By.xpath("//XCUIElementTypeStaticText[@name=\"section_title\"]"));
@@ -996,9 +1166,13 @@ public class HomePage{
 					}
 					else if(navigationDirection.equals("Down") && reachedTopOfHomePage()) {
 						break;
-					}
-					this.util = new DeviceActions(driver);		
+					}	
 					util.swipeVertical(navigationDirection);
+					try{
+						//Nothing
+					}catch(Exception e){
+						System.out.println("Error while waiting: " + e.getMessage());
+					}
 				}
 			}
 		}

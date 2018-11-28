@@ -71,11 +71,11 @@ public class PrintEditionCalendar {
 		return this;
 	}
 	
-	public WebDriver gotoPrintEdition(String day) {
+	public WebDriver gotoPrintEdition(int day) {
 		methodName = "verifyCalendarView";
 		logger.info("Entering Method: " + methodName);
 		
-		weekdaysDisplayedInCalendar.get(1).click();
+		weekdaysDisplayedInCalendar.get(day).click();
 		
 //		Date date = new Date(); // your date
 //		Calendar cal = Calendar.getInstance();

@@ -119,8 +119,8 @@ public class DeviceActions{
 		try {
             Dimension size = this.driver.manage().window().getSize();
             int anchor = (int) (size.width * 0.5);
-			int startPoint = (int) (size.height * 0.9);
-			int endPoint = (int) (size.height * 0.2);
+			int startPoint = (int) (size.height * 0.8);
+			int endPoint = (int) (size.height * 0.3);
             TouchAction action = new TouchAction ((PerformsTouchActions) driver);
             
             if (direction.equalsIgnoreCase("Up")) {
@@ -130,8 +130,10 @@ public class DeviceActions{
 //				.release().perform();
 				logger.info("Perform Upwards Scroll operation");
 			} else if (direction.equalsIgnoreCase("Down")) {
-				action.press(start.point(anchor,endPoint)).waitAction(waitTime.withDuration(Duration.ofMillis(0))).moveTo(end.point(0, startPoint - endPoint))
+				action.press(start.point(anchor,endPoint)).waitAction(waitTime.withDuration(Duration.ofMillis(1000))).moveTo(end.point(anchor, startPoint))
 				.release().perform();
+//				action.press(start.point(anchor,endPoint)).waitAction(waitTime.withDuration(Duration.ofMillis(0))).moveTo(end.point(0, startPoint - endPoint))
+//				.release().perform();
 				logger.info("Perform Downwards Scroll operation");
 			}
         }catch (Exception ex) {

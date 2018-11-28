@@ -105,6 +105,7 @@ public class LocalDriverFactory {
 			capability.setCapability("user", "madhuk");
             capability.setCapability("testobjectApiKey", "84D7FAAF04F7442EA90FFA98253A9D03");
             capability.setCapability("testobject_platform_name", "Android");
+            capability.setCapability("browserName", browserName);
             capability.setCapability("appiumVersion", "1.9.1");
             capability.setCapability("privateDevicesOnly", "true");
             capability.setCapability("deviceName","Samsung_Galaxy_S6_POC137");
@@ -189,6 +190,7 @@ public class LocalDriverFactory {
 			capability = DesiredCapabilities.iphone();
 			capability.setCapability("testobject_app_id", "1");
 			capability.setCapability("testobject_platform_name", "iOS");
+			capability.setCapability("browserName", browserName);
 			capability.setCapability("realDevice", "true");
 			capability.setCapability("testobjectApiKey", "6F5BC706246843F8B9B5F451C936A695");
 			capability.setCapability("appiumVersion", "1.9.1");

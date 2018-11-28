@@ -246,14 +246,14 @@ public class PrintEditionPage{
 		
 		List<MobileElement> tabsValidated = new ArrayList<MobileElement>();
 		for(MobileElement currentTab:tabInView) {
-			while(currentTab.getAttribute("visible").equalsIgnoreCase("false")) {
+			System.out.println("Attributes of tab: [Label-" + currentTab.getAttribute("label") + "], [IsDisplayed-" + currentTab.isDisplayed() + "]");
+			while(!currentTab.isDisplayed()) {
 				util = new DeviceActions(driver);
 				util.swipeHorizontal("left");
 			}
 			currentTab.click();
 			//Track and Verify image dimension
 			validateArticlesInView();
-			
 			
 			tabsValidated.add(currentTab);
 		}
@@ -269,6 +269,7 @@ public class PrintEditionPage{
 	public PrintEditionPage validateArticlesInView() {
 		List<String> articleTitles = new ArrayList<String>();
 		HashMap<String, Integer> actualImageDim = new HashMap<String, Integer>();
+		HashMap<String, Integer> actualTitleDim = new HashMap<String, Integer>();
 		String lastArticleValidated = "";
 		String currentArticleTitle;
 		int articleInViewCount = 0;
@@ -276,7 +277,7 @@ public class PrintEditionPage{
 			int count = 0;
 			for(MobileElement currentArticle:articlesInView) {
 				currentArticleTitle = articleTitlesInView.get(count).getAttribute("label");
-				System.out.println("Starting validation of: " + currentArticleTitle);
+				System.out.println("(1)Starting validation of: " + currentArticleTitle);
 				if(articleTitles.contains(currentArticleTitle)) {
 					continue;
 				}
@@ -284,24 +285,37 @@ public class PrintEditionPage{
 				//Validate Article Cell Dimension
 				
 				//Validate Article Image Dimension
-				actualImageDim.put("xStart", articleTitlesInView.get(count).getLocation().getX());
-				actualImageDim.put("yStart", articleTitlesInView.get(count).getLocation().getY());
-				actualImageDim.put("width", articleTitlesInView.get(count).getSize().width);
-				actualImageDim.put("height", articleTitlesInView.get(count).getSize().height);
+				actualImageDim.put("xStart", articleImagesInView.get(count).getLocation().getX());
+				actualImageDim.put("width", articleImagesInView.get(count).getSize().width);
+				actualImageDim.put("height", articleImagesInView.get(count).getSize().height);
+				
+				System.out.println("(2)Image validation attributes captured");
+				
+				actualTitleDim.put("xStart", articleTitlesInView.get(count).getLocation().getX());
+				actualTitleDim.put("width", articleTitlesInView.get(count).getSize().width);
+				
+				System.out.println("(3)Title validation attributes captured");
 				
 				if(!expectedDim.containsKey("imageDim")) {
 					expectedDim.put("imageDim", actualImageDim);
+					System.out.println("(4)Added the article image dimension to be verified");
 				}
 				else {	
 					validateElementDimension(actualImageDim, expectedDim.get("imageDim"));
-//					Assert.assertEquals(xStart, expectedArticleImageDim.get("xStart"), "X-Axis Start of article image is inconsistent");
-//					Assert.assertEquals(yStart, expectedArticleImageDim.get("yStart"), "Y-Axis Start of article image is inconsistent");
-//					Assert.assertEquals(width, expectedArticleImageDim.get("width"), "Width of article image is inconsistent");
-//					Assert.assertEquals(height, expectedArticleImageDim.get("height"), "Height of article image is inconsistent");
+					System.out.println("(5)Validated the article image aligned");
+				}
+				
+				if(!expectedDim.containsKey("titleDim")) {
+					expectedDim.put("titleDim", actualTitleDim);
+					System.out.println("(6)Added the article title dimension to be verified");
+				}
+				else {	
+					validateElementDimension(actualTitleDim, expectedDim.get("titleDim"));
+					System.out.println("(7)Validated the article title aligned");
 				}
 				
 				//Validate Article Title Dimension
-				System.out.println("Validated: " + currentArticleTitle);
+				System.out.println("(8)Validated: " + currentArticleTitle);
 				//Validate Article Time Dimension
 				
 				articleTitles.add(currentArticleTitle);
@@ -325,11 +339,16 @@ public class PrintEditionPage{
 		methodName = "validateAlignment";
 		logger.info("Entering Method: " + methodName);
 		Boolean validated = false;
-					
-		Assert.assertEquals(actualDim.get("xStart"),expectedDim.get("xStart"), "X-Axis Start of article image is inconsistent");
-		Assert.assertEquals(actualDim.get("yStart"),expectedDim.get("yStart"), "Y-Axis Start of article image is inconsistent");
-		Assert.assertEquals(actualDim.get("width"),expectedDim.get("width"), "Width of article image is inconsistent");
-		Assert.assertEquals(actualDim.get("height"),expectedDim.get("height"), "Height of article image is inconsistent");
+			
+		if(expectedDim.containsKey("xStart")) {
+			Assert.assertEquals(actualDim.get("xStart"),expectedDim.get("xStart"), "X-Axis Start of article element is inconsistent");
+		}
+		if(expectedDim.containsKey("width")) {
+			Assert.assertEquals(actualDim.get("width"),expectedDim.get("width"), "Width of article element is inconsistent");
+		}
+		if(expectedDim.containsKey("height")) {
+			Assert.assertEquals(actualDim.get("height"),expectedDim.get("height"), "Height of article element is inconsistent");
+		}
 		validated = true;
 		logger.info("Exiting Method: " + methodName);
 		return validated;
