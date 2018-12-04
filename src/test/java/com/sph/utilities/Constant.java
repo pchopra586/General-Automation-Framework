@@ -62,7 +62,7 @@ public class Constant {
 	public static final String PRINT_EDITION_PAGE_TITLE = "PRINT EDITION";
 	public static final String COMMON_NAVIGATION_BAR_TITLE = "THE STRAITS TIMES";
 	public static final String BOOKMARK = "BOOKMARK";
-	public static final String DIRECTION = "direction";
+	//public static final String DIRECTION = "direction";
 	public static final String SEARCH_PLACEHOLDER = "Search Topics";
 	
 	/*Alert and pop-ups*/
@@ -138,6 +138,10 @@ public class Constant {
 	public static final String BOOKMARK_FLAG_NO = "NO";
 	
 	public static final String AD_SKIP_STRING = "/?adbypass=topspecial_skinning_topoverlay";
+	
+	public enum DIRECTION {
+		UP, DOWN, LEFT, RIGHT
+	}
 	
 	public enum TAB {
 		ST_NOW, LATEST, HOME, SINGAPORE, POLITICS, ASIA, WORLD, LIFESTYLE, FOOD, FORUM, VIDEOS, OPINION, BUSINESS, SPORT, TECH, 

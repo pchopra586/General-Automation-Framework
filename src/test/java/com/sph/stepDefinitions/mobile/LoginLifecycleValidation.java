@@ -2,23 +2,14 @@ package com.sph.stepDefinitions.mobile;
 
 import com.sph.driverFactory.DriverManager;
 import com.sph.pageObjects.mobile.AccountPage;
-import com.sph.pageObjects.mobile.ArticleDetailPage;
-import com.sph.pageObjects.mobile.BasePage;
-import com.sph.pageObjects.mobile.HomePage;
 import com.sph.pageObjects.mobile.IntroductionPage;
-import com.sph.pageObjects.mobile.LatestTabPage;
 import com.sph.pageObjects.mobile.LicensePage;
 import com.sph.pageObjects.mobile.LoginPage;
 import com.sph.pageObjects.mobile.MenuPage;
-import com.sph.pageObjects.mobile.Mobile;
 import com.sph.pageObjects.mobile.NotificationsPage;
 import com.sph.pageObjects.mobile.SettingsPage;
 import com.sph.utilities.Constant;
 import com.sph.utilities.DeviceActions;
-import com.sph.utilities.GenericNavigator;
-import com.sph.utilities.Constant.MENU;
-import com.sph.utilities.Constant.SETTINGS_MENU;
-import com.sph.utilities.Constant.TAB;
 import com.sph.listeners.Reporter;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
@@ -28,25 +19,21 @@ import cucumber.api.java.en.When;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class LoginLifecycleValidation {
 
     static Logger log;
     WebDriver driver = DriverManager.getDriver();
-    private Mobile mobileApp;
     
     private LicensePage license;
 	private IntroductionPage intro;
 	private NotificationsPage notify;
 	private DeviceActions util;
-	private HomePage home;
 	private MenuPage menu;
 	private LoginPage login;
 	private SettingsPage settings;
@@ -73,7 +60,7 @@ public class LoginLifecycleValidation {
 		notify.acceptNotificationAfterInstall();
 		license.acceptAgreement();
         
-		System.out.println("Test Started");
+		log.info("Test Started");
         Reporter.addStepLog("User wants to launch the Straits Time site and accept the terms and conditions");
         Reporter.addScenarioLog("User wants to launch the Straits Time site and accept the terms and conditions");
 

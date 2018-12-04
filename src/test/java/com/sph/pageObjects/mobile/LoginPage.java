@@ -9,23 +9,17 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.log4testng.Logger;
+import org.apache.log4j.Logger;
 
-import com.aventstack.extentreports.ExtentTest;
-import com.aventstack.extentreports.Status;
 import com.sph.driverFactory.LocalWebDriverListener;
 import com.sph.utilities.AndroidElements;
 import com.sph.utilities.Constant;
 import com.sph.utilities.DeviceActions;
 import com.sph.utilities.IOSElements;
 
-import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.MobileDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
-import io.appium.java_client.pagefactory.HowToUseLocators;
-import io.appium.java_client.pagefactory.LocatorGroupStrategy;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 
@@ -34,9 +28,9 @@ public class LoginPage{
 	private String methodName = null;
 
 	String browserName = LocalWebDriverListener.browserName;
-    Logger logger = Logger.getLogger(LoginPage.class);
+    Logger log = Logger.getLogger(LoginPage.class);
 	private WebDriver driver;
-    private WebDriverWait wait;
+    WebDriverWait wait;
     private Capabilities capabilities;
     private DeviceActions util;
 
@@ -105,27 +99,27 @@ public class LoginPage{
 
 	public void appLogin(String usernameText, String passwordText) {
 		methodName = "appLogin";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 
-		logger.info("Click on login button");
+		log.info("Click on login button");
 		
 		if(!onLoginPage()) {
 			gotoLoginPage();
 		}
 		
-		logger.info("Entering credentials for logging into application");
+		log.info("Entering credentials for logging into application");
 		username.sendKeys(usernameText);
 		password.sendKeys(passwordText);
 		continueButton.click();
 		
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 	}
 	
 	public LoginPage gotoLoginPage() {
 		methodName = "gotoLoginPage";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		
-//		GenericNavigator navigator = new GenericNavigator(driver, logger);
+//		GenericNavigator navigator = new GenericNavigator(driver, log);
 //		if(!navigator.preConfigured()) {
 //			navigator.completeBasicInstallConfig();
 //		}
@@ -136,16 +130,16 @@ public class LoginPage{
 				menu.clickOnMenu().gotoMenu(Constant.MENU.LOGIN);
 			}
 		}catch(Exception e) {
-			logger.error("Exception raised: " + e);
+			log.error("Exception raised: " + e);
 			driver.quit();
 		}
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return this;
 	}
 
 	public LoginPage verifyLoginPageAlignment() {
 		methodName = "verifyLoginPageAlignment";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		
 		try {
 			util.isElementDisplayed(pageTitle);
@@ -171,17 +165,17 @@ public class LoginPage{
 				Assert.assertEquals(continueButton.getAttribute("text"), AndroidElements.LOGIN_CONTINUE_LABEL, "Inconsistent Continue Button Label");
 			}
 		}catch(Exception e) {
-			logger.error("Exception raised: " + e);
+			log.error("Exception raised: " + e);
 			driver.quit();
 		}
 		
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return this;
 	}
 	
 	public Boolean onLoginPage() {
 		methodName = "verifyLoginPageAlignment";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		Boolean onLoginPage = false;
 		
 		try {
@@ -192,15 +186,15 @@ public class LoginPage{
 			onLoginPage = false;
 		}
 		
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return onLoginPage;
 	}
 
 //	public SettingsPage openSettingsPage() {
 //		Log.INFO("Clicking on settings link");
-//		logger.log(Status.INFO,"Clicking on settings link");
+//		log.log(Status.INFO,"Clicking on settings link");
 //		util.clickifClickable(settingsLink, Constant.SHORT_TIMEOUT);
-//		return new SettingsPage(driver, util, logger);
+//		return new SettingsPage(driver, util, log);
 //	}
 
 }

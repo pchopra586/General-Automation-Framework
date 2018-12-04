@@ -3,7 +3,6 @@ package com.sph.pageObjects.mobile;
 import java.net.MalformedURLException;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Capabilities;
@@ -12,10 +11,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.log4testng.Logger;
-
-import com.aventstack.extentreports.ExtentTest;
-import com.aventstack.extentreports.Status;
+import org.apache.log4j.Logger;
 import com.sph.driverFactory.DriverManager;
 import com.sph.driverFactory.LocalWebDriverListener;
 import com.sph.utilities.Constant;
@@ -23,7 +19,6 @@ import com.sph.utilities.DeviceActions;
 import com.sph.utilities.GenericNavigator;
 import com.sph.utilities.IOSElements;
 
-import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
@@ -33,9 +28,9 @@ public class EditHomePage{
 	private String methodName = null;
 
 	String browserName = LocalWebDriverListener.browserName;
-    Logger logger = Logger.getLogger(AccountPage.class);
+    Logger log = Logger.getLogger(AccountPage.class);
 	private WebDriver driver;
-    private WebDriverWait wait;
+    WebDriverWait wait;
     private Capabilities capabilities;
     private DeviceActions util;
     private SettingsPage settings;
@@ -88,7 +83,7 @@ public class EditHomePage{
 	
 	public SettingsPage gotoPreviousView() {
 		methodName = "gotoEditHomePage";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		
 		//Click on Back button
 		util.clickifClickable(backButton, Constant.SHORT_TIMEOUT);		
@@ -96,7 +91,7 @@ public class EditHomePage{
 		try{
 			return new SettingsPage(driver);
 		}catch(Exception e) {
-			logger.error("Exception raised: " + e);
+			log.error("Exception raised: " + e);
 			driver.quit();
 			return null;
 		}
@@ -104,7 +99,7 @@ public class EditHomePage{
 	
 	public EditHomePage gotoEditHomePage() {
 		methodName = "gotoEditHomePage";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		try {
 			GenericNavigator navigator = new GenericNavigator(driver);
 			
@@ -113,26 +108,26 @@ public class EditHomePage{
 			}
 			
 			DriverManager.setWebDriver(driver);
-			
-			try{
-				SettingsPage settings = new SettingsPage(driver);
-			}catch(Exception e) {
-				logger.error("Exception raised: " + e);
-				driver.quit();
-			}
+//			
+//			try{
+//				SettingsPage settings = new SettingsPage(driver);
+//			}catch(Exception e) {
+//				log.error("Exception raised: " + e);
+//				driver.quit();
+//			}
 			
 			settings.gotoSettingsMenu().gotoSettings(Constant.SETTINGS_MENU.EDIT_HOME);
 		
-			logger.info("Exiting Method: " + methodName);
+			log.info("Exiting Method: " + methodName);
 		}catch(Exception ex) {
-			logger.error("Unable to goto Edit Home Page due to exception: " + ex.getMessage());
+			log.error("Unable to goto Edit Home Page due to exception: " + ex.getMessage());
 		}
 		return this;
 	}
 	
 	public EditHomePage validatePageTitle() {
 		methodName = "validatePageTitle";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		
 		if(capabilities.getCapability("platformName").toString().equalsIgnoreCase("iOS")) {
 			Assert.assertEquals(navigationBar.getAttribute("type"), "XCUIElementTypeNavigationBar","Inconsistent Type of Navigation Bar");
@@ -152,18 +147,18 @@ public class EditHomePage{
 			
 		}
 		
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return this;
 	}
 	
 	public EditHomePage validateDefaultEditHomeView() {
 		methodName = "validateDefaultEditHomeView";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		boolean resetDimension = true;
 		MobileElement sectionSelector = null;
 		
 		for(String sectionTitle:sectionsOnHomePage.keySet()) {
-			logger.info("Validating alignment of Section : " + sectionTitle);
+			log.info("Validating alignment of Section : " + sectionTitle);
 			
 			MobileElement sectionLabel = (MobileElement) driver.findElement(By.id(sectionTitle));
 			
@@ -181,15 +176,15 @@ public class EditHomePage{
 			this.isLabelAligned(resetDimension, sectionLabel).isSectionSelectorAligned(resetDimension, sectionSelector).isSectionSelectionIntact(sectionSelector, sectionTitle);
 		
 			resetDimension = false;
-			logger.info("Successfully validated alignment for Section : " + sectionTitle);
+			log.info("Successfully validated alignment for Section : " + sectionTitle);
 		}
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return this;
 	}
 	
 	public EditHomePage isSectionSelectionIntact(MobileElement sectionSelector, String sectionTitle) {
 		methodName = "isDefaultSectionSelectionIntact";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		
 		if(sectionsOnHomePage.get(sectionTitle)) {
 			//If section is by default expected to be added to home page
@@ -201,13 +196,13 @@ public class EditHomePage{
 			Assert.assertEquals(sectionSelector.getAttribute("name"), "selection customize", "Failure: Section " + sectionTitle + " is unexpectedly added to home page by default");
 			Assert.assertEquals(sectionSelector.getAttribute("enabled"), "true", "Failure: Default Section " + sectionTitle + " is unexpectedly disabled for update");
 		}
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return this;
 	}
 	
 	public EditHomePage isLabelAligned(boolean resetDimension, MobileElement sectionLabel) {
 		methodName = "isLabelAligned";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		Integer labelXAxis;
 		Integer labelWidth;
 		Integer labelHeight;
@@ -226,13 +221,13 @@ public class EditHomePage{
 			Assert.assertEquals(labelWidth, expectedLabelWidth, "Section label has inconsistent width");
 			Assert.assertEquals(labelHeight, expectedLabelHeight, "Section label has inconsistent height");
 		}
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return this;
 	}
 	
 	public EditHomePage isSectionSelectorAligned(boolean resetDimension, MobileElement sectionSelector) {
 		methodName = "isSectionSelectorAligned";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		Integer selectorXAxis;
 		Integer selectorWidth;
 		Integer selectorHeight;
@@ -251,13 +246,13 @@ public class EditHomePage{
 			Assert.assertEquals(selectorWidth, expectedSelectorWidth, "Section selector has inconsistent width");
 			Assert.assertEquals(selectorHeight, expectedSelectorHeight, "Section selector has inconsistent height");
 		}
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return this;
 	}
 	
 	public EditHomePage addSectionToHome(String sectionTitle) {
 		methodName = "addSectionToHome";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		MobileElement sectionSelector = null;
 		
 		try {
@@ -270,15 +265,15 @@ public class EditHomePage{
 		if(!sectionSelector.getAttribute("name").contains("selected")) {
 			sectionSelector.click();
 		}else {
-			logger.info("Sub Section already added to home page");
+			log.info("Sub Section already added to home page");
 		}
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return this;
 	}
 	
 	public EditHomePage removeSectionFromHome(String sectionTitle) {
 		methodName = "removeSectionFromHome";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		MobileElement sectionSelector = null;
 		
 		try {
@@ -291,9 +286,9 @@ public class EditHomePage{
 		if(sectionSelector.getAttribute("name").contains("selected")) {
 			sectionSelector.click();
 		}else {
-			logger.info("Sub Section already removed from home page");
+			log.info("Sub Section already removed from home page");
 		}
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return this;
 	}
 	

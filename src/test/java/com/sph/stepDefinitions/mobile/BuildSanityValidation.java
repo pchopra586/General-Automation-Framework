@@ -8,6 +8,8 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 
 import com.sph.driverFactory.DriverManager;
+import com.sph.pageObjects.mobile.ArticleListingPage;
+import com.sph.pageObjects.mobile.ArticlePage;
 import com.sph.pageObjects.mobile.HomePage;
 import com.sph.pageObjects.mobile.PrintEditionCalendar;
 import com.sph.pageObjects.mobile.PrintEditionPage;
@@ -15,6 +17,7 @@ import com.sph.utilities.Constant;
 import com.sph.utilities.GenericNavigator;
 
 import cucumber.api.PendingException;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -24,9 +27,15 @@ public class BuildSanityValidation {
     WebDriver driver = DriverManager.getDriver();
     GenericNavigator genericNavigator;
     HomePage homePage = null;
+    ArticleListingPage articleList = null;
     PrintEditionCalendar calendarIcn;
     
+    private String articleTitle = null;
+    private ArticlePage articlePage;
+    
     private static Map<String, Integer> sectionDimension = null;
+    
+    private static Map<String, Integer> articleContentDimension = null;
     
     static {
     		//TODO: Check whether this correction is appropriate
@@ -101,22 +110,119 @@ public class BuildSanityValidation {
 		sectionDimension = homePage.sectionValidation(sectionLabel, sectionDimension);
     }
     
-    @Then("^I open the last article on Home Page$")
+    @Given("^I open the last article on Home Page$")
     public void i_open_the_last_article_on_Home_Page() throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+    		articleList = new ArticleListingPage(this.driver);
+    		articleTitle = articleList.openLastArticleInView();
+    }
+    
+    @Then("^I validate the basic view of Article Content$")
+    public void i_validate_the_basic_view_of_Article_Content() throws Throwable {
+        //Validate article title
+    		articlePage = new ArticlePage(this.driver);
+    		articlePage.assertArticleHeading(articleTitle);
+    		
+    		//Validate the tab title, text-to-speech, bookmark, share option, back button
+    		articlePage.assertOnDetailsPage();
+    		
+    		//Validate article image(if present)
+    		//Validate article author
+    		//Validate article publish date
+    		//Validate article content(basic view)
+    		//Validate Internal recommendation view
+    		//Validate Outbrain recommendation view
+    		
     }
 
-    @Then("^capture the dimension of elements on Article Detail Page$")
+    @And("^capture the dimension of elements on Article Detail Page$")
     public void capture_the_dimension_of_elements_on_Article_Detail_Page() throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+	    	articleContentDimension = new HashMap<String, Integer>();
+	    	
+	    	/*0 = False, 1 = True for compulsory fields 
+	    	 * Eg. Headline, 
+	    	 * Navigation Bar Title, 
+	    	 * Bookmark, 
+	    	 * Text to Speech, 
+	    	 * Share Button
+	    	 * Publish Date/Time
+	    	 * Internal Recommendations
+	    	 * External Recommendations
+	    	*/
+	    	articleContentDimension.put("resetReqDimension", 1);
+	    	
+	    	articleContentDimension.put("textXStart", 0);
+	    	articleContentDimension.put("textWidth", 0);
+	    
+	    	articleContentDimension.put("backBtnXStart", 0);
+	    	articleContentDimension.put("backBtnYStart", 0);
+	    	articleContentDimension.put("backBtnWidth", 0);
+	    	articleContentDimension.put("backBtnHeight", 0);
+	    	
+	    	articleContentDimension.put("navigationTitleXStart", 0);
+	    	articleContentDimension.put("navigationTitleYStart", 0);
+	    	
+	    	articleContentDimension.put("textToSpeechXStart", 0);
+	    	articleContentDimension.put("textToSpeechYStart", 0);
+	    	articleContentDimension.put("textToSpeechWidth", 0);
+	    	articleContentDimension.put("textToSpeechHeight", 0);
+	    	
+	    	articleContentDimension.put("bookmarkXStart", 0);
+	    	articleContentDimension.put("bookmarkYStart", 0);
+	    	articleContentDimension.put("bookmarkWidth", 0);
+	    	articleContentDimension.put("bookmarkHeight", 0);
+	    	
+	    	articleContentDimension.put("shareXStart", 0);
+	    	articleContentDimension.put("shareYStart", 0);
+	    	articleContentDimension.put("shareWidth", 0);
+	    	articleContentDimension.put("shareHeight", 0);
+	    	
+	    	articleContentDimension.put("timeWidth", 0);
+	    	articleContentDimension.put("timeHeight", 0);
+	    	
+	    	articleContentDimension.put("publishInfoWidth", 0);
+	    	articleContentDimension.put("publishInfoXStart", 0);
+	    	
+	    	articleContentDimension.put("internalRecommendationTitleWidth", 0);
+	    	articleContentDimension.put("internalRecommendationTitleHeight", 0);
+	    	articleContentDimension.put("internalRecommendationArticleTitleWidth", 0);
+	    	articleContentDimension.put("internalRecommendationArticleTitleXStart", 0);
+	    	articleContentDimension.put("internalRecommendationArticlePublishInfoXStart", 0);
+	    	articleContentDimension.put("internalRecommendationArticlePublishInfoWidth", 0);
+	    	articleContentDimension.put("internalRecommendationArticlePublishInfoHeight", 0);
+	    	
+	    	articleContentDimension.put("externalRecommendationTitleWidth", 0);
+	    	articleContentDimension.put("externalRecommendationTitleHeight", 0);
+	    	
+	    	//For Main Image/Video in view
+	    	articleContentDimension.put("resetMediaDimension", 1);
+	    	
+	    	articleContentDimension.put("mediaXStart", 0);
+	    	articleContentDimension.put("mediaWidth", 0);
+	    	articleContentDimension.put("mediaHeight", 0);
+	    	
+	    	//For Author Name 
+	    	articleContentDimension.put("resetAuthorDimension", 1);
+	    	
+	    	//For Premium Article Tag
+	    	articleContentDimension.put("resetPremiumIcnDimension", 1);
+	    	
+	    	articleContentDimension.put("sectionLabelHeight", 0);
+	    	articleContentDimension.put("xRowStart", 0);
+	    	articleContentDimension.put("xRowEnd", 0);
+	    	articleContentDimension.put("firstRowArticleWidth", 0);
+	    	articleContentDimension.put("secondRowArticleWidth", 0);
+	    	articleContentDimension.put("firstRowImageVideoHeight", 0);
+	    	articleContentDimension.put("secondRowImageVideoHeight", 0);
+	    	articleContentDimension.put("thirdRowOnwardsImageVideoHeight", 0);
+	    	articleContentDimension.put("thirdRowOnwardsImageVideoWidth", 0);
+	    	articleContentDimension.put("removeFromHomeBtnHeight", 0);
+	    	articleContentDimension.put("removeFromHomeBtnWidth", 0);
+	    	articleContentDimension.put("removeFromHomeBtnXAxisStart", 0);
     }
 
     @Then("^I bookmark the article in view$")
     public void i_bookmark_the_article_in_view() throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+        //Bookmark the article
     }
 
     @Then("^Keep Scrolling to navigate and bookmark the articles on Home Page$")

@@ -1,24 +1,18 @@
 package com.sph.pageObjects.mobile;
 
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.log4testng.Logger;
+import org.apache.log4j.Logger;
 
 import com.sph.driverFactory.DriverManager;
 import com.sph.driverFactory.LocalWebDriverListener;
 import com.sph.utilities.Constant;
 import com.sph.utilities.DeviceActions;
-
-import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -28,9 +22,9 @@ public class LicensePage{
 	private String methodName = null;
 
 	String browserName = LocalWebDriverListener.browserName;
-    Logger logger = Logger.getLogger(IntroductionPage.class);
+    Logger log = Logger.getLogger(IntroductionPage.class);
 	private WebDriver driver;
-    private WebDriverWait wait;
+    WebDriverWait wait;
     private Capabilities capabilities;
     private DeviceActions util;
 	
@@ -56,7 +50,7 @@ public class LicensePage{
 	
 	public boolean basicLicenseViewValidationAtEntry() {
 		methodName = "basicLicenseViewValidationAtEntry";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		
 		if(capabilities.getCapability("platformName").toString().equalsIgnoreCase("iOS")) {
 			MobileElement title = null;
@@ -67,18 +61,18 @@ public class LicensePage{
 			headerText = (MobileElement) driver.findElement(By.xpath("//XCUIElementTypeStaticText[@name=\"TERMS OF USE FOR APPS (IOS)\"]"));
 		
 			if(title.equals(null)) {
-				logger.error("License Page for ST App is not showing up expected title: \n[SPH]");
+				log.error("License Page for ST App is not showing up expected title: \n[SPH]");
 				return false;
 			}
 			if(bannerText.equals(null)) {
-				logger.error("License Page is not showing App Banner text: \n[SPH]");
+				log.error("License Page is not showing App Banner text: \n[SPH]");
 				return false;
 			}
 			if(headerText.equals(null)) {
-				logger.error("License Page is not showing header text: \n[TERMS OF USE FOR APPS (IOS)]");
+				log.error("License Page is not showing header text: \n[TERMS OF USE FOR APPS (IOS)]");
 				return false;
 			}	
-			logger.info("License Page is consistent with expected view(title, logo, text and views)");		
+			log.info("License Page is consistent with expected view(title, logo, text and views)");		
 		}
 		else if(capabilities.getCapability("platformName").toString().equalsIgnoreCase("Android")) {
 			util.setWebViewContext();
@@ -87,56 +81,54 @@ public class LicensePage{
 				String url = driver.getCurrentUrl();
 				
 				if(!(title.equals("App For Non-iOS - Singapore Press Holdings"))) {
-					logger.error("Title is missing");
+					log.error("Title is missing");
 				}
 				if(!(url.equals("http://sph.com.sg/terms-and-conditions/app-for-non-ios/"))) {
-					logger.error("The url accessed for license loading is different from expected");
+					log.error("The url accessed for license loading is different from expected");
 				}
 			}finally {
 				util.setNativeAppContext();
 			}
 		}
 		
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return licenseAcceptDeclineButtonsValidation();
 	}
 	
 	public boolean licenseAcceptDeclineButtonsValidation() {
 		methodName = "licenseAcceptDeclineButtonsValidation";
-		logger.info("Entering Method: " + methodName);
-		MobileElement decline = null;
-		MobileElement accept = null;
+		log.info("Entering Method: " + methodName);
 		
 		if(capabilities.getCapability("platformName").toString().equalsIgnoreCase("iOS")) {
 			
 			if(decline.getAttribute("enabled").equalsIgnoreCase("false") || decline.getAttribute("visible").equalsIgnoreCase("false")) {
-				logger.error("License Decline Button is disabled or invisible");
+				log.error("License Decline Button is disabled or invisible");
 				return false;
 			}
 			if(accept.getAttribute("enabled").equalsIgnoreCase("false") || accept.getAttribute("visible").equalsIgnoreCase("false")) {
-				logger.error("License Accept Button is disabled or invisible");
+				log.error("License Accept Button is disabled or invisible");
 				return false;
 			}
 		}
 		else if(capabilities.getCapability("platformName").toString().equalsIgnoreCase("Android")) {
 			
 			if(!decline.getText().equals("Close App") || !decline.isEnabled() || !decline.isDisplayed()) {
-				logger.error("License Decline Button is disabled or invisible");
+				log.error("License Decline Button is disabled or invisible");
 				return false;
 			}
 			if(!accept.getText().equals("I Agree") || !accept.isEnabled() || !accept.isDisplayed()) {
-				logger.error("License Accept Button is disabled or invisible");
+				log.error("License Accept Button is disabled or invisible");
 				return false;
 			}
 		}
-		logger.info("License Accept and Decline Buttons are visible and enabled");
-		logger.info("Exiting Method: " + methodName);
+		log.info("License Accept and Decline Buttons are visible and enabled");
+		log.info("Exiting Method: " + methodName);
 		return true;
 	}
 	
 	public void scrollValidation() {
 		methodName = "scrollValidation";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		DeviceActions utils = null;
 
 		utils = new DeviceActions(driver);
@@ -151,31 +143,31 @@ public class LicensePage{
 		//Validate the Scroll action is able to navigate till end of the license
 		while(whetherReachedEndOfLicense()) {
 			utils.swipeVertical("Up");
-			logger.info("Keep scrolling until the End of Agreement is reached");
+			log.info("Keep scrolling until the End of Agreement is reached");
 			licenseAcceptDeclineButtonsValidation();
 		}
-		logger.info("Navigated the License till end");
+		log.info("Navigated the License till end");
 		
 		//Validate the downward scroll
 		utils.swipeVertical("Down");
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 	}
 	
 	public void acceptAgreement() {
 		methodName = "acceptAgreement";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		util.clickifClickable(accept, Constant.LONG_TIMEOUT);
-		logger.info("Accepted the License Agreement");
-		logger.info("Exiting Method: " + methodName);
+		log.info("Accepted the License Agreement");
+		log.info("Exiting Method: " + methodName);
 		DriverManager.setWebDriver(driver);
 	}
 	
 	public void declineAgreement() {
 		methodName = "declineAgreement";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		util.clickifClickable(decline, Constant.LONG_TIMEOUT);
-		logger.info("Declined the License Agreement");
-		logger.info("Exiting Method: " + methodName);
+		log.info("Declined the License Agreement");
+		log.info("Exiting Method: " + methodName);
 	}
 
 	public void acknowledgeLicenseAlert() {
@@ -183,12 +175,12 @@ public class LicensePage{
 		 * License Alert is only shown on iOS, as Android handles it by closing the app
 		 */
 		methodName = "acknowledgeLicenseAlert";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		if(capabilities.getCapability("platformName").toString().equalsIgnoreCase("iOS")) {
 			driver.findElement(By.id("Ok")).click();
-			logger.info("Acknowledged the alert after declining the license");
+			log.info("Acknowledged the alert after declining the license");
 		}
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 	}
 	
 	public boolean licenseAlertUXValidation() {
@@ -196,7 +188,7 @@ public class LicensePage{
 		 * License Alert is only shown on iOS, as Android handles it by closing the app
 		 */
 		methodName = "licenseAlertUXValidation";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		
 		MobileElement title = null;
 		MobileElement titleText = null;
@@ -210,27 +202,27 @@ public class LicensePage{
 			acceptButton = (MobileElement) driver.findElement(By.id("Ok"));
 			
 			if(title.equals(null)) {
-				logger.error("License Decline Alert: Missing expected title");
+				log.error("License Decline Alert: Missing expected title");
 			}
 			if(titleText.equals(null)) {
-				logger.error("License Decline Alert: Missing expected title text");
+				log.error("License Decline Alert: Missing expected title text");
 			}
 			if(message.equals(null)) {
-				logger.error("License Decline Alert: Missing expected message");
+				log.error("License Decline Alert: Missing expected message");
 			}
 			if(acceptButton.equals(null) || !(acceptButton.getAttribute("enabled").equalsIgnoreCase("false"))){
-				logger.error("License Decline Alert: Missing/disabled acknowledge button");
+				log.error("License Decline Alert: Missing/disabled acknowledge button");
 			}
-			logger.info("Acknowledged the alert to accept the license");
+			log.info("Acknowledged the alert to accept the license");
 		}
 		
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return true;
 	}
 
 	public void waitForLicenseView() {
 		methodName = "waitForLicenseView";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		WebDriverWait wait = new WebDriverWait(driver, 30);
 		if(capabilities.getCapability("platformName").toString().equalsIgnoreCase("Android")) {
 			wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("btn_tnc_cancel")));
@@ -238,12 +230,12 @@ public class LicensePage{
 		else if(capabilities.getCapability("platformName").toString().equalsIgnoreCase("iOS")) {
 			wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//XCUIElementTypeButton[1]")));
 		}
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 	}
 	
 	public boolean whetherReachedEndOfLicense() {
 		methodName = "whetherReachedEndOfLicense";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		boolean endOfLicense = false;
 		
 		if(capabilities.getCapability("platformName").toString().equalsIgnoreCase("iOS")) {
@@ -255,12 +247,12 @@ public class LicensePage{
 			try{
 				endOfLicense = ((MobileElement) driver.findElement(By.xpath("//td[text()='Copyright © 2017 Singapore Press Holdings Ltd. Co.']"))).isDisplayed();
 		    }catch (Exception e) {
-		        logger.info("End of License not reached!");
+		        log.info("End of License not reached!");
 		    }finally{
 				util.setNativeAppContext();
 		    }
 		}
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return endOfLicense;
 	}
 }

@@ -79,7 +79,7 @@ public class LocalWebDriverListener implements IInvokedMethodListener {
 				log.info("Renaming test method name from: '" + bm.getMethodName() + "' to: '" + newTestName + "'");
 				f.set(bm, newTestName);
 			} catch (Exception ex) {
-				System.out.println("afterInvocation exception:\n" + ex.getMessage());
+				log.error("afterInvocation exception:\n" + ex.getMessage());
 				ex.printStackTrace();
 			} finally {
 				// close the browser

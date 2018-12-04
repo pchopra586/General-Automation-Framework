@@ -11,7 +11,7 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.PageFactory;
-import org.testng.log4testng.Logger;
+import org.apache.log4j.Logger;
 
 import com.sph.driverFactory.LocalWebDriverListener;
 import com.sph.utilities.AndroidElements;
@@ -31,9 +31,9 @@ public class PrintEditionCalendar {
 	}
 
 	String browserName = LocalWebDriverListener.browserName;
-    Logger logger = Logger.getLogger(PrintEditionCalendar.class);
+    Logger log = Logger.getLogger(PrintEditionCalendar.class);
 	private WebDriver driver;
-    private Capabilities capabilities;
+    Capabilities capabilities;
     
     @iOSXCUITFindBy(xpath = "//XCUIElementTypeTable/XCUIElementTypeCell/XCUIElementTypeStaticText")
 	@AndroidFindBy(id = AndroidElements.TAB_TITLE_ID)
@@ -47,7 +47,7 @@ public class PrintEditionCalendar {
 	
 	public PrintEditionCalendar verifyCalendarView() {
 		methodName = "verifyCalendarView";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		
 		Date date = new Date(); // your date
 		Calendar cal = Calendar.getInstance();
@@ -62,18 +62,18 @@ public class PrintEditionCalendar {
 		for(MobileElement weekday: weekdaysDisplayedInCalendar) {
 			Assert.assertEquals("Failed to display the correct date", expectedDate, weekday.getText());
 			printDates.add(expectedDate);
-			System.out.println(expectedDate);
+			log.info(expectedDate);
 			cal.add(Calendar.DATE, -1);
 			totalArchived = totalArchived - 1;
 			expectedDate = dateFormatter.format(cal.getTime());
 		}
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return this;
 	}
 	
 	public WebDriver gotoPrintEdition(int day) {
 		methodName = "verifyCalendarView";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		
 		weekdaysDisplayedInCalendar.get(day).click();
 		
@@ -90,12 +90,12 @@ public class PrintEditionCalendar {
 //		for(MobileElement weekday: weekdaysDisplayedInCalendar) {
 //			Assert.assertEquals("Failed to display the correct date", expectedDate, weekday.getText());
 //			printDates.add(expectedDate);
-//			System.out.println(expectedDate);
+//			log.info(expectedDate);
 //			cal.add(Calendar.DATE, -1);
 //			totalArchived = totalArchived - 1;
 //			expectedDate = dateFormatter.format(cal.getTime());
 //		}
-//		logger.info("Exiting Method: " + methodName);
+//		log.info("Exiting Method: " + methodName);
 		return driver;
 	}
 }

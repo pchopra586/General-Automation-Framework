@@ -5,11 +5,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Capabilities;
@@ -20,10 +18,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.log4testng.Logger;
-
-import com.aventstack.extentreports.ExtentTest;
-import com.aventstack.extentreports.Status;
+import org.apache.log4j.Logger;
 import com.sph.driverFactory.LocalWebDriverListener;
 import com.sph.listeners.Reporter;
 import com.sph.utilities.AndroidElements;
@@ -33,7 +28,6 @@ import com.sph.utilities.DeviceActions;
 import com.sph.utilities.GenericNavigator;
 import com.sph.utilities.IOSElements;
 
-import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
@@ -46,9 +40,9 @@ public class HomePage{
 	private String methodName = null;
 
 	String browserName = LocalWebDriverListener.browserName;
-    Logger logger = Logger.getLogger(HomePage.class);
+    Logger log = Logger.getLogger(HomePage.class);
 	private WebDriver driver;
-    private WebDriverWait wait;
+    WebDriverWait wait;
     private Capabilities capabilities;
     private DeviceActions util;
     
@@ -88,7 +82,7 @@ public class HomePage{
 	
 	
 	
-	private static Set<String> defaultSubSections = new HashSet<String>(Arrays.asList(new String[]{"TOP STORIES","ST FOOD","ASIA TOP STORIES","WEB SPECIALS","ENTERTAINMENT"}));
+	//private static Set<String> defaultSubSections = new HashSet<String>(Arrays.asList(new String[]{"TOP STORIES","ST FOOD","ASIA TOP STORIES","WEB SPECIALS","ENTERTAINMENT"}));
 			
 	@iOSXCUITFindBy(accessibility = IOSElements.MAIN_NAVIGATION_BAR_NAME)
 	@AndroidFindBy(id = AndroidElements.MAIN_NAVIGATION_BAR_NAME)
@@ -197,7 +191,7 @@ public class HomePage{
 	
 	public boolean onHomePage() {
 		methodName = "gotoHomePage";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		boolean onHomePage = false;
 		try {
 			Assert.assertTrue(logo.isEnabled(), "Not on Home Page");
@@ -211,11 +205,11 @@ public class HomePage{
 	        }
 	        catch (Exception ex)
 	        {
-	            System.out.printf("Interstitial Ad Not Present");
+	            log.error("Interstitial Ad Not Present");
 	        }
 			return onHomePage;
 		}
-		logger.info("Successfully exiting from method: " + methodName);
+		log.info("Successfully exiting from method: " + methodName);
 		return onHomePage;
 	}
 	
@@ -224,7 +218,7 @@ public class HomePage{
 	 */
 	public HomePage gotoHomePage() {
 		methodName = "gotoHomePage";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		try {
 			GenericNavigator navigator = new GenericNavigator(driver);
 			
@@ -246,16 +240,16 @@ public class HomePage{
 			}
 			
 			Assert.assertTrue(onHomePage,"Unexpectedly not on Home Page");
-			logger.info("Successfully exiting from method: " + methodName);
+			log.info("Successfully exiting from method: " + methodName);
 		}catch(Exception ex) {
-			logger.error("Unable to goto Home Page due to exception: " + ex.getMessage());
+			log.error("Unable to goto Home Page due to exception: " + ex.getMessage());
 		}
 		return this;
 	}
 	
 //	public void sectionValidation() {
 //		methodName = "sectionValidation";
-//		logger.info("Entering Test Case: " + methodName);
+//		log.info("Entering Test Case: " + methodName);
 //		Map<String,String> sectionLabels = new LinkedHashMap<String,String>();
 //		//sectionLabels.put("TOP STORIES", "MORE HEADLINES");
 //		sectionLabels.put(IOSElements.PREMIUM_SECTION_LABEL_ID, "MORE STORIES");
@@ -271,8 +265,8 @@ public class HomePage{
 //		
 //		for(String label:sectionLabels.keySet()) {
 //			methodName = "Test section label: " + label;
-//			logger.info("Entering Test Case: " + methodName);
-//			System.out.println("Validating Section: " + label);
+//			log.info("Entering Test Case: " + methodName);
+//			log.info("Validating Section: " + label);
 //			
 //			this.gotoSection(label);
 //			
@@ -299,13 +293,13 @@ public class HomePage{
 ////			articleDetails  = new ArrayList<Map<String,String>>();
 //			
 //			//Assert.assertTrue(this.sectionTitleValidation(section));
-//			logger.info("Successfully Validated the Section title: " + label);
+//			log.info("Successfully Validated the Section title: " + label);
 //			
 //			Integer lastArticleLayoutSequence = this.sectionArticleValidation(label, resetOption, resetOption, resetOption, followedByAd, label);
 //			Assert.assertNotEquals(lastArticleLayoutSequence,0,"Section Article Validation failed");
 //			
 //			//Assert.assertTrue(this.validateMoreStoriesLink(lastArticleLayoutSequence,sectionLabels.get(label),label),"Failed to validate More Stories Link for " + label + " section");
-//			logger.info("Exiting with success method: " + methodName);
+//			log.info("Exiting with success method: " + methodName);
 //			
 //			//Setting resetOption to false for Following sections(As rest sections should followed first section for alignment)
 //			resetOption = false;
@@ -314,14 +308,14 @@ public class HomePage{
 //			}
 //			//Remove after Premium section checks are implemented
 //			sectionSequence++;
-//			System.out.println("Successfully validated Section: " + label);
+//			log.info("Successfully validated Section: " + label);
 //		}
 //		
 //	}
 	
 	public Map<String, Integer> sectionValidation(String sectionLabel, Map<String, Integer> sectionDimension) {
 		methodName = "sectionValidation";
-		logger.info("Entering Test Case: " + methodName);
+		log.info("Entering Test Case: " + methodName);
 		sectionLabel = sectionLabel.toUpperCase();
 		Integer sectionLabelHeight = 0;
 //		Map<String,String> sectionLabels = new LinkedHashMap<String,String>();
@@ -339,8 +333,9 @@ public class HomePage{
 		
 //		for(String label:sectionLabels.keySet()) {
 		methodName = "Test section label: " + sectionLabel;
-		logger.info("Entering Test Case: " + methodName);
-		System.out.println("Validating Section: " + sectionLabel);
+		log.info("Entering Test Case: " + methodName);
+		log.info("Validating Section: " + sectionLabel);
+		log.debug("[Debug]Validating Section: " + sectionLabel);
 		
 		this.gotoSection(sectionLabel);
 		
@@ -368,13 +363,13 @@ public class HomePage{
 //			articleDetails  = new ArrayList<Map<String,String>>();
 		
 		//Assert.assertTrue(this.sectionTitleValidation(section));
-		logger.info("Successfully Validated the Section title: " + sectionLabel);
+		log.info("Successfully Validated the Section title: " + sectionLabel);
 		
 		sectionDimension = this.sectionArticleValidation(sectionLabel, followedByAd, sectionDimension);
 		Assert.assertNotEquals(sectionDimension.get("articleSeqInLayout"),0,"Section Article Validation failed");
 		
 		//Assert.assertTrue(this.validateMoreStoriesLink(lastArticleLayoutSequence,sectionLabels.get(label),label),"Failed to validate More Stories Link for " + label + " section");
-		logger.info("Exiting with success method: " + methodName);
+		
 		
 		//Setting resetOption to false for Following sections(As rest sections should followed first section for alignment)
 //		resetOption = false;
@@ -383,14 +378,14 @@ public class HomePage{
 		}
 		//Remove after Premium section checks are implemented
 //		sectionSequence++;
-		System.out.println("Successfully validated Section: " + sectionLabel);
-	
+		log.info("Successfully validated Section: " + sectionLabel);
+		log.info("Exiting with success method: " + methodName);
 		return sectionDimension;
 	}
 	
 	public boolean appLogoMenuValidation() {
 		methodName = "appLogoValidation";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		boolean validated = false;
 		int logoYAxis = 0;
 		int logoHeight = 0;
@@ -399,7 +394,7 @@ public class HomePage{
 		
 		if(capabilities.getCapability("platformName").toString().equalsIgnoreCase("Android")) {
 			if(logo.getTagName().equals("THE STRAITS TIMES")){
-				logger.info("Successfully exiting from method: " + methodName);
+				log.info("Successfully exiting from method: " + methodName);
 				validated = true;
 				return validated;
 			}
@@ -420,16 +415,16 @@ public class HomePage{
 			menuHeight = menu.getSize().getHeight();
 			Assert.assertEquals(logoHeight, menuHeight, "Height of menu and logo is different, implying misalignment of the elements in home page view");
 			validated = true;
-			logger.info("Successfully exiting from method: " + methodName);
+			log.info("Successfully exiting from method: " + methodName);
 			return validated;
 		}
-		logger.info("Logo is inconsistent with expected");
+		log.info("Logo is inconsistent with expected");
 		return validated;
 	}
 	
 	public boolean tabAccessibilityValidation() {
 		methodName = "tabAccessibilityValidation";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		
 		MobileElement tabButton = null; 
 		boolean success = true;
@@ -502,7 +497,7 @@ public class HomePage{
 				tabButton = techTab;
 				break;
 			default:
-				logger.error("Tab Name doesn't exist");
+				log.error("Tab Name doesn't exist");
 				break;
 			}
 			
@@ -519,17 +514,17 @@ public class HomePage{
 				Assert.assertEquals(tabButton.getCoordinates().onPage().getY(), prevTabYAxis);
 				Assert.assertEquals(tabButton.getSize().getHeight(), prevTabHeight);
 			}
-			logger.info("Tab: \"" + tab + "\" is consistent with expected view");
+			log.info("Tab: \"" + tab + "\" is consistent with expected view");
 		}
 		
-		logger.info("Successfully exiting from method: " + methodName);
+		log.info("Successfully exiting from method: " + methodName);
 		return success;
 	}
 	
 	public boolean isRemoveFromHomeBtnAligned(String sectionLabel, Map<String, Integer> removeFromHomeBtnDimension) {
 		boolean validated = false;
 		methodName = "isRemoveFromHomeBtnAligned";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		
 		MobileElement addToHomeButton = (MobileElement) driver.findElement(By.xpath("//XCUIElementTypeStaticText[@label=\"" + sectionLabel + "\"]/following-sibling::XCUIElementTypeButton"));
 		
@@ -553,7 +548,7 @@ public class HomePage{
 		
 		removeFromHomeBtnDimension.put("resetRemoveFromHomeBtnDimension", 0);
 		validated = true;
-		logger.info("Successfully exiting from method: " + methodName);
+		log.info("Successfully exiting from method: " + methodName);
 		return validated;
 	}
 	
@@ -562,7 +557,7 @@ public class HomePage{
 		String sectionTitleType;
 		String sectionTitleId;
 		methodName = "sectionTitleValidation";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		MobileElement section = null;
 		
 		
@@ -602,7 +597,7 @@ public class HomePage{
 			
 		}
 		validated = true;
-		logger.info("Successfully exiting from method: " + methodName);
+		log.info("Successfully exiting from method: " + methodName);
 		return validated;
 	}
 	
@@ -610,7 +605,7 @@ public class HomePage{
 		boolean validated = false;
 		String sectionTitleType;
 		methodName = "premiumTitleValidation";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		
 		if(capabilities.getCapability("platformName").toString().equalsIgnoreCase("iOS")) {
 			sectionTitleType = IOSElements.SECTION_LABEL_TYPE;
@@ -628,13 +623,13 @@ public class HomePage{
 			sectionTitleType = AndroidElements.SECTION_LABEL_TYPE;
 		}
 		validated = true;
-		logger.info("Successfully exiting from method: " + methodName);
+		log.info("Successfully exiting from method: " + methodName);
 		return validated;
 	}
 	
 	public boolean firstRowArticleAlignmentValidation(Integer articleSeqInLayout, Map<String, Integer> sectionDimension) {
 		methodName = "firstRowArticleAlignmentValidation";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		Integer xArticleStart = 0;
 		Integer xArticleEnd = 0;
 		Integer articleHeight = 0;
@@ -669,19 +664,19 @@ public class HomePage{
 		}
 		else {
 			articleHeight = ((MobileElement) driver.findElement(By.xpath("//XCUIElementTypeCell[" + articleSeqInLayout.toString() + "]//XCUIElementTypeImage[1]"))).getSize().getHeight();
-			//logger.info(((MobileElement) driver.findElement(By.xpath("//XCUIElementTypeCell[" + articleSeqInLayout.toString() + "]//XCUIElementTypeStaticText").getAttribute("label"));
-			logger.info("********Expected Height: " + sectionDimension.get("firstRowImageVideoHeight"));
-			logger.info("********Actual Height: " + articleHeight);
+			//log.info(((MobileElement) driver.findElement(By.xpath("//XCUIElementTypeCell[" + articleSeqInLayout.toString() + "]//XCUIElementTypeStaticText").getAttribute("label"));
+			log.info("********Expected Height: " + sectionDimension.get("firstRowImageVideoHeight"));
+			log.info("********Actual Height: " + articleHeight);
 			Assert.assertTrue(Math.abs(articleHeight - sectionDimension.get("firstRowImageVideoHeight")) < 2, "Inconsistent Height of 1st article");
 		}
 		validated  = true;
-		logger.info("Successfully exiting from method: " + methodName);
+		log.info("Successfully exiting from method: " + methodName);
 		return validated;
 	}
 	
 	public boolean secondRowArticleAlignmentValidation(Integer articleSeqInLayout, boolean isRightArticle, Map<String, Integer> sectionDimension) {
 		methodName = "secondRowArticleAlignmentValidation";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		Integer xArticleStart = 0;
 		Integer xArticleEnd = 0;
 		Integer articleHeight = 0;
@@ -721,13 +716,14 @@ public class HomePage{
 		}
 		
 		validated = true;
-		logger.info("Successfully exiting from method: " + methodName);
+		log.info("Successfully exiting from method: " + methodName);
 		return validated;
 	}
 	
+	//TODO: Remove this function
 	public boolean isPremiumArticle(Integer articleSeqInLayout) {
 		methodName = "isPremiumArticle";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		boolean isPremium = false;
 		try {
 			MobileElement premiumIconImage = ((MobileElement) driver.findElement(By.xpath("//XCUIElementTypeCell[" + articleSeqInLayout.toString() + "]//XCUIElementTypeImage[1]")));
@@ -737,13 +733,13 @@ public class HomePage{
 		}catch(Exception e) {
 			isPremium = false;
 		}
-		logger.info("Exiting from method: " + methodName);
+		log.info("Exiting from method: " + methodName);
 		return isPremium;
 	}
 	
 	public boolean thirdRowOnwardsArticleAlignmentValidation(Integer articleSeqInLayout, Map<String, Integer> sectionDimension) {
 		methodName = "thirdRowOnwardsArticleAlignmentValidation";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		Integer xArticleStart = 0;
 		Integer xArticleEnd = 0;
 		Integer mediaHeight = 0;
@@ -785,19 +781,19 @@ public class HomePage{
 			
 			Assert.assertTrue(Math.abs(imageWidth - sectionDimension.get("thirdRowOnwardsImageVideoWidth")) < 2, "Inconsistent Width of " + articleSeqInLayout.toString() + " article, as expected is: " + sectionDimension.get("thirdRowOnwardsImageVideoWidth") + ". However, received image width of: " + imageWidth);
 		}catch(NoSuchElementException e) {
-			logger.warn("No image found for this article");
+			log.warn("No image found for this article");
 		}
 		
 		
 		validated = true;
-		logger.info("Successfully exiting from method: " + methodName);
+		log.info("Successfully exiting from method: " + methodName);
 		return validated;
 	}
 	
 	public boolean articleAlignmentValidation(MobileElement article, Integer articleSequence, Integer articleSeqInLayout, Map<String, Integer> sectionDimension) {
 		boolean validated = false;
 		methodName = "articleAlignmentValidation";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		if(articleSequence.equals(1)) {
 			firstRowArticleAlignmentValidation(articleSeqInLayout, sectionDimension);
 		}
@@ -809,14 +805,14 @@ public class HomePage{
 		}
 		validated = true;
 		String articleLabel = article.getAttribute("label");
-		logger.info("Successfully validated the alignment of article labelled as: " + articleLabel);
-		logger.info("Exiting method: " + methodName);
+		log.info("Successfully validated the alignment of article labelled as: " + articleLabel);
+		log.info("Exiting method: " + methodName);
 		return validated;
 	}
 	
 	public boolean whetherReachedLastArticleOfSection(String sectionTitle, Integer collectionViewSequence) {
 		methodName = "whetherReachedLastArticleOfSection";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		boolean reachedEndOfSection = false;
 		int elementCnt = 0;
 		Integer layoutSequence = collectionViewSequence - 1;
@@ -857,13 +853,13 @@ public class HomePage{
 				}
 			}
 		}
-		logger.info("Exiting method: " + methodName);
+		log.info("Exiting method: " + methodName);
 		return reachedEndOfSection;
 	}
 	
 	public boolean isArticleFromDifferentSection(Integer layoutSequence) {
 		methodName = "isAnotherSectionArticle";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		boolean isAnotherSectionArticle = false;
 			
 		try {
@@ -877,15 +873,15 @@ public class HomePage{
 				isAnotherSectionArticle = false;
 			}
 		}
-		logger.info("Exiting method: " + methodName);
+		log.info("Exiting method: " + methodName);
 		return isAnotherSectionArticle;
 	}
 	
 	public boolean validateMoreStoriesLink(Integer layoutSequence,String moreIconLabel, String title) {
 		methodName = "validateMoreStoriesLink";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		boolean validatedMoreStoriesLink = false;
-		MobileElement moreStories = null;
+		MobileElement moreStories;
 		MobileElement moreIconButton = null;
 		MobileElement moreStoriesTab = null;
 		MobileElement moreStoriesTabTitle = null;
@@ -921,28 +917,28 @@ public class HomePage{
 		}catch(Exception e) {
 			validatedMoreStoriesLink = false;
 		}	
-		logger.info("Exiting method: " + methodName);
+		log.info("Exiting method: " + methodName);
 		return validatedMoreStoriesLink;
 	}
 	
 	public boolean whetherAdPresent(Integer layoutSequence) {
 		methodName = "whetherAdPresent";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		boolean adPresent = false;
 		try {
 			MobileElement adSection = ((MobileElement) driver.findElement(By.xpath("//XCUIElementTypeCell[" + layoutSequence.toString() + "]//XCUIElementTypeLink")));
 			adPresent = true;
 		}catch(Exception e) {
-			logger.error(e.getMessage());
+			log.error(e.getMessage());
 			adPresent = false;
 		}	
-		logger.info("Exiting method: " + methodName);
+		log.info("Exiting method: " + methodName);
 		return adPresent;
 	}
 	
 	public boolean isArticleVisible(Integer layoutSequence) {
 		methodName = "isArticleVisible";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		boolean articleVisibility = false;
 		
 		MobileElement article = ((MobileElement) driver.findElement(By.xpath("//XCUIElementTypeCell[" + layoutSequence.toString() + "]")));
@@ -952,7 +948,7 @@ public class HomePage{
 		else{
 			articleVisibility = false;
 		}	
-		logger.info("Exiting method: " + methodName);
+		log.info("Exiting method: " + methodName);
 		return articleVisibility;
 	}
 	
@@ -960,7 +956,8 @@ public class HomePage{
 		//Integer validated = 0;
 		methodName = "sectionArticleValidation";
 		boolean reachedEndOfSection = false;
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
+		log.debug("[Debug]Entering method: " + methodName);
 //		Boolean resetDimension = sectionDimension.get("resetDimension").equals(1);
 //		Boolean resetArticleWidth = resetDimension ;
 //		Boolean resetXAxisStart = resetDimension;
@@ -1013,7 +1010,7 @@ public class HomePage{
 				articleSeqInLayout++;
 				collectionViewSequence++;
 				String currentLabel = ((MobileElement) article).getAttribute("label");
-				logger.info("********Viewing article: " + article.getAttribute("label"));
+				log.info("********Viewing article: " + article.getAttribute("label"));
 				if(!(firstArticleOfSection.equals(currentLabel)) && articleSequence.equals(0)) {
 					//Not yet reached the first article in the section
 					continue;
@@ -1034,7 +1031,7 @@ public class HomePage{
 //					}
 //				}
 				if(!alreadyCapturedArticle) {
-					System.out.println("Validating Article labelled: " + currentLabel);
+					log.debug("[Debug]Validating Article labelled: " + currentLabel);
 					if(isArticleVisible(articleSeqInLayout)) {
 						if(afterSwipeView) {
 							if(isArticleFromDifferentSection(articleSeqInLayout)) {
@@ -1050,9 +1047,9 @@ public class HomePage{
 						if(sectionTitle.equalsIgnoreCase(IOSElements.PREMIUM_SECTION_LABEL_ID)) {
 							MobileElement premiumTag = (MobileElement) driver.findElement(By.xpath("//XCUIElementTypeCell[" + articleSeqInLayout.toString() + "]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeImage[@name=\"premium\"]"));
 							Assert.assertEquals(premiumTag.getAttribute("enabled"),"true","Premium tag is not visible for Premium articles");
-							logger.info("Validated the Premium tag is visible for Premium article");
+							log.info("Validated the Premium tag is visible for Premium article");
 						}
-						logger.info("Validating article labelled: " + currentLabel);
+						log.info("Validating article labelled: " + currentLabel);
 						
 						if(sectionTitle.equalsIgnoreCase("VIEWPOINTS")) {
 							Assert.assertTrue(articleAlignmentValidation((MobileElement) article, Constant.VIEWPOINT_ARTICLE_LAYOUT_SEQUENCE, articleSeqInLayout, sectionDimension),"Article Alignment Validation Failed");
@@ -1062,7 +1059,7 @@ public class HomePage{
 						}
 						
 						articleLabels.put(currentLabel, articleSequence);
-						System.out.println("Successfully Validated Article labelled: " + currentLabel);
+						log.debug("[Debug]Successfully Validated Article labelled: " + currentLabel);
 						
 						//As this is a special case wherein second row article follows alignment rules of third row onward article(as there's only 1 last article in 2nd row)
 						if(whetherReachedLastArticleOfSection(sectionTitle, collectionViewSequence)) {
@@ -1073,7 +1070,7 @@ public class HomePage{
 						}
 						
 						if(reachedEndOfSection) {
-							System.out.println("Reached End of Section: " + sectionTitle);
+							log.debug("[Debug]Reached End of Section: " + sectionTitle);
 							break;
 						}
 					}
@@ -1081,7 +1078,7 @@ public class HomePage{
 						//Decrementing the layout sequence of current article, as it should not be counted as not visible(thus the view is to be scrolled and re-evaluated)
 						collectionViewSequence--;
 						articleSeqInLayout--;
-						System.out.println("Need to be revalidated as article isn't visible, labelled: " + currentLabel);
+						log.debug("[Debug]Need to be revalidated as article isn't visible, labelled: " + currentLabel);
 						break;
 					}
 				}
@@ -1103,28 +1100,29 @@ public class HomePage{
 			layoutSeqSectionFirstArticle = 0;
 		}
 		sectionDimension.put("articleSeqInLayout",articleSeqInLayout);
-		logger.info("Exiting method: " + methodName);
+		log.debug("[Debug]Exiting method: " + methodName);
+		log.info("Exiting method: " + methodName);
 		return sectionDimension;
 	}
 	
 	public boolean reachedEndOfHomePage() {
 		methodName = "reachedEndOfHomePage";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		boolean endOfHomePage = false;
 		try {
 			MobileElement currentElement = (MobileElement) driver.findElement(By.id("MORE ENTERTAINMENT"));
 			endOfHomePage = true;
 		}
 		catch(Exception e) {
-			logger.info("Not reached end of Home page yet");
+			log.info("Not reached end of Home page yet");
 		}
-		logger.info("Successfully exiting from Method: " + methodName);
+		log.info("Successfully exiting from Method: " + methodName);
 		return endOfHomePage;
 	}
 	
 	public boolean reachedTopOfHomePage() {
 		methodName = "reachedTopOfHomePage";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		boolean topOfHomePage = false;
 		try {
 			MobileElement currentElement = (MobileElement) driver.findElement(By.xpath("//XCUIElementTypeStaticText[@name=\"section_title\"]"));
@@ -1133,15 +1131,15 @@ public class HomePage{
 			}
 		}
 		catch(Exception e) {
-			logger.info("Not reached top of Home page yet");
+			log.info("Not reached top of Home page yet");
 		}
-		logger.info("Successfully exiting from method: " + methodName);
+		log.info("Successfully exiting from method: " + methodName);
 		return topOfHomePage;
 	}
 	
 	public boolean gotoSection(String label) {
 		methodName = "goto " + label + " Section";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		boolean onExpectedSection = false;
 		String navigationDirection = "Up";
 		while(!onExpectedSection) {
@@ -1159,7 +1157,7 @@ public class HomePage{
 					}
 				}
 			}catch(Exception e){
-				logger.info("Need to navigate further to fetch the required section: " + label);
+				log.info("Need to navigate further to fetch the required section: " + label);
 			}finally {
 				if(!onExpectedSection) {
 					if(reachedEndOfHomePage()) {
@@ -1172,20 +1170,19 @@ public class HomePage{
 					try{
 						//Nothing
 					}catch(Exception e){
-						System.out.println("Error while waiting: " + e.getMessage());
+						log.error("Error while waiting: " + e.getMessage());
 					}
 				}
 			}
 		}
 		
-		logger.info("Successfully exiting from method: " + methodName);
+		log.info("Successfully exiting from method: " + methodName);
 		return onExpectedSection;
 	}
 	
 	public MobileDriver gotoTab(TAB tab) {
 		methodName = "gotoTab";
-		logger.info("Entering Method: " + methodName);
-		GenericNavigator navigator = new GenericNavigator(driver);
+		log.info("Entering Method: " + methodName);
 		
 		try {
 			switch(tab) {
@@ -1220,31 +1217,30 @@ public class HomePage{
 			case TECH: 
 				util.clickifClickable(techTab, Constant.LONG_TIMEOUT);
 			default:
-				logger.error("Please provide valid Tab Title");
+				log.error("Please provide valid Tab Title");
 				break;	
 			}
 		}catch(Exception e) {
-			logger.error("Exception raised: " + e);
+			log.error("Exception raised: " + e);
 			driver.quit();
 		}
 		
 		return (MobileDriver) driver;
     }
 
-	//Cybage libraries
 	public HomePage isInfoScreenPresent() {
-		logger.info("Verifying if Information screen is displayed on the tab ");
+		log.info("Verifying if Information screen is displayed on the tab ");
 		boolean flag = util.isElementPresent(infoScreen, Constant.SHORT_TIMEOUT);
 		if (flag) {
 			infoScreen.click();
-			logger.info("Information screen is displayed, clicked on 'GOT IT' button, now on selected tab");
+			log.info("Information screen is displayed, clicked on 'GOT IT' button, now on selected tab");
 		}
 
 		return this;
 	}
 
 	public HomePage navigateToTab(Constant.TAB tabName, String direction) {
-		logger.info("Navigating to " + tabName + " Tab");
+		log.info("Navigating to " + tabName + " Tab");
 		switch (tabName) {
 		
 		case ST_NOW:
@@ -1298,7 +1294,7 @@ public class HomePage{
 			break;
 
 		default:
-			logger.info("Please provide valid tab name");
+			log.info("Please provide valid tab name");
 			break;
 
 		}
@@ -1313,7 +1309,7 @@ public class HomePage{
 	 */
 
 	public HomePage switchTab(MobileElement tab, Constant.TAB tabName, int swipe, String direction) {
-		logger.info("Checking visibility of the tab :" + tabName + "and navigating to  " + tabName);
+		log.info("Checking visibility of the tab :" + tabName + "and navigating to  " + tabName);
 		if (swipe > 0) {
 			if (util.isElementPresent(tab, Constant.SHORT_TIMEOUT)) {
 				util.clickifClickable(tab, Constant.SHORT_TIMEOUT);
@@ -1322,9 +1318,9 @@ public class HomePage{
 					// boolean
 					// flag=wait.until(ExpectedConditions.elementSelectionStateToBe(tab,true));
 					// Assert.assertTrue(tab.isSelected());
-					logger.info("Tab is visible! and tab title verified :Navigated to desired tab " + tabName);
+					log.info("Tab is visible! and tab title verified :Navigated to desired tab " + tabName);
 				} catch (AssertionError er) {
-					logger.error("Required tab not found!" + tabName);
+					log.error("Required tab not found!" + tabName);
 					Assert.fail(
 							"Assertion Failed , Tab title doesn't match: Navigated to incorrect tab" + er.getMessage());
 				}
@@ -1336,25 +1332,25 @@ public class HomePage{
 
 		}
 
-		logger.error("Required tab not found!" + tabName);
+		log.error("Required tab not found!" + tabName);
 		Assert.fail("Required tab not found!");
 
 		return this;
 	}
 
 	public LoginPage openLoginControl() {
-		logger.info("Opening login page/Drawer menu");
+		log.info("Opening login page/Drawer menu");
 		try{
 			util.clickifClickable(menu, Constant.SHORT_TIMEOUT);
 			return new LoginPage(driver);
 		}catch(Exception ex) {
-			logger.error("Cannot open Login Control");
+			log.error("Cannot open Login Control");
 			return null;
 		}
 	}
 	
 	public HomePage isOnHomePage() {
-		logger.error("Verifying if on home page");
+		log.error("Verifying if on home page");
 		if (capabilities.getCapability("platformName").toString().equalsIgnoreCase("ios")) {
 			util.clickUsingCoordinates(menu);
 		}
@@ -1364,10 +1360,10 @@ public class HomePage{
 	public ArticlePage verifyNavigatedToTopStoriesPage() {
 		try{
 			util.isElementPresent(topStoriesHeading, Constant.SHORT_TIMEOUT, "Top stories heading");
-			logger.info("Top Stories page is displayed to the user");
+			log.info("Top Stories page is displayed to the user");
 			return new ArticlePage(driver);
 		}catch(Exception ex) {
-			logger.error("Cannot navigate to Top Stories page");
+			log.error("Cannot navigate to Top Stories page");
 			return null;
 		}
 		
@@ -1381,18 +1377,18 @@ public class HomePage{
 /////modified this for new framework To do : remove comments
 	public void navigateToTopStoryOftheHomePage() {
 		try {
-			logger.info("Navigating to main article of home page");
+			log.info("Navigating to main article of home page");
 			//String headline = topStory.getText();
 			
 			topStory.click();
 			//util.clickifClickable(topStory, Constant.SHORT_TIMEOUT);
 			//switchCall();
-//			logger.info("Verifying main article headline");
+//			log.info("Verifying main article headline");
 //			
 //			assertHeadingOfArticle(headline);
 			
 		}catch(Exception ex) {
-			logger.error("Cannot navigate to Top Story of Home Page"+ex.getMessage());
+			log.error("Cannot navigate to Top Story of Home Page"+ex.getMessage());
 			
 		}
 	}
@@ -1401,7 +1397,7 @@ public class HomePage{
 	
 	public String getHeadlineOfTheArticle() {
 		
-			logger.info("Fetching headline of the topstory");
+			log.info("Fetching headline of the topstory");
 			Reporter.addStepLog("Fetching headline of the topstory");
 	       // Reporter.addScenarioLog("User wants to launch the Straits Time site and accept the terms and conditions");
 			String headline = topStory.getText();
@@ -1412,7 +1408,7 @@ public class HomePage{
 	
 	public void assertTitleOfTheHeadline() {
 		
-		logger.info("Assert headline of the topstory");
+		log.info("Assert headline of the topstory");
 		Reporter.addStepLog("Assert headline of the topstory");
        // Reporter.addScenarioLog("User wants to launch the Straits Time site and accept the terms and conditions");
 		String headline = getHeadlineOfTheArticle();
@@ -1428,7 +1424,7 @@ public class HomePage{
 		try {
 			return new LoginPage(driver);
 		}catch(Exception ex) {
-			logger.error("Cannot return to Login Page");
+			log.error("Cannot return to Login Page");
 			return null;
 		}
 	}
@@ -1437,18 +1433,18 @@ public class HomePage{
 		try {
 			return new STNowPage(driver);
 		}catch(Exception ex) {
-			logger.error("Cannot go to STNow Page");
+			log.error("Cannot go to STNow Page");
 			return null;
 		}
 	}
 	
 	public HomePage verifyVisibilityOfAddToHomeButton() {
-		logger.info("Verifying if 'Add To Home' Button is displayed on the tab ");
+		log.info("Verifying if 'Add To Home' Button is displayed on the tab ");
 		boolean flag = util.isElementPresent(addToHomeButton, Constant.SHORT_TIMEOUT);
 		if (flag) {
-			logger.info("'Add To Home' Button is displayed on the tab");
+			log.info("'Add To Home' Button is displayed on the tab");
 		} else {
-			logger.info("'Add To Home' Button is not displayed on the tab");
+			log.info("'Add To Home' Button is not displayed on the tab");
 		}
 
 		return this;
@@ -1463,32 +1459,32 @@ public class HomePage{
 			}
 			return new ArticlePage(driver);
 		}catch(Exception ex) {
-			logger.error("Cannot open Article");
+			log.error("Cannot open Article");
 			return null;
 		}
 	}
 
 	public ArticlePage navigateToArticle(MobileElement element, int maxSwipe, String articleType) {
-		logger.info("Searching for " + articleType + " article..");
+		log.info("Searching for " + articleType + " article..");
 		boolean flag = util.swipeVerticalUntilElementIsFound(element, maxSwipe, Constant.UP);
 		try {
 			if (flag) {
 				String headline;
 				headline = element.getText();
-				logger.info("Article found! Now navigating to " + articleType + " article..");
-				logger.info("Article heading is " + headline);
+				log.info("Article found! Now navigating to " + articleType + " article..");
+				log.info("Article heading is " + headline);
 				util.clickifClickable(element, Constant.SHORT_TIMEOUT);
 				switchCall();
-				logger.info(" Opened article, verifying article headline of " + articleType + " article..");
+				log.info(" Opened article, verifying article headline of " + articleType + " article..");
 				assertHeadingOfArticle(headline);
 
-				logger.info(headline);
-				logger.info("Article headline matches! we have been navigated to selected article..");
+				log.info(headline);
+				log.info("Article headline matches! we have been navigated to selected article..");
 			}
 			return new ArticlePage(driver);
 
 		} catch (Exception ex) {
-			logger.error(articleType + " article you are looking for is not present");
+			log.error(articleType + " article you are looking for is not present");
 			Assert.fail(articleType + "article is not found!");
 			return null;
 		}
@@ -1499,7 +1495,7 @@ public class HomePage{
 		try {
 			return new ArticlePage(driver).switchToMainArticle();
 		}catch (Exception ex) {
-			logger.error("Unable to switch to Main Article");
+			log.error("Unable to switch to Main Article");
 			return null;
 		}
 	}
@@ -1508,7 +1504,7 @@ public class HomePage{
 		try {
 			return new ArticlePage(driver).assertArticleHeading(headline);
 		}catch (Exception ex) {
-			logger.error("Heading of Article is inconsistent");
+			log.error("Heading of Article is inconsistent");
 			return null;
 		}
 	}
@@ -1516,15 +1512,15 @@ public class HomePage{
 	public HomePage verifyMainArticleOnHomePage() {
 		try {
 			String articleHeadline = topStory.getText();
-			logger.info("Verifying main article at home page : ");
-			logger.info("Article heading is " + articleHeadline);
+			log.info("Verifying main article at home page : ");
+			log.info("Article heading is " + articleHeadline);
 			util.isElementPresent(topStory, Constant.SHORT_TIMEOUT, "Article headline");
-			logger.info("Article headline is displayed!");
+			log.info("Article headline is displayed!");
 			util.isElementPresent(topStoryImage, Constant.SHORT_TIMEOUT, "Article Image");
-			logger.info("Top story image is displayed!");
-			logger.info("Article headline is displayed!");
+			log.info("Top story image is displayed!");
+			log.info("Article headline is displayed!");
 		} catch (Exception er) {
-			logger.error("Article headline is missing");
+			log.error("Article headline is missing");
 			Assert.fail("Article headline is missing");
 		}
 
@@ -1535,7 +1531,7 @@ public class HomePage{
 		try {
 			return new BookmarkPage(driver);
 		}catch (Exception ex) {
-			logger.error("Unable to return to Bookmark page");
+			log.error("Unable to return to Bookmark page");
 			return null;
 		}
 	}
@@ -1545,7 +1541,7 @@ public class HomePage{
 			if (maxSwipe > 0 && list.size() > 0) {
 				if (list.get(index).equals(topStory.getText())) {
 					topStory.click();
-					logger.info("Article headline of article is :" + list.get(index));
+					log.info("Article headline of article is :" + list.get(index));
 					return new ArticlePage(driver);
 				}
 				util.swipeVertical(Constant.UP);
@@ -1555,7 +1551,7 @@ public class HomePage{
 			}
 			return new ArticlePage(driver);
 		}catch (Exception ex) {
-			logger.error("Unable to open and verify article");
+			log.error("Unable to open and verify article");
 			return null;
 		}
 	}
@@ -1565,7 +1561,7 @@ public class HomePage{
 			navigateToArticle(videoIcon, maxSwipe, articleType);
 			return new ArticlePage(driver);
 		}catch (Exception ex) {
-			logger.error("Unable to open article having webview");
+			log.error("Unable to open article having webview");
 			return null;
 		}
 	}
@@ -1575,7 +1571,7 @@ public class HomePage{
 		try {
 			return new ArticlePage(driver).verifyArticleContentForHtmlEntities();
 		}catch (Exception ex) {
-			logger.error("Unable to open and verify article");
+			log.error("Unable to open and verify article");
 			return null;
 		}
 	}
@@ -1584,7 +1580,7 @@ public class HomePage{
 		try {
 			return new ArticlePage(driver).clickOnBackButton(1);
 		}catch (Exception ex) {
-			logger.error("Unable to click On back icon");
+			log.error("Unable to click On back icon");
 			return null;
 		}
 	}
@@ -1594,19 +1590,19 @@ public class HomePage{
 			List<String> list = new ArrayList<String>();
 	
 			for (int i = 0; i < webviewArticles.size(); i++) {
-				logger.info("Web Articles are" + webviewArticles.size());
+				log.info("Web Articles are" + webviewArticles.size());
 				list.add(webviewArticles.get(i).getText());
-				logger.info("The list elements are " + list);
+				log.info("The list elements are " + list);
 			}
 			for (int i = 0; i < list.size(); i++) {
-				logger.info("value of i " + i);
+				log.info("value of i " + i);
 				openAndVerifyArticle(list, i, 4);// top story will always consider 1st Occurrence of article title, therefore seems not feasible
 				verifyArticleContent();
 				clickOnBackIcon();
 			}
 			return new ArticlePage(driver);
 		}catch (Exception ex) {
-			logger.error("Unable to open and verify article");
+			log.error("Unable to open and verify article");
 			return null;
 		}
 	}

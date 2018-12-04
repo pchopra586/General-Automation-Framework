@@ -17,17 +17,15 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.log4testng.Logger;
+import org.apache.log4j.Logger;
 
 import java.net.MalformedURLException;
 import java.time.*;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 
 public class Mobile {
 	String browserName = LocalWebDriverListener.browserName;
-    Logger logger = Logger.getLogger(Mobile.class);
+    Logger log = Logger.getLogger(Mobile.class);
 
     @iOSXCUITFindBy(accessibility = IOSElements.TERMS_CONDITIONS)
     @AndroidFindBy(id = AndroidElements.TERMS_AND_CONDITIONS)
@@ -85,7 +83,7 @@ public class Mobile {
 	private MobileElement accountSettings;
 	
     private WebDriver driver;
-    private WebDriverWait wait;
+    WebDriverWait wait;
 
     public Mobile(WebDriver driver) throws MalformedURLException {
         this.driver = driver;
@@ -95,7 +93,7 @@ public class Mobile {
 
     public Mobile accept_terms_and_conditions() throws InterruptedException, MalformedURLException {
 //    		driver.switchTo().alert().accept();
-    		System.out.println("Browser is " + browserName);
+    		log.info("Browser is " + browserName);
         try {
             if (terms_conditions.isDisplayed()) {
                 terms_conditions.click();
@@ -103,7 +101,7 @@ public class Mobile {
         } catch (Exception e) {
             System.out.printf("Term and conditions Not Found");
         }
-        logger.info("Terms and condition are accepted");
+        log.info("Terms and condition are accepted");
         return this;
     }
     public Mobile skip_tutorials() throws InterruptedException {
@@ -133,7 +131,7 @@ public class Mobile {
         {
             System.out.printf("Element Not Found");
         }
-        logger.info("Tutorials are skipped");
+        log.info("Tutorials are skipped");
         return this;
     }
     public Mobile click_hamburger_menu() throws InterruptedException {
@@ -150,7 +148,7 @@ public class Mobile {
             System.out.printf("Element Not Present");
         }
     		System.out.printf("Hamburger Menu is clicked");
-        logger.info("Hamburger Menu is clicked");
+        log.info("Hamburger Menu is clicked");
         return this;
     }
 
@@ -199,12 +197,12 @@ public class Mobile {
     		try {
             if (loggedInUser.isDisplayed()) {
             		loggedInText = loggedInUser.getText();
-            		System.out.println("LoggedInUser Text: "+ loggedInText);
+            		log.info("LoggedInUser Text: "+ loggedInText);
             		Assert.assertTrue(loggedInText.contains(username),"Invalid Login " + loggedInText);
             }
     		}catch(Exception e)
         {
-            System.out.println("LoggedIn user can't be retrieved");
+            log.error("LoggedIn user can't be retrieved");
         }
         return this;
 	}
@@ -218,7 +216,7 @@ public class Mobile {
 			}
 		}catch(Exception e)
 	    {
-	        System.out.println("Can't be navigated to Settings Menu");
+	        log.error("Can't be navigated to Settings Menu");
 	    }
 		return this;
     }
@@ -232,7 +230,7 @@ public class Mobile {
 			}
 		}catch(Exception e)
 	    {
-	        System.out.println("Can't be navigated to Account Settings");
+	        log.error("Can't be navigated to Account Settings");
 	    }
 		return this;
     }
@@ -240,7 +238,7 @@ public class Mobile {
 
     public Mobile logout_app() throws InterruptedException {
         logoutMenu.click();
-        System.out.println("Logged out the user successfully");
+        log.info("Logged out the user successfully");
         return this;
     }
 

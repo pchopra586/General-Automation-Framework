@@ -7,15 +7,10 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.log4testng.Logger;
+import org.apache.log4j.Logger;
 
-import com.aventstack.extentreports.ExtentTest;
-import com.aventstack.extentreports.Status;
 import com.sph.driverFactory.LocalWebDriverListener;
-
-import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -30,9 +25,8 @@ public class AccountPage {
 	private String methodName = null;
 
 	String browserName = LocalWebDriverListener.browserName;
-	Logger logger = Logger.getLogger(AccountPage.class);
+	Logger log = Logger.getLogger(AccountPage.class);
 	private WebDriver driver;
-	private WebDriverWait wait;
 	private Capabilities capabilities;
 
 	public AccountPage(WebDriver driver) throws MalformedURLException {
@@ -98,7 +92,7 @@ public class AccountPage {
 
 	public AccountPage gotoAccountPage() {
 		methodName = "gotoAccountPage";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		GenericNavigator navigator = new GenericNavigator(driver);
 
 		try {
@@ -113,25 +107,25 @@ public class AccountPage {
 
 			settings.gotoSettings(Constant.SETTINGS_MENU.ACCOUNT);
 		} catch (Exception e) {
-			logger.error("Exception raised: " + e);
+			log.error("Exception raised: " + e);
 			driver.quit();
 		}
 
 		// Log.INFO("Exiting Method: " + methodName);
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return this;
 	}
 
 	public SettingsPage goBackToPreviousView() {
 		methodName = "goBackToPreviousView";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 
 		try {
 			backButton.click();
-			logger.info("Exiting Method: " + methodName);
+			log.info("Exiting Method: " + methodName);
 			return new SettingsPage(driver);
 		} catch (Exception e) {
-			logger.error("Exception raised: " + e);
+			log.error("Exception raised: " + e);
 			driver.quit();
 			return null;
 		}
@@ -139,7 +133,7 @@ public class AccountPage {
 
 	public AccountPage verifyPageTitleContent() {
 		methodName = "verifyPageTitleContent";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 
 		try {
 			if (pageTitle != null) {
@@ -200,20 +194,20 @@ public class AccountPage {
 							"Inconsistent label of Manage Header");
 				}
 			} else {
-				logger.warn("Elements not found");
+				log.warn("Elements not found");
 			}
 		} catch (Exception e) {
-			logger.error("Exception raised: " + e);
+			log.error("Exception raised: " + e);
 			driver.quit();
 		}
 
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return this;
 	}
 
 	public AccountPage verifyLogInLinkDisplayed() {
 		methodName = "verifyLogInLinkDisplayed";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 
 		try {
 			Assert.assertTrue(logInLink.getAttribute("enabled").equals("true"),
@@ -243,18 +237,18 @@ public class AccountPage {
 						"Subscription Alert Message is unexpectedly invisible");
 			}
 		} catch (Exception e) {
-			logger.error("Exception raised: " + e);
+			log.error("Exception raised: " + e);
 			driver.quit();
 		}
 
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return this;
 	}
 
 	public AccountPage verifyLogOutLinkIsDisplayed() {
 		methodName = "verifyLogOutLinkIsDisplayed";
 		// Log.INFO("Entering Method: " + methodName);
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		Assert.assertTrue(logOutLink.isEnabled(), "Login button is unexpectedly disabled");
 
@@ -276,18 +270,18 @@ public class AccountPage {
 				Assert.assertTrue(loginSuccessMsg.isEnabled(), "Successful Login Message is unexpectedly disabled");
 			}
 		} catch (Exception e) {
-			logger.error("Exception raised: " + e);
+			log.error("Exception raised: " + e);
 			driver.quit();
 		}
 
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return this;
 
 	}
 
 	public AccountPage verifyElementAlignment(boolean loggedIn) {
 		methodName = "verifyElementAlignment";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 
 		try {
@@ -311,25 +305,25 @@ public class AccountPage {
 						"Login Option and Subscribe Option are unexpectedly vary in width");
 			}
 		} catch (Exception e) {
-			logger.error("Exception raised: " + e);
+			log.error("Exception raised: " + e);
 			driver.quit();
 		}
 
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return this;
 	}
 
 	public LoginPage initiateLogin() {
 		methodName = "initiateLogin";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 
 		try {
 			logIn.click();
-			logger.info("Exiting Method: " + methodName);
+			log.info("Exiting Method: " + methodName);
 			return new LoginPage(driver);
 		} catch (Exception e) {
-			logger.error("Exception raised: " + e);
+			log.error("Exception raised: " + e);
 			driver.quit();
 			return null;
 		}
@@ -337,17 +331,17 @@ public class AccountPage {
 
 	public AccountPage logout() {
 		methodName = "logout";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 
 		try {
 			logOut.click();
 		} catch (Exception e) {
-			logger.error("Exception raised: " + e);
+			log.error("Exception raised: " + e);
 			driver.quit();
 		}
 
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return this;
 	}
 
