@@ -2,6 +2,7 @@ package com.sph.pageObjects.web;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -9,13 +10,12 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.sph.driverFactory.LocalWebDriverListener;
-import com.sph.utilities.WebElements;
 
 public class LiveBlogPage {
 	private WebDriver driver;
     private WebDriverWait wait;
     String browserName = LocalWebDriverListener.browserName;
-
+    Logger log = Logger.getLogger(LiveBlogPage.class);
     @FindBy(xpath = "//div[@class='st_liveblog fullv']/div/div/div/div/p/a")
     private List<WebElement> liveBlogArticles;
     
@@ -52,7 +52,7 @@ public class LiveBlogPage {
 			String url = article.getAttribute("href");
 			if(url != "") {
 				liveBlogArticleCount = liveBlogArticleCount+1;
-				System.out.println("Article URL: " + url);
+				log.info("Article URL: " + url);
 			}
 		}
 		return liveBlogArticleCount;

@@ -9,10 +9,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.log4testng.Logger;
-
-import com.aventstack.extentreports.ExtentTest;
-import com.aventstack.extentreports.Status;
+import org.apache.log4j.Logger;
 import com.sph.driverFactory.LocalWebDriverListener;
 import com.sph.utilities.AndroidElements;
 import com.sph.utilities.Constant;
@@ -20,7 +17,6 @@ import com.sph.utilities.Constant.MENU;
 import com.sph.utilities.DeviceActions;
 import com.sph.utilities.IOSElements;
 
-import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
@@ -32,9 +28,9 @@ public class MenuPage{
 	private String methodName = null;
 
 	String browserName = LocalWebDriverListener.browserName;
-    Logger logger = Logger.getLogger(IntroductionPage.class);
+    Logger log = Logger.getLogger(IntroductionPage.class);
 	private WebDriver driver;
-    private WebDriverWait wait;
+    WebDriverWait wait;
     private Capabilities capabilities;
     private DeviceActions util;
 	
@@ -101,17 +97,17 @@ public class MenuPage{
 	public MenuPage gotoMenuPage() {
 		methodName = "gotoMenuPage";
 		//Log.INFO("Entering Method: " + methodName);
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		
 		try {
 			clickOnMenu();
 		}catch(Exception e) {
-			logger.error("Exception raised: " + e);
+			log.error("Exception raised: " + e);
 			driver.quit();
 		}
 	
 		//Log.INFO("Exiting Method: " + methodName);
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return this;
 	}
 	
@@ -119,18 +115,18 @@ public class MenuPage{
 		boolean validated = false;
 		methodName = "sectionTitleValidation";
 		//Log.INFO("Entering Method: " + methodName);
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 
 		
 		//Log.INFO("Exiting Method: " + methodName);
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return validated;
 	}
 	
 	public boolean onMenuPage() {
 		methodName = "sectionTitleValidation";
 		//Log.INFO("Entering Method: " + methodName);
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		boolean onMenuPage = false;
 		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		try {
@@ -143,33 +139,33 @@ public class MenuPage{
 			}
 			onMenuPage = true;
 		}catch(Exception e) {
-			logger.error("Exception raised: " + e);
+			log.error("Exception raised: " + e);
 			driver.quit();
 		}
 		
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return onMenuPage;
 	}
 	
 	public MenuPage clickOnMenu() {
 		methodName = "clickOnMenu";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		
 		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		try {
 			hamburgerMenu.click();
 		}catch(Exception e) {
-			logger.error("Exception raised: " + e);
+			log.error("Exception raised: " + e);
 			driver.quit();
 		}
 		
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return this;
 	}
 	
 	public MobileDriver gotoMenu(MENU menu) {
 		methodName = "gotoMenu - " + menu + "";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		
 		try {
 			switch(menu) {
@@ -192,11 +188,11 @@ public class MenuPage{
 				case MORE_FROM_ST: 
 					util.clickifClickable(moreFromSTMenu, Constant.LONG_TIMEOUT);
 				default:
-					logger.error("Please provide valid Menu Title");
+					log.error("Please provide valid Menu Title");
 					break;	
 			}
 		}catch(Exception e) {
-			logger.error("Exception raised: " + e);
+			log.error("Exception raised: " + e);
 			driver.quit();
 		}
 		
@@ -207,7 +203,7 @@ public class MenuPage{
 //		boolean onEditHomePage = false;
 //		methodName = "gotoEditHomePage";
 //		//Log.INFO("Entering Method: " + methodName);
-//		logger.info("Entering Method: " + methodName);
+//		log.info("Entering Method: " + methodName);
 //		MobileElement editHomeOption = null;
 //		MobileElement currentPage = null;
 //		
@@ -229,14 +225,14 @@ public class MenuPage{
 //		}
 //		
 //		//Log.INFO("Exiting Method: " + methodName);
-//		logger.info("Exiting Method: " + methodName);
+//		log.info("Exiting Method: " + methodName);
 //		return onEditHomePage;
 //	}
 	
 //	public boolean goBackToHomePage() {
 //		methodName = "closeSettingsView";
 //		//Log.INFO("Entering Method: " + methodName);
-//		logger.info("Entering Method: " + methodName);
+//		log.info("Entering Method: " + methodName);
 //		boolean closedSettingsView = false;
 //		
 //		MobileElement closeSettingsButton = null;
@@ -249,42 +245,42 @@ public class MenuPage{
 //		
 //		closedSettingsView = true;
 //		//Log.INFO("Exiting Method: " + methodName);
-//		logger.info("Exiting Method: " + methodName);
+//		log.info("Exiting Method: " + methodName);
 //		return closedSettingsView;
 //	}
 	
 	public MenuPage verifyLoggedInUser(String verifyUser) {
 		methodName = "verifyLoggedInUser";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		String loggedInText = "";
 		try {
 			driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 			loggedInText = loggedInUser.getText();
 			
-			logger.info("Logged In User text: " + loggedInText);
+			log.info("Logged In User text: " + loggedInText);
 		}catch(Exception e) {
-			logger.error("Exception raised: " + e);
+			log.error("Exception raised: " + e);
 			driver.quit();
 		}
 			
 		Assert.assertTrue(loggedInText.contains("Logged in as " + verifyUser),"Invalid Login " + loggedInText);
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return this;
 	}
 	
 	public MenuPage verifyLogoutLinkDisplayed() {
 		methodName = "verifyLoggedInUser";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		
 		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return this;
 	}
 	
 	public MenuPage logout() {
 		methodName = "logout";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		
 		try {
 			if(capabilities.getCapability("platformName").toString().equalsIgnoreCase("Android")) {
@@ -300,11 +296,11 @@ public class MenuPage{
 				account.logout();
 			}
 		}catch(Exception e) {
-			logger.error("Exception raised: " + e);
+			log.error("Exception raised: " + e);
 			driver.quit();
 		}
 		
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return this;
 	}
 }

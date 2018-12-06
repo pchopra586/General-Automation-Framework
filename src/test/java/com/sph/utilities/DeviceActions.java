@@ -26,7 +26,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.log4testng.Logger;
+import org.apache.log4j.Logger;
 
 import com.sph.driverFactory.DriverManager;
 import com.sph.driverFactory.LocalWebDriverListener;
@@ -50,7 +50,7 @@ public class DeviceActions{
 	private Capabilities capabilities;
 
 	String browserName = LocalWebDriverListener.browserName;
-    Logger logger = Logger.getLogger(DeviceActions.class);
+    Logger log = Logger.getLogger(DeviceActions.class);
     
     @iOSXCUITFindBy(accessibility = IOSElements.INTERSTITIAL_AD_ID)
 	@AndroidFindBy(xpath = AndroidElements.INTERSTITIAL_AD_XPATH)
@@ -68,14 +68,14 @@ public class DeviceActions{
 	
 	public void backClick() {
 		methodName = "backClick";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		driver.navigate().back();
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 	}
 	
 	public void swipeHorizontal(String direction) {
 		methodName = "swipeHorizontal";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		PointOption start = new PointOption();
 		PointOption end = new PointOption();
@@ -98,20 +98,20 @@ public class DeviceActions{
 //				.release().perform();
             		action.press(start.point(startPoint, anchor)).waitAction(waitTime.withDuration(Duration.ofMillis(1000))).moveTo(end.point(endPoint, anchor))
 				.release().perform();
-				logger.info("Perform Swipe to Left Direction");
+				log.info("Perform Swipe to Left Direction");
 			} else if (direction.equalsIgnoreCase("Right")) {
 				action.press(start.point(endPoint, anchor)).waitAction(waitTime.withDuration(Duration.ofMillis(0))).moveTo(end.point(startPoint, anchor))
 						.release().perform();
-				logger.info("Perform Swipe to Right Direction");
+				log.info("Perform Swipe to Right Direction");
 			}
         }catch (Exception ex) {
-    			logger.info("Error occured during " + direction + " swipe" + ex.getMessage());	
+    			log.info("Error occured during " + direction + " swipe" + ex.getMessage());	
         }
 	}
 	
 	public void swipeVertical(String direction) {
 		methodName = "swipeVertical";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		PointOption start = new PointOption();
 		PointOption end = new PointOption();
 		WaitOptions waitTime = new WaitOptions();
@@ -119,8 +119,8 @@ public class DeviceActions{
 		try {
             Dimension size = this.driver.manage().window().getSize();
             int anchor = (int) (size.width * 0.5);
-			int startPoint = (int) (size.height * 0.9);
-			int endPoint = (int) (size.height * 0.2);
+			int startPoint = (int) (size.height * 0.8);
+			int endPoint = (int) (size.height * 0.3);
             TouchAction action = new TouchAction ((PerformsTouchActions) driver);
             
             if (direction.equalsIgnoreCase("Up")) {
@@ -128,45 +128,47 @@ public class DeviceActions{
 				.release().perform();
 //				action.press(start.point(anchor,startPoint)).waitAction(waitTime.withDuration(Duration.ofMillis(0))).moveTo(end.point(0, endPoint-startPoint))
 //				.release().perform();
-				logger.info("Perform Upwards Scroll operation");
+				log.info("Perform Upwards Scroll operation");
 			} else if (direction.equalsIgnoreCase("Down")) {
-				action.press(start.point(anchor,endPoint)).waitAction(waitTime.withDuration(Duration.ofMillis(0))).moveTo(end.point(0, startPoint - endPoint))
+				action.press(start.point(anchor,endPoint)).waitAction(waitTime.withDuration(Duration.ofMillis(1000))).moveTo(end.point(anchor, startPoint))
 				.release().perform();
-				logger.info("Perform Downwards Scroll operation");
+//				action.press(start.point(anchor,endPoint)).waitAction(waitTime.withDuration(Duration.ofMillis(0))).moveTo(end.point(0, startPoint - endPoint))
+//				.release().perform();
+				log.info("Perform Downwards Scroll operation");
 			}
         }catch (Exception ex) {
-        		logger.info("Error occured during " + direction + " swipe" + ex.getMessage());	
+        		log.info("Error occured during " + direction + " swipe" + ex.getMessage());	
 		}
 		
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 	}
 	
 	public void goToFirstPage() {
 		methodName = "goToFirstPage";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		if(capabilities.getPlatform().toString().equalsIgnoreCase("iOS")) {
 			try {
 				MobileElement topPage = (MobileElement) driver.findElement(By.xpath("//XCUIElementTypeOther[@name=\"App For iOS - Singapore Press Holdings\"]/XCUIElementTypeLink/XCUIElementTypeLink"));
 				topPage.click();
-				logger.info("Clicked Upward Arrow and reached the first page of License");
+				log.info("Clicked Upward Arrow and reached the first page of License");
 			}
 			catch (Exception ex) {
-				logger.info("Error occured while navigating to top page" + ex.getMessage());	
+				log.info("Error occured while navigating to top page" + ex.getMessage());	
 			}
 		}
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 	}
 	
 	public Boolean clickifClickable(MobileElement element, int timeOut) {
 		methodName = "clickifClickable";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		try {
 			WebDriverWait wait = new WebDriverWait(driver, timeOut);
 			wait.until(ExpectedConditions.elementToBeClickable(element)).click();
 			return true;
 		} catch (Exception ex) {
-			logger.info("Element is not clickable" + ex.getMessage());
+			log.info("Element is not clickable" + ex.getMessage());
 			return false;
 		}
 	}
@@ -179,32 +181,32 @@ public class DeviceActions{
 			int xPoint = el.getCenter().getX();
 			int yPoint = el.getCenter().getY();
 			touchAction.tap(tapOptions().withPosition(point(xPoint, yPoint))).perform();
-			logger.info("Performing click on mobile element using it's co-ordinates");
+			log.info("Performing click on mobile element using it's co-ordinates");
 
 		} catch (Exception ex) {
-			logger.info("Error occured during click event using co-ordinates " + ex.getMessage());
+			log.info("Error occured during click event using co-ordinates " + ex.getMessage());
 		}
 	}
 	
 	public void verifyMobileElements(String screenName, MobileElement... mobileElements) {
 		methodName = "verifyMobileElements: " + screenName;
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		for (MobileElement list : mobileElements) {
 			Assert.assertTrue(isElementPresent(list, Constant.SHORT_TIMEOUT, screenName));
 		}
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 	}
 	
 	public void verifyUnwantedTextElements(String bodyText, String... htmlEntities) {
-		logger.info("Verifying text on article details for presence of html entities  ");
+		log.info("Verifying text on article details for presence of html entities  ");
 
 		for (String list : htmlEntities) {
-			logger.info("verifying if \"" + list + "\" is present");
+			log.info("verifying if \"" + list + "\" is present");
 			boolean flag = bodyText.contains(list);
 			if (flag) {
-				logger.info("Following Unwanted text present \"" + list + "\"");
+				log.info("Following Unwanted text present \"" + list + "\"");
 			} else {
-				logger.info("Following text is not present \"" + list + "\"");
+				log.info("Following text is not present \"" + list + "\"");
 			}
 		}
 
@@ -212,23 +214,23 @@ public class DeviceActions{
 	
 	public boolean isElementPresent(MobileElement element, int timeOut, String elementName) {
 		methodName = "isElementPresent using ElementName: " + element;
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		if (isElementPresent(element, timeOut)) {
 			return true;
 		}
 		Assert.fail(elementName + " is not displayed on the screen");
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return false;
 	}
 	
 	public boolean isElementPresent(MobileElement element, int timeOut) {
 		methodName = "isElementPresent: " + element;
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		try {
 			WebDriverWait wait = new WebDriverWait(driver, timeOut);
 			return wait.until(ExpectedConditions.visibilityOf(element)).isDisplayed();
 		} catch (TimeoutException ex) {
-			logger.info("Element is not displayed" + ex.getMessage());
+			log.info("Element is not displayed" + ex.getMessage());
 			return false;
 		}
 	}
@@ -238,7 +240,7 @@ public class DeviceActions{
 	*/
 	public void moveSeekbar(MobileElement seekbar,double percentage) {
 		methodName = "moveSeekbar";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 	    
 		int start=seekbar.getLocation().getX();  
         int end=seekbar.getSize().getWidth()+start;
@@ -248,28 +250,28 @@ public class DeviceActions{
         LongPressOptions longPress = new LongPressOptions();
         action.longPress(longPress.withPosition(new PointOption().withCoordinates(start,y))).moveTo(new PointOption().withCoordinates(targetX,y)).release().perform();
 		
-        logger.info("Exiting Method: " + methodName);
+        log.info("Exiting Method: " + methodName);
 	}
 	
 	public void isElementDisplayed(MobileElement element) {
 		methodName = "moveSeekbar";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		
 		try {
 			Assert.assertTrue(element.isDisplayed());
-			logger.info(element + " is displayed/visible on the screen");
+			log.info(element + " is displayed/visible on the screen");
 		} catch (AssertionError er) {
-			logger.info(element + " is not displayed.");
+			log.info(element + " is not displayed.");
 			Assert.fail("Assertion Failed : " + er.getMessage());
 		}
 		
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 	}
 	
 //	public void isElementClickable(MobileElement element) {
 //		try {
 //			Assert.assertTrue(element.isDisplayed());
-//			logger.info(element + " is displayed/visible on the screen");
+//			log.info(element + " is displayed/visible on the screen");
 //		} catch (AssertionError er) {
 //			Log.ERROR(element + " is not displayed.");
 //			Assert.fail("Assertion Failed : " + er.getMessage());
@@ -279,29 +281,29 @@ public class DeviceActions{
 	
 	public void isElementEnabled(MobileElement element) {
 		methodName = "moveSeekbar";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		try {
 			Assert.assertTrue(element.isEnabled());
-			logger.info(element + " is displayed/visible on the screen");
+			log.info(element + " is displayed/visible on the screen");
 		} catch (AssertionError er) {
-			logger.info(element + " is not displayed.");
+			log.info(element + " is not displayed.");
 			Assert.fail("Assertion Failed : " + er.getMessage());
 		}
 		
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 	}
 
 	public void assertEquals(String text1, String text2) {
 		methodName = "moveSeekbar";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		try {
 			Assert.assertEquals(text1, text2);
-			logger.info("Both strings are equal : " + text1 + " Matches " + text2);
+			log.info("Both strings are equal : " + text1 + " Matches " + text2);
 		} catch (AssertionError er) {
-			logger.info("Texts doesn't match both differ in value");
+			log.info("Texts doesn't match both differ in value");
 			Assert.fail("Assertion Failed : " + er.getMessage());
 		}
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 	}
 	
 	public void setWebViewContext() {
@@ -326,20 +328,20 @@ public class DeviceActions{
 	
 	public Boolean isInterstitialAdBlockingView() {
 		methodName = "closeInterstitialAd";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		boolean interstitialAdInView = false;
 		
 		if(interstitialAd!= null) {
 			interstitialAdInView = true;
 		}
 		
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return interstitialAdInView;
 	}
 	
 	public boolean closeInterstitialAd() {
 		methodName = "closeInterstitialAd";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		boolean closedAdFound = false;
 		if(isInterstitialAdBlockingView()) {
 			try {
@@ -347,11 +349,11 @@ public class DeviceActions{
 				closedAdFound = true;
 			}
 			catch(Exception e) {
-				logger.info("No Interstitial Ad displayed");
+				log.info("No Interstitial Ad displayed");
 			}
 		}
 		
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return closedAdFound;
 	}
 	
@@ -362,16 +364,16 @@ public class DeviceActions{
 			for (String contextName : contextNames) {
 
 				if (contextName.contains(view)) {
-					logger.info(contextName);
+					log.info(contextName);
 					((AppiumDriver)driver).context(contextName);
-					logger.info("Switched context to : " + contextName);
-					logger.info(driver.getPageSource());
+					log.info("Switched context to : " + contextName);
+					log.info(driver.getPageSource());
 
 				}
 
 			} // driver.context(contextNames.toArray()[1].toString());//Purposely not removed comment
 		} catch (Exception ex) {
-			logger.error("Error occured during switching context to " + view);
+			log.error("Error occured during switching context to " + view);
 			Assert.fail("Unable to switch view to -- " + view + ex.getMessage());
 		}
 
@@ -382,7 +384,7 @@ public class DeviceActions{
 		int invalidLinksCount = 0;
 		ArrayList<String> brokenLinks = new ArrayList<String>();
 
-		logger.info("Total links count : " + articleLinks.size());
+		log.info("Total links count : " + articleLinks.size());
 
 		for (int i = 0; i < articleLinks.size(); i++) {
 
@@ -390,27 +392,27 @@ public class DeviceActions{
 			if (url != null) {
 				int status = getResponseCode(url);
 				if (status == 200) {
-					logger.info(url + " is Valid Link  with Response code :" + status);
+					log.info(url + " is Valid Link  with Response code :" + status);
 
 				} else if (status == 403) {
 					invalidLinksCount++;
 					brokenLinks.add(url);
-					logger.error(
+					log.error(
 							url + " Forbidden error, user might not have necessary permissions for a resource,Response code is :"
 									+ status);
 				} else if (status != 200) {
 					invalidLinksCount++;
 					brokenLinks.add(url);
-					logger.error(url + " is Invalid Link  with Response code :" + status);
+					log.error(url + " is Invalid Link  with Response code :" + status);
 				}
 
 			}
 
 		}
-		logger.info("No. of broken links are :" + invalidLinksCount);
+		log.info("No. of broken links are :" + invalidLinksCount);
 		for (Object link : brokenLinks) {
 
-			logger.error("failed links are " + link.toString());
+			log.error("failed links are " + link.toString());
 		}
 	}
 
@@ -419,7 +421,7 @@ public class DeviceActions{
 		int brokenImageCount = 0;
 		ArrayList<String> brokenImages = new ArrayList<String>();
 
-		logger.info("Total image link count : " + articleImages.size());
+		log.info("Total image link count : " + articleImages.size());
 
 		for (int i = 0; i < articleImages.size(); i++) {
 
@@ -427,27 +429,27 @@ public class DeviceActions{
 			if (url != null) {
 				int status = getResponseCode(url);
 				if (status == 200) {
-					logger.info(url + " is valid image with Response code :" + status);
+					log.info(url + " is valid image with Response code :" + status);
 
 				} else if (status == 403) {
 					brokenImageCount++;
 					brokenImages.add(url);
-					logger.error(
+					log.error(
 							url + " Forbidden error, user might not have necessary permissions for a resource,Response code is :"
 									+ status);
 				} else if (status != 200) {
 					brokenImageCount++;
 					brokenImages.add(url);
-					logger.error(url + " image is broken,  Response code is :" + status);
+					log.error(url + " image is broken,  Response code is :" + status);
 				}
 
 			}
 
 		}
-		logger.info("No. of broken image url are :" + brokenImageCount);
+		log.info("No. of broken image url are :" + brokenImageCount);
 		for (Object link : brokenImages) {
 
-			logger.error("failed image links are " + link.toString());
+			log.error("failed image links are " + link.toString());
 		}
 
 	}
@@ -462,7 +464,7 @@ public class DeviceActions{
 
 		} catch (Exception ex) {
 
-			logger.info("Exception in getting response.." + ex.getMessage());
+			log.info("Exception in getting response.." + ex.getMessage());
 		}
 		return responseCode;
 	}
@@ -480,7 +482,7 @@ public class DeviceActions{
 			}
 
 		} catch (Exception er) {
-			logger.error("Element is not present : " + element);
+			log.error("Element is not present : " + element);
 		}
 		Assert.fail(element + "element is not found!");
 		return false;
@@ -499,7 +501,7 @@ public class DeviceActions{
 			}
 
 		} catch (Exception er) {
-			logger.error("Element is not present : " + element);
+			log.error("Element is not present : " + element);
 		}
 		Assert.fail(element + "element is not found!");
 		return false;
@@ -509,14 +511,14 @@ public class DeviceActions{
 		try {
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 			HashMap<String, String> swipeObject = new HashMap<String, String>();
-			if (direction.equals(Constant.DOWN)) {
-				swipeObject.put(Constant.DIRECTION, Constant.DOWN);
-			} else if (direction.equals(Constant.UP)) {
-				swipeObject.put(Constant.DIRECTION, Constant.UP);
-			} else if (direction.equals(Constant.LEFT)) {
-				swipeObject.put(Constant.DIRECTION, Constant.LEFT);
-			} else if (direction.equals(Constant.RIGHT)) {
-				swipeObject.put(Constant.DIRECTION, Constant.RIGHT);
+			if (direction.equals(Constant.DIRECTION.DOWN.toString())) {
+				swipeObject.put("direction", Constant.DIRECTION.DOWN.toString());
+			} else if (direction.equals(Constant.DIRECTION.UP.toString())) {
+				swipeObject.put("direction", Constant.DIRECTION.UP.toString());
+			} else if (direction.equals(Constant.DIRECTION.LEFT.toString())) {
+				swipeObject.put("direction", Constant.DIRECTION.LEFT.toString());
+			} else if (direction.equals(Constant.DIRECTION.RIGHT.toString())) {
+				swipeObject.put("direction", Constant.DIRECTION.RIGHT.toString());
 			}
 			swipeObject.put("element", element.getId());
 			js.executeScript("mobile:swipe", swipeObject);

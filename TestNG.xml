@@ -37,7 +37,7 @@
                 <class name="com.sph.runners.RunCukesTestInWeb"/>
             </classes>
         </test>  -->
-            <test name="Tests iOS in Remote">
+            <!-- <test name="Tests iOS in Remote">
             <parameter name="browserName" value="iosremote" />
             <parameter name="driverHost" value="demo.experitest.com" />
             <parameter name="driverPort" value="443" />
@@ -48,5 +48,5 @@
             <classes>
                 <class name="com.sph.runners.RunCukesTestIPhone" />
             </classes>
-        </test>   
+        </test>    -->
 </suite>

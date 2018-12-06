@@ -1,16 +1,13 @@
 package com.sph.pageObjects.mobile;
 
 import java.net.MalformedURLException;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.log4testng.Logger;
+import org.apache.log4j.Logger;
 
 import com.sph.driverFactory.LocalWebDriverListener;
 import com.sph.utilities.Constant;
@@ -25,9 +22,8 @@ public class ArticleDetailPage {
 	private String methodName = null;
 
 	String browserName = LocalWebDriverListener.browserName;
-    Logger logger = Logger.getLogger(ArticleDetailPage.class);
+    Logger log = Logger.getLogger(ArticleDetailPage.class);
 	private WebDriver driver;
-    private WebDriverWait wait;
     private Capabilities capabilities;
     private DeviceActions util;
 
@@ -46,30 +42,35 @@ public class ArticleDetailPage {
     
     public boolean verifyArticleTitle(String expectedArticleTitle) {
 		methodName = "verifyArticleTitle";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		Boolean verifiedTitle = false;
 		try {
 			Assert.assertEquals(articleTitle.getText().contains(expectedArticleTitle), "Article Title mismatch");
 		}catch(Exception e) {
-			logger.error("Exception raised: " + e);
+			log.error("Exception raised: " + e);
 			driver.quit();
 		}
 
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return verifiedTitle;
 	}
     
     public void gotoPreviousView() {
     		methodName = "gotoPreviousView";
-		logger.info("Entering Method: " + methodName);	
+		log.info("Entering Method: " + methodName);	
 		try {
 			if(capabilities.getCapability("platformName").toString().equalsIgnoreCase("iOS")) {
 				util.clickifClickable(backToPreviousView,Constant.SHORT_TIMEOUT);
 			}
 		}catch(Exception e) {
-			logger.error("Exception raised: " + e);
+			log.error("Exception raised: " + e);
 			driver.quit();
 		}
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 	}
+    
+    //Validate the tab title, text-to-speech, bookmark, share option, back button
+    public void validateNavigationBarMenu() {
+    		methodName = "validateNavigationBarMenu";
+    }
 }

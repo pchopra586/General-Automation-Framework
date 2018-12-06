@@ -6,13 +6,12 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.log4testng.Logger;
+import org.apache.log4j.Logger;
 
 import com.sph.driverFactory.LocalWebDriverListener;
 import com.sph.utilities.Constant;
 import com.sph.utilities.DeviceActions;
 
-import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 
 
@@ -24,10 +23,10 @@ public class STNowPage {
 	private String methodName = null;
 
 	String browserName = LocalWebDriverListener.browserName;
-    Logger logger = Logger.getLogger(AccountPage.class);
-	private WebDriver driver;
-    private WebDriverWait wait;
-    private Capabilities capabilities;
+    Logger log = Logger.getLogger(AccountPage.class);
+	WebDriver driver;
+    WebDriverWait wait;
+    Capabilities capabilities;
     private DeviceActions util;
 
 	public STNowPage(WebDriver driver) throws MalformedURLException {
@@ -44,14 +43,14 @@ public class STNowPage {
 
 	public void OpenRecapLink() {
 		do{
-			logger.info("Looking for load more link...");
+			log.info("Looking for load more link...");
 		boolean flag = util.swipeVerticalUntilElementIsFound(loadMoreLink, 10, Constant.UP);
 		if(flag){
-		logger.info("Clicking on load more link...");
+		log.info("Clicking on load more link...");
 		util.clickUsingCoordinates(loadMoreLink);
 		}
 		}while(!(util.isElementPresent(recapLink, Constant.SHORT_TIMEOUT)));
-		logger.info("clicking on recaplink");
+		log.info("clicking on recaplink");
 		util.clickUsingCoordinates(recapLink);
 		try {
 			Thread.sleep(6000);

@@ -8,14 +8,13 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.log4testng.Logger;
+import org.apache.log4j.Logger;
 
 import com.sph.driverFactory.LocalWebDriverListener;
 import com.sph.utilities.Constant;
 import com.sph.utilities.DeviceActions;
 import com.sph.utilities.IOSElements;
 
-import io.appium.java_client.MobileDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
@@ -25,9 +24,9 @@ public class LatestTabPage {
 	private String methodName = null;
 
 	String browserName = LocalWebDriverListener.browserName;
-    Logger logger = Logger.getLogger(LatestTabPage.class);
+    Logger log = Logger.getLogger(LatestTabPage.class);
 	private WebDriver driver;
-    private WebDriverWait wait;
+    WebDriverWait wait;
     private Capabilities capabilities;
     private DeviceActions util;
     private ArticleDetailPage articleDetail;
@@ -52,10 +51,8 @@ public class LatestTabPage {
     
     public void validateFirstArticleInView() {
 		methodName = "validateArticle";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		MobileElement articleTitleOnListingPage = null;
-		MobileElement articleTitleOnContentPage = null;
-		String articlePublishTime = "";
 		
 		try {
 			if(capabilities.getCapability("platformName").toString().equalsIgnoreCase("iOS")) {
@@ -68,15 +65,15 @@ public class LatestTabPage {
 				
 			}
 		}catch(Exception e) {
-			logger.error("Exception raised: " + e);
+			log.error("Exception raised: " + e);
 			driver.quit();
 		}
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 	}
     
     public String openArticle(int articleSequence) {
 		methodName = "validateArticle";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		MobileElement articleTitleOnListingPage = null;
 		
 		try {
@@ -86,11 +83,11 @@ public class LatestTabPage {
 				util.clickifClickable(articleTitleOnListingPage,Constant.SHORT_TIMEOUT);
 			}
 		}catch(Exception e) {
-			logger.error("Exception raised: " + e);
+			log.error("Exception raised: " + e);
 			driver.quit();
 		}
 	
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return articleTitleOnListingPage.getText();
     }
 }

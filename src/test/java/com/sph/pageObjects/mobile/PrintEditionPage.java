@@ -13,7 +13,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
-import org.testng.log4testng.Logger;
+import org.apache.log4j.Logger;
 
 import com.sph.driverFactory.LocalWebDriverListener;
 import com.sph.utilities.AndroidElements;
@@ -32,7 +32,7 @@ public class PrintEditionPage{
 	private String methodName = null;
 
 	String browserName = LocalWebDriverListener.browserName;
-    Logger logger = Logger.getLogger(PrintEditionPage.class);
+    Logger log = Logger.getLogger(PrintEditionPage.class);
 	private WebDriver driver;
     private Capabilities capabilities;
     private DeviceActions util;
@@ -115,7 +115,7 @@ public class PrintEditionPage{
 	
 	public PrintEditionPage gotoPrintEditionPage() {
 		methodName = "gotoPrintEditionPage";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		try{
 			GenericNavigator navigator = new GenericNavigator(driver);
 			if(!navigator.preConfigured()) {
@@ -124,16 +124,16 @@ public class PrintEditionPage{
 			MenuPage menu = new MenuPage(driver);
 			menu.clickOnMenu().gotoMenu(Constant.MENU.PRINT_EDITION);
 		}catch(Exception e) {
-			logger.error("Exception raised: " + e);
+			log.error("Exception raised: " + e);
 			driver.quit();
 		}
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return this;
 	}
 	
 	public Boolean verifyInstantPreDownloadAlert() {
 		methodName = "verifyInstantPreDownloadAlert";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		Boolean firstTimeVisitPopUpFound = false;
 		
 		String alertMsgReceived = alertMsg.getText().trim().replaceAll("( )+", " ");
@@ -155,13 +155,13 @@ public class PrintEditionPage{
 //			Log.INFO("No First time Print Edition PopUp Found. Exception thrown: " + e.getMessage());
 //		}
 		
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return firstTimeVisitPopUpFound;
 	}
 	
 	public Boolean verifyPushNotifyPopUp() {
 		methodName = "verifyPushNotifyPopUp";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		Boolean pushNotifyPopUpFound = false;
 		
 		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
@@ -174,38 +174,38 @@ public class PrintEditionPage{
 			}
 		}
 		catch(Exception e) {
-			logger.warn("No Push Notification PopUp Found on Print Edition Page. Exception thrown: " + e.getMessage());
+			log.warn("No Push Notification PopUp Found on Print Edition Page. Exception thrown: " + e.getMessage());
 		}
 		
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return pushNotifyPopUpFound;
 	}
 	
 	public PrintEditionPage closePrintEditionInstantDownloadAlert() {
 		methodName = "closePrintEditionInstantDownloadAlert";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		if(capabilities.getCapability("platformName").toString().equalsIgnoreCase("iOS")) {
 			alertAccept.click();
 		}
 		
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return this;
 	}
 	
 	public PrintEditionPage closePrintEditionPushNotificationAlert() {
 		methodName = "closePrintEditionPushNotificationAlert";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		
 		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		pushNotifyAlertClose.click();
 		
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return this;
 	}
 	
 	public PrintEditionPage verifyDefaultView() {
 		methodName = "verifyDefaultView";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		
 		List<String> expectedTabInView = new ArrayList<String>();
 		expectedTabInView.add(Constant.TOP_OF_THE_NEWS_TAB_LABEL);
@@ -237,7 +237,7 @@ public class PrintEditionPage{
 			}
 		}
 		
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return this;
 	}
 
@@ -246,14 +246,14 @@ public class PrintEditionPage{
 		
 		List<MobileElement> tabsValidated = new ArrayList<MobileElement>();
 		for(MobileElement currentTab:tabInView) {
-			while(currentTab.getAttribute("visible").equalsIgnoreCase("false")) {
+			log.info("Attributes of tab: [Label-" + currentTab.getAttribute("label") + "], [IsDisplayed-" + currentTab.isDisplayed() + "]");
+			while(!currentTab.isDisplayed()) {
 				util = new DeviceActions(driver);
 				util.swipeHorizontal("left");
 			}
 			currentTab.click();
 			//Track and Verify image dimension
 			validateArticlesInView();
-			
 			
 			tabsValidated.add(currentTab);
 		}
@@ -269,6 +269,7 @@ public class PrintEditionPage{
 	public PrintEditionPage validateArticlesInView() {
 		List<String> articleTitles = new ArrayList<String>();
 		HashMap<String, Integer> actualImageDim = new HashMap<String, Integer>();
+		HashMap<String, Integer> actualTitleDim = new HashMap<String, Integer>();
 		String lastArticleValidated = "";
 		String currentArticleTitle;
 		int articleInViewCount = 0;
@@ -276,7 +277,7 @@ public class PrintEditionPage{
 			int count = 0;
 			for(MobileElement currentArticle:articlesInView) {
 				currentArticleTitle = articleTitlesInView.get(count).getAttribute("label");
-				System.out.println("Starting validation of: " + currentArticleTitle);
+				log.info("(1)Starting validation of: " + currentArticleTitle);
 				if(articleTitles.contains(currentArticleTitle)) {
 					continue;
 				}
@@ -284,24 +285,37 @@ public class PrintEditionPage{
 				//Validate Article Cell Dimension
 				
 				//Validate Article Image Dimension
-				actualImageDim.put("xStart", articleTitlesInView.get(count).getLocation().getX());
-				actualImageDim.put("yStart", articleTitlesInView.get(count).getLocation().getY());
-				actualImageDim.put("width", articleTitlesInView.get(count).getSize().width);
-				actualImageDim.put("height", articleTitlesInView.get(count).getSize().height);
+				actualImageDim.put("xStart", articleImagesInView.get(count).getLocation().getX());
+				actualImageDim.put("width", articleImagesInView.get(count).getSize().width);
+				actualImageDim.put("height", articleImagesInView.get(count).getSize().height);
+				
+				log.info("(2)Image validation attributes captured");
+				
+				actualTitleDim.put("xStart", articleTitlesInView.get(count).getLocation().getX());
+				actualTitleDim.put("width", articleTitlesInView.get(count).getSize().width);
+				
+				log.info("(3)Title validation attributes captured");
 				
 				if(!expectedDim.containsKey("imageDim")) {
 					expectedDim.put("imageDim", actualImageDim);
+					log.info("(4)Added the article image dimension to be verified");
 				}
 				else {	
 					validateElementDimension(actualImageDim, expectedDim.get("imageDim"));
-//					Assert.assertEquals(xStart, expectedArticleImageDim.get("xStart"), "X-Axis Start of article image is inconsistent");
-//					Assert.assertEquals(yStart, expectedArticleImageDim.get("yStart"), "Y-Axis Start of article image is inconsistent");
-//					Assert.assertEquals(width, expectedArticleImageDim.get("width"), "Width of article image is inconsistent");
-//					Assert.assertEquals(height, expectedArticleImageDim.get("height"), "Height of article image is inconsistent");
+					log.info("(5)Validated the article image aligned");
+				}
+				
+				if(!expectedDim.containsKey("titleDim")) {
+					expectedDim.put("titleDim", actualTitleDim);
+					log.info("(6)Added the article title dimension to be verified");
+				}
+				else {	
+					validateElementDimension(actualTitleDim, expectedDim.get("titleDim"));
+					log.info("(7)Validated the article title aligned");
 				}
 				
 				//Validate Article Title Dimension
-				System.out.println("Validated: " + currentArticleTitle);
+				log.info("(8)Validated: " + currentArticleTitle);
 				//Validate Article Time Dimension
 				
 				articleTitles.add(currentArticleTitle);
@@ -323,25 +337,30 @@ public class PrintEditionPage{
 	
 	public Boolean validateElementDimension(HashMap<String,Integer> actualDim, HashMap<String,Integer> expectedDim) {
 		methodName = "validateAlignment";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		Boolean validated = false;
-					
-		Assert.assertEquals(actualDim.get("xStart"),expectedDim.get("xStart"), "X-Axis Start of article image is inconsistent");
-		Assert.assertEquals(actualDim.get("yStart"),expectedDim.get("yStart"), "Y-Axis Start of article image is inconsistent");
-		Assert.assertEquals(actualDim.get("width"),expectedDim.get("width"), "Width of article image is inconsistent");
-		Assert.assertEquals(actualDim.get("height"),expectedDim.get("height"), "Height of article image is inconsistent");
+			
+		if(expectedDim.containsKey("xStart")) {
+			Assert.assertEquals(actualDim.get("xStart"),expectedDim.get("xStart"), "X-Axis Start of article element is inconsistent");
+		}
+		if(expectedDim.containsKey("width")) {
+			Assert.assertEquals(actualDim.get("width"),expectedDim.get("width"), "Width of article element is inconsistent");
+		}
+		if(expectedDim.containsKey("height")) {
+			Assert.assertEquals(actualDim.get("height"),expectedDim.get("height"), "Height of article element is inconsistent");
+		}
 		validated = true;
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return validated;
 	}
 	
 	public PrintEditionPage openCalendarView() {
 		methodName = "openCalendarView";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		
 		calendar.click();
 		
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return this;
 	}
 
