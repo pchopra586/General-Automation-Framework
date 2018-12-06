@@ -12,6 +12,9 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.MobileElement;
+
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import java.io.IOException;
@@ -54,7 +57,7 @@ public class ArticleTitleVerification {
     
     @Then("^I am at article details page$")
     public void verifyAtArticleDetailsPage() throws Throwable {
-    		articlePage =new ArticlePage(this.driver);
+    		articlePage =new ArticlePage((AppiumDriver<MobileElement>) this.driver);
     		articlePage.assertOnDetailsPage();
     }
     

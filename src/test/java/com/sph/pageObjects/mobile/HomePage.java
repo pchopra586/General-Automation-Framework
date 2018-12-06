@@ -89,7 +89,7 @@ public class HomePage{
 	private MobileElement logo;
 	
 	@iOSXCUITFindBy(accessibility = IOSElements.HAMBURGER_MENU_LOCATOR)
-	@AndroidFindBy(xpath = AndroidElements.HAMBURGER_MENU_LOCATOR)
+	@AndroidFindBy(accessibility = AndroidElements.HAMBURGER_MENU_LOCATOR)
 	private MobileElement menu;
 	
 	@iOSXCUITFindBy(accessibility = IOSElements.ST_NOW_TAB_ID)
@@ -160,7 +160,7 @@ public class HomePage{
 	@HowToUseLocators(androidAutomation = LocatorGroupStrategy.ALL_POSSIBLE, iOSXCUITAutomation = LocatorGroupStrategy.ALL_POSSIBLE)
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther/child::XCUIElementTypeStaticText[@name='article_title']")
 	@AndroidFindBy(xpath = "//*[@resource-id='com.buuuk.st:id/article_title']/../android.widget.TextView[@index='0']")
-	//@AndroidFindBy(xpath = "//*[@resource-id='com.buuuk.st:id/imageLayout']//following-sibling::android.widget.TextView[@resource-id='com.buuuk.st:id/article_title']")
+	@AndroidFindBy(xpath = "//*[@resource-id='com.buuuk.st:id/imageLayout']//following-sibling::android.widget.TextView[@resource-id='com.buuuk.st:id/article_title']")
 	private MobileElement freeArticleTitle;
 
 	@iOSXCUITFindBy(xpath = "//*[@name='premium']//following-sibling::XCUIElementTypeStaticText[@name='article_title']")
@@ -182,6 +182,7 @@ public class HomePage{
 	
 	public HomePage(WebDriver driver) throws MalformedURLException {
 		this.driver = driver;
+		this.util = new DeviceActions(this.driver);
         this.capabilities = ((RemoteWebDriver) driver).getCapabilities();
         this.wait = new WebDriverWait(this.driver, 30);
         this.util = new DeviceActions(this.driver);
@@ -1338,43 +1339,6 @@ public class HomePage{
 		return this;
 	}
 
-	public LoginPage openLoginControl() {
-		log.info("Opening login page/Drawer menu");
-		try{
-			util.clickifClickable(menu, Constant.SHORT_TIMEOUT);
-			return new LoginPage(driver);
-		}catch(Exception ex) {
-			log.error("Cannot open Login Control");
-			return null;
-		}
-	}
-	
-	public HomePage isOnHomePage() {
-		log.error("Verifying if on home page");
-		if (capabilities.getCapability("platformName").toString().equalsIgnoreCase("ios")) {
-			util.clickUsingCoordinates(menu);
-		}
-		return this;
-	}
-
-	public ArticlePage verifyNavigatedToTopStoriesPage() {
-		try{
-			util.isElementPresent(topStoriesHeading, Constant.SHORT_TIMEOUT, "Top stories heading");
-			log.info("Top Stories page is displayed to the user");
-			return new ArticlePage(driver);
-		}catch(Exception ex) {
-			log.error("Cannot navigate to Top Stories page");
-			return null;
-		}
-		
-	}
-
-	public HomePage assertOnMediaDisplayed() {
-		util.isElementPresent(articleWithImage, Constant.SHORT_TIMEOUT, "Article with Image");
-		return this;
-	}
-
-/////modified this for new framework To do : remove comments
 	public void navigateToTopStoryOftheHomePage() {
 		try {
 			log.info("Navigating to main article of home page");
@@ -1417,27 +1381,7 @@ public class HomePage{
 		 
 	
 }
-//////////////////////////////////////////////////////////////////////
 
-
-	public LoginPage returnLoginPage() {
-		try {
-			return new LoginPage(driver);
-		}catch(Exception ex) {
-			log.error("Cannot return to Login Page");
-			return null;
-		}
-	}
-
-	public STNowPage returnSTNowPage() {
-		try {
-			return new STNowPage(driver);
-		}catch(Exception ex) {
-			log.error("Cannot go to STNow Page");
-			return null;
-		}
-	}
-	
 	public HomePage verifyVisibilityOfAddToHomeButton() {
 		log.info("Verifying if 'Add To Home' Button is displayed on the tab ");
 		boolean flag = util.isElementPresent(addToHomeButton, Constant.SHORT_TIMEOUT);
@@ -1459,6 +1403,8 @@ public class HomePage{
 			}
 			return new ArticlePage(driver);
 		}catch(Exception ex) {
+			Reporter.addStepLog("the error is "+ex.getMessage());
+			log.info(ex.getMessage());
 			log.error("Cannot open Article");
 			return null;
 		}
@@ -1470,7 +1416,7 @@ public class HomePage{
 		try {
 			if (flag) {
 				String headline;
-				headline = element.getText();
+				headline = element.getText().trim();
 				log.info("Article found! Now navigating to " + articleType + " article..");
 				log.info("Article heading is " + headline);
 				util.clickifClickable(element, Constant.SHORT_TIMEOUT);
@@ -1525,15 +1471,6 @@ public class HomePage{
 		}
 
 		return this;
-	}
-
-	public BookmarkPage returnBookmarkPage() {
-		try {
-			return new BookmarkPage(driver);
-		}catch (Exception ex) {
-			log.error("Unable to return to Bookmark page");
-			return null;
-		}
 	}
 
 	public ArticlePage openAndVerifyArticle(List<String> list, int index, int maxSwipe) {
@@ -1606,5 +1543,7 @@ public class HomePage{
 			return null;
 		}
 	}
+	
+	
 }
 	

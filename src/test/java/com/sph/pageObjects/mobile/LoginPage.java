@@ -12,6 +12,7 @@ import org.testng.Assert;
 import org.apache.log4j.Logger;
 
 import com.sph.driverFactory.LocalWebDriverListener;
+import com.sph.listeners.Reporter;
 import com.sph.utilities.AndroidElements;
 import com.sph.utilities.Constant;
 import com.sph.utilities.DeviceActions;
@@ -21,7 +22,6 @@ import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
-
 
 /* Class contains page objects for Login screen.*/
 public class LoginPage{
@@ -93,10 +93,7 @@ public class LoginPage{
 //	@AndroidFindBy(id = "iv_settings")
 //	private MobileElement settingsLink;
 //
-//	@iOSXCUITFindBy(accessibility = "saved menu")
-//	@AndroidFindBy(id = "iv_saved")
-//	private MobileElement bookmarkLink;
-
+	
 	public void appLogin(String usernameText, String passwordText) {
 		methodName = "appLogin";
 		log.info("Entering Method: " + methodName);
@@ -196,5 +193,5 @@ public class LoginPage{
 //		util.clickifClickable(settingsLink, Constant.SHORT_TIMEOUT);
 //		return new SettingsPage(driver, util, log);
 //	}
-
+	
 }

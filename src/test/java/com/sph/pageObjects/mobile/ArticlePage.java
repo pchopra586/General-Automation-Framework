@@ -10,6 +10,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import org.testng.Assert;
 import org.apache.log4j.Logger;
 
@@ -17,6 +21,8 @@ import com.sph.driverFactory.LocalWebDriverListener;
 import com.sph.listeners.Reporter;
 import com.sph.utilities.Constant;
 import com.sph.utilities.DeviceActions;
+
+import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 
 import io.appium.java_client.pagefactory.AndroidFindBy;
@@ -27,8 +33,11 @@ public class ArticlePage {
 	private String methodName = null;
 
 	String browserName = LocalWebDriverListener.browserName;
+
     Logger log = Logger.getLogger(BookmarkPage.class);
 	private WebDriver driver;
+    private WebDriverWait wait;
+
     private Capabilities capabilities;
     private DeviceActions util;
     
@@ -60,8 +69,10 @@ public class ArticlePage {
 	@AndroidFindBy(id = "btn_subscribe")
 	private MobileElement subscribeButton;
 
-	@iOSXCUITFindBy(iOSClassChain = "/XCUIElementTypeNavigationBar//XCUIElementTypeStaticText")
-	@AndroidFindBy(id = "tv_title")
+
+	@iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeNavigationBar/**/XCUIElementTypeStaticText")
+	@AndroidFindBy(id = "com.buuuk.st:id/tv_title")
+
 	private MobileElement sectionTitle;
 
 	@iOSXCUITFindBy(accessibility = "title_subscription_full_article")
@@ -73,6 +84,7 @@ public class ArticlePage {
 	private MobileElement gradientView;
 
 	@FindBy(css = "#main-content p:nth-child(3) ")
+	@AndroidFindBy(xpath = "(//android.widget.TextView[@resource-id=\"com.buuuk.st:id/tv_text\"])[3]")
 	private WebElement mainContent;
 
 	@iOSXCUITFindBy(accessibility = "FROM AROUND THE WEB")
@@ -155,11 +167,13 @@ public class ArticlePage {
 	public ArticlePage switchView(String view) {
 		log.info("Switching to " + view);
 		try{
-			util.switchContextToView(driver, view);
+			util.switchContextToView((AppiumDriver<MobileElement>)driver, view);
 		}catch (Exception ex) {
 			log.info("Exception in getting response.." + ex.getMessage());
 		}
-		log.info("body is" + articleContent.getText());
+
+		//logger.info("body is" + articleContent.getText()); add if condition , if webview then execute this statement
+
 		return this;
 	}
 
@@ -186,8 +200,15 @@ public class ArticlePage {
 	 */
 
 	public ArticlePage verifyPremiumArticleAccess(int maxSwipe) {
-
 		log.info("verifying accessibility of premium article");
+		checkView();
+		////switchView(Constant.WEBVIEW);
+		boolean visibilityFlag = util.isElementPresent(mainContent, Constant.LONG_TIMEOUT);
+		if (!visibilityFlag) {
+			log.info("User doesn't have access to the article, kindly subscribe for get access to premium content!");
+		}
+		switchView(Constant.NATIVE);
+
 		boolean flag = util.swipeVerticalUntilElementIsFound(premiumStoryAccessHelpText, maxSwipe, Constant.UP);
 		if (flag) {
 			log.info("'premium Stories access help text' is visible!");
@@ -203,14 +224,7 @@ public class ArticlePage {
 			Assert.assertEquals(premiumStoryAccessHelpText.getText().trim(), Constant.PREMIUM_STORIES_ACCESS_HELP_TEXT);
 			// util.assertEquals(whatIsPremiumText.getText(),
 			// Constant.WHAT_IS_PREMIUM_TEXT);
-			switchView(Constant.WEBVIEW);
-			boolean visibilityFlag = util.isElementPresent((MobileElement)mainContent, Constant.SHORT_TIMEOUT);
-			if (!visibilityFlag) {
-				log.info("User doesn't have access to the article, kindly subscribe for get access to premium content!");
-			}
-
 		}
-
 		return this;
 
 	}
@@ -219,12 +233,14 @@ public class ArticlePage {
 		log.info("Section title is : " + sectionTitle.getText());
 		Assert.assertEquals(sectionTitle.getText(), tabName);
 		log.info("Section title is displaying correctly!!");
+		Reporter.addStepLog("Section title is "+sectionTitle.getText());
 		return this;
 	}
 
 	public ArticlePage verifyArticleAccess() {
-		switchView(Constant.WEBVIEW);
-		util.isElementPresent((MobileElement)mainContent, Constant.SHORT_TIMEOUT);
+		////switchView(Constant.WEBVIEW);
+		checkView();
+		util.isElementPresent(mainContent, Constant.SHORT_TIMEOUT);
 		log.info(mainContent.getText());
 		log.info("User has access to the article!");
 		switchView(Constant.NATIVE);
