@@ -85,7 +85,7 @@ public class DeviceActions{
             Dimension size = this.driver.manage().window().getSize();
             int anchor = (int) (size.height /2);
             int startPoint = (int) (size.width * 0.90);
-            int endPoint = (int) (size.width * 0.05);
+            int endPoint = (int) (size.width * 0.02);
             TouchAction action = new TouchAction ((PerformsTouchActions) driver);
             
         
@@ -100,7 +100,7 @@ public class DeviceActions{
 				.release().perform();
 				log.info("Perform Swipe to Left Direction");
 			} else if (direction.equalsIgnoreCase("Right")) {
-				action.press(start.point(endPoint, anchor)).waitAction(waitTime.withDuration(Duration.ofMillis(0))).moveTo(end.point(startPoint, anchor))
+				action.press(start.point(endPoint, anchor)).waitAction(waitTime.withDuration(Duration.ofMillis(1000))).moveTo(end.point(startPoint, anchor))
 						.release().perform();
 				log.info("Perform Swipe to Right Direction");
 			}

@@ -111,5 +111,8 @@ public class IOSElements {
 	
 	public static final String ALERT_IGNORE_ID = "alert_button_option_two";
 	public static final String ALERT_ACCEPT_ID = "OK";
+	
+	public static final String OUTBRAIN_TEXT = "Recommended by";
+	public static final String OUTBRAIN_LOGO_ID = "Outbrain-logo";
 }
 

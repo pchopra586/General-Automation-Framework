@@ -109,6 +109,29 @@ public class ArticleListingPage {
 			return null;
 		}
 	}
+    
+    public String openFirstArticleInView() {
+		Integer totalArticlesInView = articlesInView.size();
+		Integer articleIndex = 0;
+		String firstArticleTitle = null;
+		try {
+			while(totalArticlesInView > articleIndex) {
+				MobileElement firstArticleInView = articlesInView.get(articleIndex);
+				if(firstArticleInView.getAttribute("visible").equalsIgnoreCase("true")) {
+					firstArticleTitle = firstArticleInView.getAttribute("label");
+					firstArticleInView.click();
+					break;
+				}
+				else {
+					articleIndex++;
+				}
+			}
+		return firstArticleTitle;
+	}catch(Exception ex) {
+		log.error("Cannot open Article");
+		return null;
+	}
+}
 
     //TODO: Discuss with Sandhya (couldn't get the purpose of element)
 	public ArticlePage navigateToArticle(MobileElement element, String articleType) {

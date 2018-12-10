@@ -1,7 +1,9 @@
 package com.sph.stepDefinitions.mobile;
 
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -14,6 +16,7 @@ import com.sph.pageObjects.mobile.HomePage;
 import com.sph.pageObjects.mobile.PrintEditionCalendar;
 import com.sph.pageObjects.mobile.PrintEditionPage;
 import com.sph.utilities.Constant;
+import com.sph.utilities.DeviceActions;
 import com.sph.utilities.GenericNavigator;
 
 import cucumber.api.PendingException;
@@ -25,6 +28,7 @@ import cucumber.api.java.en.When;
 public class BuildSanityValidation {
 	static Logger log;
     WebDriver driver = DriverManager.getDriver();
+    DeviceActions util;
     GenericNavigator genericNavigator;
     HomePage homePage = null;
     ArticleListingPage articleList = null;
@@ -32,8 +36,9 @@ public class BuildSanityValidation {
     
     private String articleTitle = null;
     private ArticlePage articlePage;
+    List<String> bookmarkedArticles;
     
-    private static Map<String, Integer> sectionDimension = null;
+    private static Map<String, Object> sectionDimension = null;
     
     private static Map<String, Integer> articleContentDimension = null;
     
@@ -76,7 +81,7 @@ public class BuildSanityValidation {
     
     @Then("^I capture the dimension of \"([^\"]*)\" on Home Page$")
     public void i_capture_the_dimension_of_on_Home_Page(String sectionLabel) throws Throwable {
-	    	sectionDimension = new HashMap<String, Integer>();
+	    	sectionDimension = new HashMap<String, Object>();
 	    	sectionDimension.put("resetDimension", 1);		//0 = False, 1 = True
 	    	sectionDimension.put("resetArticleWidth", 1);
 	    	sectionDimension.put("resetXAxisStart", 1);
@@ -94,9 +99,11 @@ public class BuildSanityValidation {
 	    	sectionDimension.put("removeFromHomeBtnHeight", 0);
 	    	sectionDimension.put("removeFromHomeBtnWidth", 0);
 	    	sectionDimension.put("removeFromHomeBtnXAxisStart", 0);
+	    	
     	
     		homePage = new HomePage(this.driver);
-		sectionDimension = homePage.sectionValidation(sectionLabel, sectionDimension);
+    		sectionDimension = homePage.sectionValidation(sectionLabel, sectionDimension);
+		
     }
 
     @Then("^I validate the alignment and relative dimension of \"([^\"]*)\" on Home Page$")
@@ -107,7 +114,7 @@ public class BuildSanityValidation {
 	    	sectionDimension.put("resetXAxisStart", 0);
 	    	sectionDimension.put("resetArticleImageVideoHeight", 0);
 	    	sectionDimension.put("resetRemoveFromHomeBtnDimension", 0);
-		sectionDimension = homePage.sectionValidation(sectionLabel, sectionDimension);
+	    	sectionDimension = homePage.sectionValidation(sectionLabel, sectionDimension);
     }
     
     @Given("^I open the last article on Home Page$")
@@ -124,6 +131,33 @@ public class BuildSanityValidation {
     		
     		//Validate the tab title, text-to-speech, bookmark, share option, back button
     		articlePage.assertOnDetailsPage();
+//    		
+//    		
+//    		
+//    		//TODO: Delete later
+//    		String bookmarkedArticleTitle =	articlePage.bookmarkArticle();
+//    		bookmarkedArticles = new ArrayList<String>();
+//	    bookmarkedArticles.add(bookmarkedArticleTitle);
+//	    
+//	    util = new DeviceActions(this.driver);
+//		
+//		Boolean afterSwipeSameArticle = false;
+//		Integer totalBookmarkedArticle;
+//		
+//		totalBookmarkedArticle = bookmarkedArticles.size();
+//		
+//		util.swipeHorizontal("Right");
+//		afterSwipeSameArticle = articlePage.verifyWhetherReachedFirstArticleInListing(bookmarkedArticles.get(totalBookmarkedArticle-1));
+//		
+//		while(!afterSwipeSameArticle) {
+//			bookmarkedArticleTitle =	articlePage.bookmarkArticle();
+//	    	    bookmarkedArticles.add(bookmarkedArticleTitle);
+//				
+//			totalBookmarkedArticle = bookmarkedArticles.size();
+//				
+//			util.swipeHorizontal("Right");
+//	    		afterSwipeSameArticle = articlePage.verifyWhetherReachedFirstArticleInListing(bookmarkedArticles.get(totalBookmarkedArticle-1));
+//		}
     		
     		//Validate article image(if present)
     		//Validate article author
@@ -148,87 +182,120 @@ public class BuildSanityValidation {
 	    	 * Internal Recommendations
 	    	 * External Recommendations
 	    	*/
+	    	
+	    	//Reset Required Dimension
 	    	articleContentDimension.put("resetReqDimension", 1);
 	    	
-	    	articleContentDimension.put("textXStart", 0);
-	    	articleContentDimension.put("textWidth", 0);
+//	    	//Text - Required Dimension for Article Content Page
+//	    	articleContentDimension.put("textXStart", 0);
+//	    	articleContentDimension.put("textRowWidth", 0);
+//	    
+//	    	//Back Button - Required Dimension for Article Content Page
+//	    	articleContentDimension.put("backBtnXStart", 0);
+//	    	articleContentDimension.put("backBtnYStart", 0);
+//	    	articleContentDimension.put("backBtnWidth", 0);
+//	    	articleContentDimension.put("backBtnHeight", 0);
+//	    	
+//	    	//Navigation Bar Title - Required Dimension for Article Content Page
+//	    	articleContentDimension.put("navigationTitleXStart", 0);
+//	    	articleContentDimension.put("navigationTitleYStart", 0);
+//	    	
+//	    	//Text to speech - Required Dimension for Article Content Page
+//	    	articleContentDimension.put("textToSpeechXStart", 0);
+//	    	articleContentDimension.put("textToSpeechYStart", 0);
+//	    	articleContentDimension.put("textToSpeechWidth", 0);
+//	    	articleContentDimension.put("textToSpeechHeight", 0);
+//	    	
+//	    	//Bookmark Button - Required Dimension for Article Content Page
+//	    	articleContentDimension.put("bookmarkXStart", 0);
+//	    	articleContentDimension.put("bookmarkYStart", 0);
+//	    	articleContentDimension.put("bookmarkWidth", 0);
+//	    	articleContentDimension.put("bookmarkHeight", 0);
+//	    	
+//	    	//Share Button - Required Dimension for Article Content Page
+//	    	articleContentDimension.put("shareXStart", 0);
+//	    	articleContentDimension.put("shareYStart", 0);
+//	    	articleContentDimension.put("shareWidth", 0);
+//	    	articleContentDimension.put("shareHeight", 0);
+//	    	
+//	    	//Publish Info and Watch icon next to it - Required Dimension for Article Content Page
+//	    	articleContentDimension.put("timeWidth", 0);
+//	    	articleContentDimension.put("timeHeight", 0);
+//	    	articleContentDimension.put("publishInfoWidth", 0);
+//	    	articleContentDimension.put("publishInfoXStart", 0);
+//	    	
+//	    	//Internal Recommendation - Required Dimension for Article Content Page
+//	    	articleContentDimension.put("internalRecommendationTitleWidth", 0);
+//	    	articleContentDimension.put("internalRecommendationTitleHeight", 0);
+//	    	articleContentDimension.put("recommendationArticleTitleWidth", 0);
+//	    	articleContentDimension.put("recommendationArticleTitleXStart", 0);
+//	    	articleContentDimension.put("internalRecommendationArticlePublishInfoXStart", 0);
+//	    	articleContentDimension.put("internalRecommendationArticlePublishInfoWidth", 0);
+//	    	articleContentDimension.put("internalRecommendationArticlePublishInfoHeight", 0);
+//	    	
+//	    	//External Recommendation - Required Dimension for Article Content Page
+//	    	articleContentDimension.put("externalRecommendationTitleWidth", 0);
+//	    	articleContentDimension.put("externalRecommendationTitleHeight", 0);
+//	    	articleContentDimension.put("externalRecommendationArticleURLXStart", 0);
+//	    	articleContentDimension.put("externalRecommendationArticleURLWidth", 0);
+//	    	
+//	    	articleContentDimension.put("outbrainLogoTextWidth", 0);
+//	    	articleContentDimension.put("outbrainLogoTextHeight", 0);
+//	    	articleContentDimension.put("outbrainLogoWidth", 0);
+//	    	articleContentDimension.put("outbrainLogoHeight", 0);
+//	    	articleContentDimension.put("outbrainLogoXStart", 0);
+//	    	
+//	    	//For Main Image/Video in view
+//	    	articleContentDimension.put("resetMediaDimension", 1);
+//	    	articleContentDimension.put("mediaXStart", 0);
+//	    	articleContentDimension.put("mediaWidth", 0);
+//	    	articleContentDimension.put("mediaHeight", 0);
+//	    	
+//	    	//For Author Name 
+//	    	articleContentDimension.put("resetAuthorDimension", 1);
+//	    	articleContentDimension.put("authorNameXStart", 0);
+//	    	
+//	    	//For Premium Article Tag
+//	    	articleContentDimension.put("resetPremiumIcnDimension", 1);
+//	    	articleContentDimension.put("premiumIcnXStart", 1);
+//	    	articleContentDimension.put("premiumIcnWidth", 0);
+//	    	articleContentDimension.put("premiumIcnHeight", 0);
+	    	
+	    articleContentDimension = articlePage.articlePageAlignmentValidation(articleContentDimension);
+	    	
 	    
-	    	articleContentDimension.put("backBtnXStart", 0);
-	    	articleContentDimension.put("backBtnYStart", 0);
-	    	articleContentDimension.put("backBtnWidth", 0);
-	    	articleContentDimension.put("backBtnHeight", 0);
-	    	
-	    	articleContentDimension.put("navigationTitleXStart", 0);
-	    	articleContentDimension.put("navigationTitleYStart", 0);
-	    	
-	    	articleContentDimension.put("textToSpeechXStart", 0);
-	    	articleContentDimension.put("textToSpeechYStart", 0);
-	    	articleContentDimension.put("textToSpeechWidth", 0);
-	    	articleContentDimension.put("textToSpeechHeight", 0);
-	    	
-	    	articleContentDimension.put("bookmarkXStart", 0);
-	    	articleContentDimension.put("bookmarkYStart", 0);
-	    	articleContentDimension.put("bookmarkWidth", 0);
-	    	articleContentDimension.put("bookmarkHeight", 0);
-	    	
-	    	articleContentDimension.put("shareXStart", 0);
-	    	articleContentDimension.put("shareYStart", 0);
-	    	articleContentDimension.put("shareWidth", 0);
-	    	articleContentDimension.put("shareHeight", 0);
-	    	
-	    	articleContentDimension.put("timeWidth", 0);
-	    	articleContentDimension.put("timeHeight", 0);
-	    	
-	    	articleContentDimension.put("publishInfoWidth", 0);
-	    	articleContentDimension.put("publishInfoXStart", 0);
-	    	
-	    	articleContentDimension.put("internalRecommendationTitleWidth", 0);
-	    	articleContentDimension.put("internalRecommendationTitleHeight", 0);
-	    	articleContentDimension.put("internalRecommendationArticleTitleWidth", 0);
-	    	articleContentDimension.put("internalRecommendationArticleTitleXStart", 0);
-	    	articleContentDimension.put("internalRecommendationArticlePublishInfoXStart", 0);
-	    	articleContentDimension.put("internalRecommendationArticlePublishInfoWidth", 0);
-	    	articleContentDimension.put("internalRecommendationArticlePublishInfoHeight", 0);
-	    	
-	    	articleContentDimension.put("externalRecommendationTitleWidth", 0);
-	    	articleContentDimension.put("externalRecommendationTitleHeight", 0);
-	    	
-	    	//For Main Image/Video in view
-	    	articleContentDimension.put("resetMediaDimension", 1);
-	    	
-	    	articleContentDimension.put("mediaXStart", 0);
-	    	articleContentDimension.put("mediaWidth", 0);
-	    	articleContentDimension.put("mediaHeight", 0);
-	    	
-	    	//For Author Name 
-	    	articleContentDimension.put("resetAuthorDimension", 1);
-	    	
-	    	//For Premium Article Tag
-	    	articleContentDimension.put("resetPremiumIcnDimension", 1);
-	    	
-	    	articleContentDimension.put("sectionLabelHeight", 0);
-	    	articleContentDimension.put("xRowStart", 0);
-	    	articleContentDimension.put("xRowEnd", 0);
-	    	articleContentDimension.put("firstRowArticleWidth", 0);
-	    	articleContentDimension.put("secondRowArticleWidth", 0);
-	    	articleContentDimension.put("firstRowImageVideoHeight", 0);
-	    	articleContentDimension.put("secondRowImageVideoHeight", 0);
-	    	articleContentDimension.put("thirdRowOnwardsImageVideoHeight", 0);
-	    	articleContentDimension.put("thirdRowOnwardsImageVideoWidth", 0);
-	    	articleContentDimension.put("removeFromHomeBtnHeight", 0);
-	    	articleContentDimension.put("removeFromHomeBtnWidth", 0);
-	    	articleContentDimension.put("removeFromHomeBtnXAxisStart", 0);
     }
 
     @Then("^I bookmark the article in view$")
     public void i_bookmark_the_article_in_view() throws Throwable {
-        //Bookmark the article
+    		String bookmarkedArticleTitle =	articlePage.bookmarkArticle();
+    		bookmarkedArticles = new ArrayList<String>();
+	    bookmarkedArticles.add(bookmarkedArticleTitle);
     }
 
     @Then("^Keep Scrolling to navigate and bookmark the articles on Home Page$")
     public void keep_Scrolling_to_navigate_and_bookmark_the_articles_on_Home_Page() throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+    		Boolean afterSwipeSameArticle = false;
+    		Integer totalBookmarkedArticle;
+    		util = new DeviceActions(this.driver);
+    		
+    		articleContentDimension.put("resetReqDimension", 1);
+    		
+    		totalBookmarkedArticle = bookmarkedArticles.size();
+    		
+    		util.swipeHorizontal("Right");
+    		afterSwipeSameArticle = articlePage.verifyWhetherReachedFirstArticleInListing(bookmarkedArticles.get(totalBookmarkedArticle-1));
+    		
+    		while(!afterSwipeSameArticle) {
+    			articleContentDimension = articlePage.articlePageAlignmentValidation(articleContentDimension);
+    			String bookmarkedArticleTitle =	articlePage.bookmarkArticle();
+        	    bookmarkedArticles.add(bookmarkedArticleTitle);
+    			
+    			totalBookmarkedArticle = bookmarkedArticles.size();
+    			
+    			util.swipeHorizontal("Right");
+        		afterSwipeSameArticle = articlePage.verifyWhetherReachedFirstArticleInListing(bookmarkedArticles.get(totalBookmarkedArticle-1));
+    		}
     }
     
 

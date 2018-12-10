@@ -11,6 +11,7 @@ Feature: Run basic sanity tests
     |SectionName	|
     |Viewpoints	|
     |Asia Top Stories	|
+    |Christmas Special|
     |ST Food				|
     |Web Specials		|
     |Entertainment	|
@@ -19,8 +20,8 @@ Feature: Run basic sanity tests
    	Given I open the last article on Home Page 
    	Then I validate the basic view of Article Content
    	And capture the dimension of elements on Article Detail Page
-   #	Then I bookmark the article in view
-   #	And Keep Scrolling to navigate and bookmark the articles on Home Page
+   	Then I bookmark the article in view
+   	And Keep Scrolling to navigate and bookmark the articles on Home Page
    #
    
    
