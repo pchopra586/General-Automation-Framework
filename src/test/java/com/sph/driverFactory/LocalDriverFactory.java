@@ -93,6 +93,8 @@ public class LocalDriverFactory {
 			capability.setCapability(MobileCapabilityType.FULL_RESET, true);
 			capability.setCapability(MobileCapabilityType.TAKES_SCREENSHOT, true);
 			capability.setCapability(MobileCapabilityType.ACCEPT_SSL_CERTS, true);
+			capability.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, 300);
+			capability.setCapability("setWebContentsDebuggingEnabled", Constant.TRUE);
 			capability.setCapability("deviceName", devicename);
 			capability.setCapability(MobileCapabilityType.APP, appPath);
 			capability.setCapability(AndroidMobileCapabilityType.APP_WAIT_PACKAGE, appPackage);

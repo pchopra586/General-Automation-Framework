@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.apache.log4j.Logger;
 import com.sph.driverFactory.LocalWebDriverListener;
+import com.sph.listeners.Reporter;
 import com.sph.utilities.AndroidElements;
 import com.sph.utilities.Constant;
 import com.sph.utilities.Constant.MENU;
@@ -171,22 +172,31 @@ public class MenuPage{
 			switch(menu) {
 				case LOGOUT: 
 					util.clickifClickable(logoutMenu, Constant.LONG_TIMEOUT);
+					break;
 				case SUBSCRIBE: 
 					util.clickifClickable(subscribeMenu, Constant.LONG_TIMEOUT);
+					break;
 				case LOGIN: 
 					util.clickifClickable(loginMenu, Constant.LONG_TIMEOUT);
+					break;
 				case HOME_PAGE: 
 					util.clickifClickable(homePageMenu, Constant.LONG_TIMEOUT);
+					break;
 				case EPAPER: 
 					util.clickifClickable(ePaperMenu, Constant.LONG_TIMEOUT);
+					break;
 				case BOOKMARK: 
 					util.clickifClickable(bookmarkMenu, Constant.LONG_TIMEOUT);
+					break;
 				case PRINT_EDITION: 
 					util.clickifClickable(printEditionMenu, Constant.LONG_TIMEOUT);
+					break;
 				case SETTINGS: 
 					util.clickifClickable(settingsMenu, Constant.LONG_TIMEOUT);
+					break;
 				case MORE_FROM_ST: 
 					util.clickifClickable(moreFromSTMenu, Constant.LONG_TIMEOUT);
+					break;
 				default:
 					log.error("Please provide valid Menu Title");
 					break;	
@@ -303,4 +313,5 @@ public class MenuPage{
 		log.info("Exiting Method: " + methodName);
 		return this;
 	}
-}
+	
+	}

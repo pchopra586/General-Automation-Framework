@@ -30,6 +30,7 @@ import org.apache.log4j.Logger;
 
 import com.sph.driverFactory.DriverManager;
 import com.sph.driverFactory.LocalWebDriverListener;
+import com.sph.listeners.Reporter;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileDriver;
@@ -42,6 +43,7 @@ import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 import io.appium.java_client.touch.LongPressOptions;
 import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.PointOption;
+
 
 public class DeviceActions{
 	private WebDriver driver;
@@ -197,6 +199,7 @@ public class DeviceActions{
 		log.info("Exiting Method: " + methodName);
 	}
 	
+	
 	public void verifyUnwantedTextElements(String bodyText, String... htmlEntities) {
 		log.info("Verifying text on article details for presence of html entities  ");
 
@@ -235,6 +238,15 @@ public class DeviceActions{
 		}
 	}
 	
+	public boolean isElementPresent(WebElement element, int timeOut) {
+		try {
+			WebDriverWait wait = new WebDriverWait(driver, timeOut);
+			return wait.until(ExpectedConditions.visibilityOf(element)).isDisplayed();
+		} catch (Exception ex) {
+			Reporter.addStepLog("Element is not displayed" + ex.getMessage());
+			return false;
+		}
+	}
 	/**percentage is the amount by which user wants to move seekbar like for 
 	e.g by 50%= 0.5, llly for 80%, percentage=0.8
 	*/
@@ -357,21 +369,48 @@ public class DeviceActions{
 		return closedAdFound;
 	}
 	
-	public void switchContextToView(WebDriver driver, String view) {
+//	public void switchContextToView(WebDriver driver, String view) {
+//
+//		try {
+//			Set<String> contextNames = ((AppiumDriver)driver).getContextHandles();
+//			for (String contextName : contextNames) {
+//
+//				if (contextName.contains(view)) {
+//					logger.info(contextName);
+//					((AppiumDriver)driver).context(contextName);
+//					logger.info("Switched context to : " + contextName);
+//					Reporter.addStepLog(driver.getPageSource());
+//					Thread.sleep(5000);
+//
+//				}
+//
+//			} // driver.context(contextNames.toArray()[1].toString());//Purposely not removed comment
+//		} catch (Exception ex) {
+//			logger.error("Error occured during switching context to " + view);
+//			Assert.fail("Unable to switch view to -- " + view + ex.getMessage());
+//		}
+//
+//	}
+	
+	public void switchContextToView(AppiumDriver<MobileElement> driver, String view) {
 
 		try {
-			Set<String> contextNames = ((AppiumDriver)driver).getContextHandles();
+
+			Set<String> contextNames = driver.getContextHandles();
 			for (String contextName : contextNames) {
 
 				if (contextName.contains(view)) {
 					log.info(contextName);
+					Reporter.addStepLog(contextName);
 					((AppiumDriver)driver).context(contextName);
-					log.info("Switched context to : " + contextName);
-					log.info(driver.getPageSource());
-
+					Reporter.addStepLog("Switched context to : " + contextName);
+					log.info("Switched context to : " + contextName);				
+					break;
 				}
 
-			} // driver.context(contextNames.toArray()[1].toString());//Purposely not removed comment
+			} 
+			//driver.context(contextNames.toArray()[1].toString());//Purposely not removed comment
+
 		} catch (Exception ex) {
 			log.error("Error occured during switching context to " + view);
 			Assert.fail("Unable to switch view to -- " + view + ex.getMessage());

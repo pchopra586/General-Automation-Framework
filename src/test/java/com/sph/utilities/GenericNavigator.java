@@ -37,8 +37,11 @@ public class GenericNavigator{
     Logger log = Logger.getLogger(GenericNavigator.class);
     
     @iOSXCUITFindBy(accessibility = IOSElements.CLOSE_INTERSTITIAL_AD_ID)
-    @AndroidFindBy(className = AndroidElements.CLOSE_AD)
+    @AndroidFindBy(accessibility = AndroidElements.CLOSE_AD)
     private MobileElement close_ad;
+    
+    @AndroidFindBy(accessibility = "Interstitial close button")
+	private MobileElement adCloseButton;
     
     @iOSXCUITFindBy(accessibility = IOSElements.MAIN_NAVIGATION_BAR_NAME)
 	@AndroidFindBy(id = AndroidElements.MAIN_NAVIGATION_BAR_NAME)
@@ -104,5 +107,19 @@ public class GenericNavigator{
 		completedBasicInstallConfig = true;
 		log.info("Exiting Method: " + methodName);
 		return completedBasicInstallConfig;
+	}
+	
+public void isAdDisplayed() {
+		
+		logger.info("Verifying if ad is displayed");
+		if (adCloseButton.isDisplayed()) {
+			adCloseButton.click();	
+		}
+		try {
+			Thread.sleep(4000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

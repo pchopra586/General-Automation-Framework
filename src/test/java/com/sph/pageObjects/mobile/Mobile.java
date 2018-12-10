@@ -92,8 +92,9 @@ public class Mobile {
     }
 
     public Mobile accept_terms_and_conditions() throws InterruptedException, MalformedURLException {
-//    		driver.switchTo().alert().accept();
+    		driver.switchTo().alert().accept();
     		log.info("Browser is " + browserName);
+
         try {
             if (terms_conditions.isDisplayed()) {
                 terms_conditions.click();

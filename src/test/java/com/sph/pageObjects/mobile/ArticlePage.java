@@ -11,6 +11,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import org.testng.Assert;
 import org.apache.log4j.Logger;
 
@@ -20,6 +24,7 @@ import com.sph.utilities.Constant;
 import com.sph.utilities.DeviceActions;
 import com.sph.utilities.IOSElements;
 
+import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 
 import io.appium.java_client.pagefactory.AndroidFindBy;
@@ -188,7 +193,7 @@ public class ArticlePage {
 	public ArticlePage switchView(String view) {
 		log.info("Switching to " + view);
 		try{
-			util.switchContextToView(driver, view);
+			util.switchContextToView((AppiumDriver<MobileElement>) driver, view);
 		}catch (Exception ex) {
 			log.info("Exception in getting response.." + ex.getMessage());
 		}

@@ -38,11 +38,11 @@ public class BookmarkPage{
 
     public BookmarkPage(WebDriver driver) throws MalformedURLException {
         this.driver = driver;
-        util = new DeviceActions(this.driver);
+        this.util = new DeviceActions(this.driver);
         this.capabilities = ((RemoteWebDriver) driver).getCapabilities();
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
     }
-    
+       
     @iOSXCUITFindBy(accessibility = "navigation_title")
 	@AndroidFindBy(id = "toolbar_title")
 	private MobileElement bookmarkPageTitle;
@@ -116,17 +116,6 @@ public class BookmarkPage{
 
 	}
 
-	public LoginPage clickOnHamburgerIcon() {
-		try {
-			return new HomePage(driver).openLoginControl();
-		}catch(Exception e) {
-			log.error("Exception raised: " + e);
-			driver.quit();
-			return null;
-		}
-
-	}
-
 	public BookmarkPage compareBookmarkedArticleList(List<String> articles) {
 		List<String> list = new ArrayList<String>();
 		for (int i = 0; i < bookmarkedArticleList.size(); i++) {
@@ -161,15 +150,6 @@ public class BookmarkPage{
 		Assert.assertEquals(list, articles);
 		log.info("Bookmarked articles are equal");
 		return this;
-	}
-
-	public LoginPage openLoginControlOnBookmarkPage() {
-		try {
-			return new HomePage(driver).openLoginControl();
-		}catch(Exception e) {
-			log.error("Unable to login from Bookmark page " + e);
-			return null;
-		}
 	}
 
 	public BookmarkPage surfAllBookmarkedArticles() {
