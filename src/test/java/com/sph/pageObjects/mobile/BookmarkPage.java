@@ -14,9 +14,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.log4testng.Logger;
-
-import com.aventstack.extentreports.ExtentTest;
+import org.apache.log4j.Logger;
 import com.sph.driverFactory.LocalWebDriverListener;
 import com.sph.utilities.Constant;
 import com.sph.utilities.DeviceActions;
@@ -30,22 +28,21 @@ import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 
 public class BookmarkPage{
-	private String methodName = null;
 
 	String browserName = LocalWebDriverListener.browserName;
-    Logger logger = Logger.getLogger(BookmarkPage.class);
+    Logger log = Logger.getLogger(BookmarkPage.class);
 	private WebDriver driver;
-    private WebDriverWait wait;
-    private Capabilities capabilities;
+    WebDriverWait wait;
+    Capabilities capabilities;
     private DeviceActions util;
 
     public BookmarkPage(WebDriver driver) throws MalformedURLException {
         this.driver = driver;
-        util = new DeviceActions(this.driver);
+        this.util = new DeviceActions(this.driver);
         this.capabilities = ((RemoteWebDriver) driver).getCapabilities();
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
     }
-    
+       
     @iOSXCUITFindBy(accessibility = "navigation_title")
 	@AndroidFindBy(id = "toolbar_title")
 	private MobileElement bookmarkPageTitle;
@@ -68,27 +65,27 @@ public class BookmarkPage{
 	public HomePage verifyScreenTitle() {
 		
 		try {
-			logger.info("Section title is : " + bookmarkPageTitle.getText());
+			log.info("Section title is : " + bookmarkPageTitle.getText());
 			Assert.assertEquals(bookmarkPageTitle.getText(), Constant.BOOKMARK);
-			logger.info("Section title matches : " + Constant.BOOKMARK + "Equals " + bookmarkPageTitle.getText());
-			logger.info("Section title is displaying correctly!!");
+			log.info("Section title matches : " + Constant.BOOKMARK + "Equals " + bookmarkPageTitle.getText());
+			log.info("Section title is displaying correctly!!");
 			return new HomePage(driver);
 		}catch(Exception e) {
-			logger.error("Exception raised: " + e);
+			log.error("Exception raised: " + e);
 			driver.quit();
 			return null;
 		}
 	}
 
 	public BookmarkPage verifyDefaultBookmarkPage() {
-		logger.info("Verifying bookmark default screen ");
+		log.info("Verifying bookmark default screen ");
 		try {
 			util.verifyMobileElements("Bookmark Page", bookmarkIconImage, bookmarkHelpText);
 		}catch(Exception e) {
-			logger.error("Exception raised: " + e);
+			log.error("Exception raised: " + e);
 			driver.quit();
 		}
-		logger.info("No articles Bookmarked yet!");
+		log.info("No articles Bookmarked yet!");
 		return this;
 	}
 
@@ -96,13 +93,13 @@ public class BookmarkPage{
 		try {
 			if (bookmarkedArticleList.size() > 0) {
 				bookmarkedArticleList.get(index).getText();
-				logger.info("Article headline of bookmarked article is :" + bookmarkedArticleList.get(index).getText());
+				log.info("Article headline of bookmarked article is :" + bookmarkedArticleList.get(index).getText());
 				bookmarkedArticleList.get(index).click();
 				verifyBookmarkIconSelection();
 			}
 			return new ArticlePage(driver);
 		}catch(Exception e) {
-			logger.error("Exception raised: " + e);
+			log.error("Exception raised: " + e);
 			driver.quit();
 			return null;
 		}
@@ -112,20 +109,9 @@ public class BookmarkPage{
 		try {
 			return new ArticlePage(driver).isBookmarkIconSelected();
 		}catch(Exception e) {
-			logger.error("Exception raised: " + e);
+			log.error("Exception raised: " + e);
 			driver.quit();
 			return false;
-		}
-
-	}
-
-	public LoginPage clickOnHamburgerIcon() {
-		try {
-			return new HomePage(driver).openLoginControl();
-		}catch(Exception e) {
-			logger.error("Exception raised: " + e);
-			driver.quit();
-			return null;
 		}
 
 	}
@@ -136,11 +122,11 @@ public class BookmarkPage{
 			list.add(bookmarkedArticleList.get(i).getText());
 		}
 
-		logger.info("list are " + list);
-		logger.info("Articles list are " + articles);
+		log.info("list are " + list);
+		log.info("Articles list are " + articles);
 		Collections.reverse(list);
 		Assert.assertEquals(list, articles);
-		logger.info("Bookmarked articles are equal");
+		log.info("Bookmarked articles are equal");
 		return this;
 	}
 
@@ -148,7 +134,7 @@ public class BookmarkPage{
 		if (bookmarkedArticleList.size() > 0) {
 			articles.remove(bookmarkedArticleList.get(index).getText());
 			util.swipeSpecificElement(bookmarkedArticleList.get(index), Constant.LEFT);
-			logger.info("Article to be removed is at " + index);
+			log.info("Article to be removed is at " + index);
 			
 			@SuppressWarnings("rawtypes")
 			TouchAction action = new TouchAction((AppiumDriver) driver);
@@ -158,21 +144,12 @@ public class BookmarkPage{
 		for (int i = 0; i < bookmarkedArticleList.size(); i++) {
 			list.add(bookmarkedArticleList.get(i).getText());
 		}
-		logger.info("list are " + list);
-		logger.info("Articles list are " + articles);
+		log.info("list are " + list);
+		log.info("Articles list are " + articles);
 		Collections.reverse(list);
 		Assert.assertEquals(list, articles);
-		logger.info("Bookmarked articles are equal");
+		log.info("Bookmarked articles are equal");
 		return this;
-	}
-
-	public LoginPage openLoginControlOnBookmarkPage() {
-		try {
-			return new HomePage(driver).openLoginControl();
-		}catch(Exception e) {
-			logger.error("Unable to login from Bookmark page " + e);
-			return null;
-		}
 	}
 
 	public BookmarkPage surfAllBookmarkedArticles() {
@@ -189,7 +166,7 @@ public class BookmarkPage{
 		try {
 			return new ArticlePage(driver).clickOnBackButton(noOfArticle);
 		}catch(Exception e) {
-			logger.error("Unable to login from Bookmark page " + e);
+			log.error("Unable to login from Bookmark page " + e);
 			return null;
 		}
 	}

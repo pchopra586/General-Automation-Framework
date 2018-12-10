@@ -1,9 +1,11 @@
 package com.sph.pageObjects.web;
 
 import com.sph.driverFactory.LocalWebDriverListener;
+import com.sph.pageObjects.mobile.HomePage;
 import com.sph.utilities.Constant;
 import com.sph.utilities.WebElements;
 
+import org.apache.log4j.Logger;
 //import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -24,6 +26,7 @@ public class Web {
     private WebDriver driver;
     private WebDriverWait wait;
     private String Read_Story_Headline;
+    Logger log = Logger.getLogger(Web.class);
     String browserName = LocalWebDriverListener.browserName;
     String stWebURL = "https://www.straitstimes.com/?adbypass=topspecial_skinning_topoverlay";
 
@@ -84,7 +87,7 @@ public class Web {
         }
         catch(Exception e)
         {
-            System.out.println("Maximize not required");
+        		log.error("Maximize not required");
         }
         //this.driver.get("https://www.straitstimes.com");
     }
@@ -97,7 +100,7 @@ public class Web {
                 driver.switchTo().frame((WebElement) iframe);
             }
         } catch (Exception e) {
-            System.out.println("Element not found");
+        		log.error("Element not found");
         }
         try {
             if (close_ad.isDisplayed()) {
@@ -110,11 +113,11 @@ public class Web {
                 }
                 catch (Exception e)
                 {
-                    System.out.println("Element Not found");
+                		log.error("Element Not found");
                 }
             }
         } catch (Exception e) {
-            System.out.println("Ad is not displayed");
+        		log.error("Ad is not displayed");
         }
 
             /*Actions actions = new Actions(driver);
@@ -131,7 +134,7 @@ public class Web {
             }
             catch (Exception e)
             {
-                System.out.println("Element not found");
+            		log.error("Element not found");
             }
         Thread.sleep(2000);
         
@@ -150,11 +153,11 @@ public class Web {
 	                }
 	                catch (Exception e)
 	                {
-	                    System.out.println("Element Not found");
+	                		log.error("Element Not found");
 	                }
 	            }
 	        } catch (Exception e) {
-	            System.out.println("Ad is not displayed");
+	        		log.error("Ad is not displayed");
 	        }
     }
 
@@ -176,7 +179,7 @@ public class Web {
     public void read_main_artcle() throws InterruptedException {
         Thread.sleep(5000);
         Read_Story_Headline = read_headline.getText();
-        System.out.println("Story Headline is: " + Read_Story_Headline);
+        log.info("Story Headline is: " + Read_Story_Headline);
         Thread.sleep(5000);
         story_headline.click();
 
@@ -186,7 +189,7 @@ public class Web {
 
         Thread.sleep(10000);
         String Main_article_Page_text = main_article_heading.getText();
-        System.out.println("Main Article Heading is: " + Main_article_Page_text);
+        log.info("Main Article Heading is: " + Main_article_Page_text);
         Assert.assertEquals(Main_article_Page_text, Read_Story_Headline);
     }
 

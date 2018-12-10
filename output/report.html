@@ -53,7 +53,7 @@
 		<ul id='nav-mobile' class='right hide-on-med-and-down nav-right'>
 			<li>
                 <a href='#!'>
-                    <span class='label suite-start-time blue darken-3'>Oct 30, 2018 10:42:50 AM</span>
+                    <span class='label suite-start-time blue darken-3'>Nov 28, 2018 03:12:04 PM</span>
 				</a>
 			</li>
 			<li>
@@ -91,7 +91,7 @@
 					<i class='material-icons'>local_offer</i> Category
 				</a>
 				<ul id='category-toggle' class='dropdown-content'>
-					<li><a href='#'>@mobileApp</a></li>
+					<li><a href='#'>@sanity</a></li>
 					<li class='divider'></li>
 					<li class='clear'><a href='#!' clear='true'>Clear Filters</a></li>
 				</ul>
@@ -169,7 +169,7 @@
 					<canvas id='grandchild-analysis' width='100' height='80'></canvas>
 				</div>
 				<div class='block text-small'>
-					<span class='tooltipped' data-position='top' data-tooltip='100%'><span class='strong'>8</span> step(s) passed</span>
+					<span class='tooltipped' data-position='top' data-tooltip='100%'><span class='strong'>5</span> step(s) passed</span>
 				</div>
 				<div class='block text-small'>
 					<span class='strong tooltipped' data-position='top' data-tooltip='0%'>0</span> step(s) failed, <span class='strong tooltipped' data-position='top' data-tooltip='0%'>0</span> others
@@ -188,74 +188,46 @@
 				
 				<li class='test displayed active has-leaf pass' status='pass' bdd='true' test-id='1'>
 					<div class='test-heading'>
-						<span class='test-name'>Login into Straits Time Mobile App in browser  v: MAC</span>
-						<span class='test-time'>Oct 30, 2018 10:42:50 AM</span>
+						<span class='test-name'>Run basic sanity tests in browser IOSLOCAL v: MAC</span>
+						<span class='test-time'>Nov 28, 2018 03:12:04 PM</span>
 						<span class='test-status right pass'>pass</span>
 					</div>
 					<div class='test-content hide'>
 <div class='scenariooutline node' test-id='2' status='pass'>
-	<span class='duration right label'>0h 1m 17s+908ms</span>
+	<span class='duration right label'>0h 11m 54s+552ms</span>
 	<div class='desc'>
 		<b>ScenarioOutline</b>
-		<span class="desc-text">Login into Straits Time Mobile App</span>
+		<span class="desc-text">Run basic sanity tests</span>
 	</div>
 	<ul class='steps'>
 		<li test-id='3' class='node scenario pass' status='pass'>
 			<div class='category-list'>
-				<span class='category label white-text'>@mobileApp</span>
+				<span class='category label white-text'>@sanity</span>
 			</div>
 			
 			<b>Scenario</b>
 			
-			<span class="bdd-step-name">Login into Straits Time Mobile App</span>
-				<div class='pre'>User wants to launch the Straits Time site and accept the terms and conditions</div>
-				<div class='pre'>User wants to skip the tutorials</div>
-				<div class='pre'>User wants to click the hamburger menu</div>
-				<div class='pre'>User wants to enter the login credentials</div>
-				<div class='pre'>User wants to verify the logged in user</div>
-				<div class='pre'>User wants to goto Settings Menu</div>
-				<div class='pre'>User wants to goto Account Settings</div>
-				<div class='pre'>User wants to logout</div>
+			<span class="bdd-step-name">Run basic sanity tests</span>
 			
 				<ul class='steps'>
 					<li test-id='4' class='node given pass' status='pass'><b>Given</b>
-						<span class="bdd-step-name">Given I want to launch the Straits Time site and accept the terms and conditions</span>
-							<div class='pre'>User wants to launch the Straits Time site and accept the terms and conditions</div>
+						<span class="bdd-step-name">Given I want to complete the basic app installation [Sanity Testing]</span>
 							<div class='pre'>passed</div>
 					</li>
-					<li test-id='5' class='node when pass' status='pass'><b>When</b>
-						<span class="bdd-step-name">When I want to skip the tutorials</span>
-							<div class='pre'>User wants to skip the tutorials</div>
+					<li test-id='5' class='node then pass' status='pass'><b>Then</b>
+						<span class="bdd-step-name">Then I capture the dimension of "Top Stories" on Home Page</span>
 							<div class='pre'>passed</div>
 					</li>
 					<li test-id='6' class='node and pass' status='pass'><b>And</b>
-						<span class="bdd-step-name">And I want to click the hamburger menu</span>
-							<div class='pre'>User wants to click the hamburger menu</div>
+						<span class="bdd-step-name">And I validate the alignment and relative dimension of "Viewpoints" on Home Page</span>
 							<div class='pre'>passed</div>
 					</li>
 					<li test-id='7' class='node and pass' status='pass'><b>And</b>
-						<span class="bdd-step-name">And I want to enter the login credentials as "Premium_Smartphone2" and "Password123"</span>
-							<div class='pre'>User wants to enter the login credentials</div>
+						<span class="bdd-step-name">And I validate the alignment and relative dimension of "ST Food" on Home Page</span>
 							<div class='pre'>passed</div>
 					</li>
-					<li test-id='8' class='node then pass' status='pass'><b>Then</b>
-						<span class="bdd-step-name">Then I want to verify the logged-in user as "Premium_Smartphone2"</span>
-							<div class='pre'>User wants to verify the logged in user</div>
-							<div class='pre'>passed</div>
-					</li>
-					<li test-id='9' class='node then pass' status='pass'><b>Then</b>
-						<span class="bdd-step-name">Then I want to goto Settings menu</span>
-							<div class='pre'>User wants to goto Settings Menu</div>
-							<div class='pre'>passed</div>
-					</li>
-					<li test-id='10' class='node then pass' status='pass'><b>Then</b>
-						<span class="bdd-step-name">Then I want to goto Account Settings</span>
-							<div class='pre'>User wants to goto Account Settings</div>
-							<div class='pre'>passed</div>
-					</li>
-					<li test-id='11' class='node then pass' status='pass'><b>Then</b>
-						<span class="bdd-step-name">Then I want to logout the user</span>
-							<div class='pre'>User wants to logout</div>
+					<li test-id='8' class='node and pass' status='pass'><b>And</b>
+						<span class="bdd-step-name">And I validate the alignment and relative dimension of "Entertainment" on Home Page</span>
 							<div class='pre'>passed</div>
 					</li>
 				</ul>
@@ -316,7 +288,7 @@
 				
 				<li class='category displayed active'>
 					<div class='category-heading'>
-						<span class='category-name'>@mobileApp</span>
+						<span class='category-name'>@sanity</span>
 						<span class='category-status right'>
 							<span class='label pass'>1</span>
 						</span>
@@ -339,8 +311,8 @@
 								</thead>
 								<tbody>
 									<tr>
-										<td>Oct 30, 2018 10:42:50 AM</td>
-										<td class='linked' test-id='3'>Login into Straits Time Mobile App in browser  v: MAC.Login into Straits Time Mobile App.Login into Straits Time Mobile App</td>
+										<td>Nov 28, 2018 03:12:04 PM</td>
+										<td class='linked' test-id='3'>Run basic sanity tests in browser IOSLOCAL v: MAC.Run basic sanity tests.Run basic sanity tests</td>
 										<td><span class='test-status pass'>pass</span></td>
 									</tr>
 								</tbody>
@@ -381,25 +353,25 @@
 			<div class='col s2'>
 				<div class='card-panel r'>
 					Steps
-					<div class='panel-lead'>8</div>
+					<div class='panel-lead'>5</div>
 				</div>
 			</div>
 			<div class='col s2'>
 				<div class='card-panel r'>
 					Start
-					<div class='panel-lead'>Oct 30, 2018 10:42:50 AM</div>
+					<div class='panel-lead'>Nov 28, 2018 03:12:04 PM</div>
 				</div>
 			</div>
 			<div class='col s2'>
 				<div class='card-panel r'>
 			 		End
-			 		<div class='panel-lead'>Oct 30, 2018 10:44:10 AM</div>
+			 		<div class='panel-lead'>Nov 28, 2018 03:24:00 PM</div>
 				</div>
 			</div>
 			<div class='col s2'>
 				<div class='card-panel r'>
 					Time Taken
-					<div class='panel-lead'>79,580ms</div>
+					<div class='panel-lead'>715,702ms</div>
 				</div>
 			</div>
 			<div class='col s4'>
@@ -413,7 +385,7 @@
 						</tr>
 							<tr>
 								<td>Browser Name</td>
-								<td>iosremote</td>
+								<td>IOSLOCAL</td>
 							</tr>
 							<tr>
 								<td>user</td>
@@ -438,7 +410,7 @@
 							<th>Others</th>
 						</tr>
 						<tr>
-							<td>@mobileApp</td>
+							<td>@sanity</td>
 							<td>1</td>
 							<td>0</td>
 							<td>0</td>
@@ -482,7 +454,7 @@
 				infoChild: 0,
 				exceptionsChild: 0,
 				
-				passGrandChild: 8,
+				passGrandChild: 5,
 				failGrandChild: 0,
 				fatalGrandChild: 0,
 				errorGrandChild: 0,

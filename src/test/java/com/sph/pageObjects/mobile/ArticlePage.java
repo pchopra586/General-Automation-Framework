@@ -2,6 +2,7 @@ package com.sph.pageObjects.mobile;
 
 import java.net.MalformedURLException;
 import java.util.List;
+import java.util.Map;
 
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
@@ -9,9 +10,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
 import org.testng.Assert;
-import org.testng.log4testng.Logger;
+import org.apache.log4j.Logger;
 
 import com.sph.driverFactory.LocalWebDriverListener;
 import com.sph.listeners.Reporter;
@@ -19,7 +23,6 @@ import com.sph.utilities.Constant;
 import com.sph.utilities.DeviceActions;
 
 import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.MobileDriver;
 import io.appium.java_client.MobileElement;
 
 import io.appium.java_client.pagefactory.AndroidFindBy;
@@ -30,11 +33,15 @@ public class ArticlePage {
 	private String methodName = null;
 
 	String browserName = LocalWebDriverListener.browserName;
-    Logger logger = Logger.getLogger(BookmarkPage.class);
+
+    Logger log = Logger.getLogger(BookmarkPage.class);
 	private WebDriver driver;
     private WebDriverWait wait;
+
     private Capabilities capabilities;
     private DeviceActions util;
+    
+    private Map<String, Integer> contentDimension = null;
 
 	public ArticlePage(WebDriver driver) throws MalformedURLException {
         this.driver = driver;
@@ -54,7 +61,7 @@ public class ArticlePage {
 	@AndroidFindBy(id = "btn_login")
 	private MobileElement loginButton;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='article_title']")
+	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name='article_title'])[1]")
 	@AndroidFindBy(id = "article_headline")
 	private MobileElement articleHeadline;
 
@@ -62,8 +69,10 @@ public class ArticlePage {
 	@AndroidFindBy(id = "btn_subscribe")
 	private MobileElement subscribeButton;
 
+
 	@iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeNavigationBar/**/XCUIElementTypeStaticText")
-	@AndroidFindBy(id = "tv_title")
+	@AndroidFindBy(id = "com.buuuk.st:id/tv_title")
+
 	private MobileElement sectionTitle;
 
 	@iOSXCUITFindBy(accessibility = "title_subscription_full_article")
@@ -75,6 +84,7 @@ public class ArticlePage {
 	private MobileElement gradientView;
 
 	@FindBy(css = "#main-content p:nth-child(3) ")
+	@AndroidFindBy(xpath = "(//android.widget.TextView[@resource-id=\"com.buuuk.st:id/tv_text\"])[3]")
 	private WebElement mainContent;
 
 	@iOSXCUITFindBy(accessibility = "FROM AROUND THE WEB")
@@ -112,11 +122,17 @@ public class ArticlePage {
 
 	@iOSXCUITFindBy(accessibility = "bookmark")
 	@AndroidFindBy(id = "btn_boomark")
-	private MobileElement bookmarkButton;
+	private MobileElement bookmarkBtn;
+	
+	@iOSXCUITFindBy(accessibility = "share")
+	private MobileElement shareBtn;
+	
+	@iOSXCUITFindBy(accessibility = "text_to_speech")
+	private MobileElement textToSpeechBtn;
 
 	@iOSXCUITFindBy(accessibility = "back")
 	@AndroidFindBy(id = "btn_back")
-	private MobileElement backButton;
+	private MobileElement backBtn;
 
 	@FindBy(css = ".related-story-headline a")
 	@iOSXCUITFindBy(xpath = "//*[@name='RELATED STORY']//following-sibling:: XCUIElementTypeButton")
@@ -149,13 +165,15 @@ public class ArticlePage {
 	}
 
 	public ArticlePage switchView(String view) {
-		logger.info("Switching to " + view);
+		log.info("Switching to " + view);
 		try{
-			util.switchContextToView(driver, view);
+			util.switchContextToView((AppiumDriver<MobileElement>)driver, view);
 		}catch (Exception ex) {
-			logger.info("Exception in getting response.." + ex.getMessage());
+			log.info("Exception in getting response.." + ex.getMessage());
 		}
-		logger.info("body is" + articleContent.getText());
+
+		//logger.info("body is" + articleContent.getText()); add if condition , if webview then execute this statement
+
 		return this;
 	}
 
@@ -164,9 +182,9 @@ public class ArticlePage {
 
 		if (flag) {
 			try {
-				logger.info("Article headline from  assert article get Text is" + articleHeadline.getText());
-				Assert.assertEquals(articleHeadline.getText().trim(), headline);
-				logger.info("Article headline matches! we have been navigated to selected article..");
+				log.info("Article headline from  assert article get Text is" + articleHeadline.getText());
+				Assert.assertTrue(articleHeadline.getText().contains(headline),"Article opened is different from expected");
+				log.info("Article headline matches! we have been navigated to selected article..");
 
 			} catch (AssertionError er) {
 				Assert.fail("Assertion Failed : " + er.getMessage());
@@ -182,16 +200,23 @@ public class ArticlePage {
 	 */
 
 	public ArticlePage verifyPremiumArticleAccess(int maxSwipe) {
+		log.info("verifying accessibility of premium article");
+		checkView();
+		////switchView(Constant.WEBVIEW);
+		boolean visibilityFlag = util.isElementPresent(mainContent, Constant.LONG_TIMEOUT);
+		if (!visibilityFlag) {
+			log.info("User doesn't have access to the article, kindly subscribe for get access to premium content!");
+		}
+		switchView(Constant.NATIVE);
 
-		logger.info("verifying accessibility of premium article");
 		boolean flag = util.swipeVerticalUntilElementIsFound(premiumStoryAccessHelpText, maxSwipe, Constant.UP);
 		if (flag) {
-			logger.info("'premium Stories access help text' is visible!");
+			log.info("'premium Stories access help text' is visible!");
 			// gradient view,what is premium not visible
-			logger.info(thankText.getText().replaceAll("\\s", " "));
+			log.info(thankText.getText().replaceAll("\\s", " "));
 			util.verifyMobileElements("Premium Article Page", readFullArticleText, subscribeButton, thankText,
 					premiumStoryAccessHelpText);
-			logger.info(
+			log.info(
 					"Gradient view, read full article text ,Subscribe and Login button, Thank you Text,premium Stories access help text,what is Premium Text are present!");
 			Assert.assertEquals(readFullArticleText.getText(), Constant.READFULLARTICLE);
 			Assert.assertEquals(thankText.getText().replaceAll("\n", " "), Constant.THANK_YOU_FOR_READING_ST_TEXT);
@@ -199,39 +224,34 @@ public class ArticlePage {
 			Assert.assertEquals(premiumStoryAccessHelpText.getText().trim(), Constant.PREMIUM_STORIES_ACCESS_HELP_TEXT);
 			// util.assertEquals(whatIsPremiumText.getText(),
 			// Constant.WHAT_IS_PREMIUM_TEXT);
-			switchView(Constant.WEBVIEW);
-			boolean visibilityFlag = util.isElementPresent((MobileElement)mainContent, Constant.SHORT_TIMEOUT);
-			if (!visibilityFlag) {
-				logger.info("User doesn't have access to the article, kindly subscribe for get access to premium content!");
-			}
-
 		}
-
 		return this;
 
 	}
 
 	public ArticlePage verifySectionTitle(String tabName) {
-		logger.info("Section title is : " + sectionTitle.getText());
+		log.info("Section title is : " + sectionTitle.getText());
 		Assert.assertEquals(sectionTitle.getText(), tabName);
-		logger.info("Section title is displaying correctly!!");
+		log.info("Section title is displaying correctly!!");
+		Reporter.addStepLog("Section title is "+sectionTitle.getText());
 		return this;
 	}
 
 	public ArticlePage verifyArticleAccess() {
-		switchView(Constant.WEBVIEW);
-		util.isElementPresent((MobileElement)mainContent, Constant.SHORT_TIMEOUT);
-		logger.info(mainContent.getText());
-		logger.info("User has access to the article!");
+		////switchView(Constant.WEBVIEW);
+		checkView();
+		util.isElementPresent(mainContent, Constant.SHORT_TIMEOUT);
+		log.info(mainContent.getText());
+		log.info("User has access to the article!");
 		switchView(Constant.NATIVE);
 		return this;
 	}
 
 	public ArticlePage verifySectionTitleIsDisplayedOnMainArticlePage(MobileElement element, String sectionName) {
 		util.swipeVerticalUntilElementIsFound(element, 20, Constant.UP);
-		logger.info("Section title is : " + element.getText());
+		log.info("Section title is : " + element.getText());
 		Assert.assertEquals(element.getText(), sectionName);
-		logger.info("Section title is displaying correctly!!");
+		log.info("Section title is displaying correctly!!");
 		return this;
 	}
 
@@ -252,12 +272,12 @@ public class ArticlePage {
 	public ArticlePage verifySectionUnderMainArticlePage(List<MobileElement> element1, List<MobileElement> element2,
 			String sectionName) {
 
-		logger.info("Number of articles present under this section : " + element1.size());
+		log.info("Number of articles present under this section : " + element1.size());
 		if (element1.size() > 0) {
-			logger.info("articles listed under " + sectionName + " are : ");
+			log.info("articles listed under " + sectionName + " are : ");
 			for (int i = 0; i < element1.size(); i++) {
-				logger.info(element2.get(i).getText());
-				logger.info(element2.get(i).getText());
+				log.info(element2.get(i).getText());
+				log.info(element2.get(i).getText());
 			}
 		}
 		return this;
@@ -265,14 +285,14 @@ public class ArticlePage {
 
 	public ArticlePage verifyMainArticleOnArticlePage() {
 		util.isElementPresent(imageOnArticlePage, Constant.SHORT_TIMEOUT);
-		logger.info("Article Image is loaded successfully!");
+		log.info("Article Image is loaded successfully!");
 		switchView(Constant.WEBVIEW);
 		boolean visibilityFlag = util.isElementPresent((MobileElement)mainContent, Constant.SHORT_TIMEOUT);
 		if (!visibilityFlag) {
-			logger.info(
+			log.info(
 					"User doesn't have access to the article, kindly subscribe for get access to premium content!");
 		} else {
-			logger.info("User have access to the article, article is loaded successfully!");
+			log.info("User have access to the article, article is loaded successfully!");
 		}
 		switchView(Constant.NATIVE);
 		return this;
@@ -281,18 +301,18 @@ public class ArticlePage {
 	public HomePage clickOnBackButton(int noOfArticle) {
 		try {
 			for (int i = 0; i < noOfArticle; i++) {
-				util.clickifClickable(backButton, Constant.SHORT_TIMEOUT);
+				util.clickifClickable(backBtn, Constant.SHORT_TIMEOUT);
 			}
 			return new HomePage(driver);
 		}catch (Exception ex) {
-			logger.info("Exception in getting response.." + ex.getMessage());
+			log.info("Exception in getting response.." + ex.getMessage());
 			driver.quit();
 			return null;
 		}
 	}
 
 	public ArticlePage clickOnBookmarkIcon() {
-		util.clickifClickable(bookmarkButton, Constant.SHORT_TIMEOUT);
+		util.clickifClickable(bookmarkBtn, Constant.SHORT_TIMEOUT);
 		return this;
 	}
 
@@ -301,12 +321,12 @@ public class ArticlePage {
 		if (capabilities.getCapability("platformName").toString().equalsIgnoreCase("iOS")) {
 			flag = util.isElementPresent(bookmarkIconSelected, Constant.SHORT_TIMEOUT);
 		} else {
-			flag = util.isElementPresent(bookmarkButton, Constant.SHORT_TIMEOUT);
+			flag = util.isElementPresent(bookmarkBtn, Constant.SHORT_TIMEOUT);
 			// flag=bookmarkButton.isSelected(); is NAF node , is Selected not
 			// working need to confirm with the developer
 		}
 		// if (flag) {
-		// logger.info("Article is bookmarked successfully!");
+		// log.info("Article is bookmarked successfully!");
 		// util.logPassMessage("Article is bookmarked successfully!");
 		// } else {
 		// util.logFailedMessage("Article is not bookmarked");// pass or fail?
@@ -326,14 +346,14 @@ public class ArticlePage {
 	public ArticlePage bookmarkArticle() {
 		boolean flag = isBookmarkIconSelected();
 		if (flag) {
-			logger.info("Article is already bookmarked!!");
+			log.info("Article is already bookmarked!!");
 		} else {
 			clickOnBookmarkIcon();
 			flag = isBookmarkIconSelected();
 			if (flag) {
-				logger.info("Article is bookmarked successfully!");
+				log.info("Article is bookmarked successfully!");
 			} else {
-				logger.error("Unable to bookmark article");
+				log.error("Unable to bookmark article");
 			}
 		}
 		return this;
@@ -345,15 +365,15 @@ public class ArticlePage {
 			clickOnBookmarkIcon();
 			flag = isBookmarkIconSelected();
 			if (flag) {
-				logger.error("Unable to unbookmark article!");
+				log.error("Unable to unbookmark article!");
 			} else {
-				logger.info("Article is removed from bookmarked list of article!!");
+				log.info("Article is removed from bookmarked list of article!!");
 
 			}
 
 		} else {
 
-			logger.info("Navigated article was not bookmarked!!");
+			log.info("Navigated article was not bookmarked!!");
 
 		}
 		return this;
@@ -368,7 +388,7 @@ public class ArticlePage {
 			switchView(Constant.NATIVE);
 			verifyRelatedArticleHeadline(headline);
 		} else {
-			logger.info("No Related story found!!");
+			log.info("No Related story found!!");
 		}
 		return this;
 	}
@@ -385,7 +405,7 @@ public class ArticlePage {
 	public List<String> createArticleList(List<String> articles) {
 		if (!articles.contains(articleHeadline.getText())) {
 			articles.add(articleHeadline.getText());
-			logger.info("Articles are " + articles);
+			log.info("Articles are " + articles);
 		}
 		return articles;
 	}
@@ -393,7 +413,7 @@ public class ArticlePage {
 	public ArticlePage verifyArticleContentForHtmlEntities() {
 		checkView();
 		String bodyText = articleContent.getText();
-		logger.info(bodyText);
+		log.info(bodyText);
 		util.verifyUnwantedTextElements(bodyText, Constant.NON_BREAKING_SPACE, Constant.LESS_THAN,
 				Constant.GREATER_THAN, Constant.AMPERSAND, Constant.DOUBLE_QUOTATION_MARK, Constant.APOSTROPHE,
 				Constant.COPYRIGHT, Constant.REGISTERED_TRADEMARK, Constant.TRADEMARK);
@@ -417,11 +437,11 @@ public class ArticlePage {
 		util.swipeVertical("UP");
 		boolean flag = util.isElementPresent(nativeArticle, Constant.SHORT_TIMEOUT);
 		if (flag) {
-			logger.info("The article is displayed in native view!");
+			log.info("The article is displayed in native view!");
 			switchView(Constant.NATIVE);
 
 		} else {
-			logger.info("The article is displayed in Web view! ");
+			log.info("The article is displayed in Web view! ");
 			switchView(Constant.WEBVIEW);
 		}
 
@@ -467,12 +487,12 @@ public class ArticlePage {
 	}
 
 	public LoginPage clickOnLoginButton() {
-		logger.info("Clicking on login Button");
+		log.info("Clicking on login Button");
 		try{
 			util.clickifClickable(loginButton, Constant.SHORT_TIMEOUT);
 			return new LoginPage(driver);
 		}catch(Exception e) {
-			logger.error("Exception raised: " + e);
+			log.error("Exception raised: " + e);
 			driver.quit();
 			return null;
 		}
@@ -481,16 +501,19 @@ public class ArticlePage {
 	
 	/*new framework changes*/
 	public void assertOnDetailsPage() {
-		logger.info("Verifying on details page");
+		log.info("Verifying on details page");
 		Reporter.addStepLog("Verifying on details page");
-		boolean flag = util.isElementPresent(articleHeadline, Constant.SHORT_TIMEOUT, "Article Heading");
-
-		if (flag) {
-			logger.info("Navigated to details page and article headline is displayed");
+		boolean headline = util.isElementPresent(articleHeadline, Constant.SHORT_TIMEOUT, "Article Heading");
+		boolean bookmark = util.isElementPresent(bookmarkBtn, Constant.SHORT_TIMEOUT, "Bookmark Button");
+		boolean textToSpeech = util.isElementPresent(textToSpeechBtn, Constant.SHORT_TIMEOUT, "Bookmark Button");
+		boolean share = util.isElementPresent(shareBtn, Constant.SHORT_TIMEOUT, "Bookmark Button");
+		boolean back = util.isElementPresent(backBtn, Constant.SHORT_TIMEOUT, "Bookmark Button");
+		if (headline && bookmark && textToSpeech && share && back) {
+			log.info("Navigated to details page and article headline is displayed");
 			Reporter.addStepLog("Navigated to details page and article headline is displayed");	
 			
 		}else{
-			logger.error("error while Navigation to details");
+			log.error("error while Navigation to details");
 					
 		}
 		

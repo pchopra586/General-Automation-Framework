@@ -47,7 +47,6 @@ public class PrintEditionPageValidation {
 
     @When("^I goto Print Edition Page$")
     public void i_goto_Print_Edition_Page() throws Throwable {
-   
     		printEditionPage = new PrintEditionPage(driver);
     		printEditionPage.gotoPrintEditionPage();
     }
@@ -96,7 +95,7 @@ public class PrintEditionPageValidation {
     
     @Given("^Goto Today's Print Edition$")
     public void goto_Today_s_Print_Edition() throws Throwable {
-    		calendarIcn.gotoPrintEdition("1");
+    		calendarIcn.gotoPrintEdition(0);
     }
 
     @Then("^I validate the Tab View and image dimension$")

@@ -3,25 +3,18 @@ package com.sph.pageObjects.mobile;
 import java.net.MalformedURLException;
 import java.util.concurrent.TimeUnit;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
-import org.testng.log4testng.Logger;
-
-import com.aventstack.extentreports.ExtentTest;
-import com.aventstack.extentreports.Status;
+import org.apache.log4j.Logger;
 import com.sph.driverFactory.LocalWebDriverListener;
 import com.sph.utilities.AndroidElements;
 import com.sph.utilities.Constant;
 import com.sph.utilities.Constant.SETTINGS_MENU;
 import com.sph.utilities.DeviceActions;
 import com.sph.utilities.IOSElements;
-
-import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
@@ -33,10 +26,10 @@ public class SettingsPage{
 	private String methodName = null;
 
 	String browserName = LocalWebDriverListener.browserName;
-    Logger logger = Logger.getLogger(LoginPage.class);
+    Logger log = Logger.getLogger(LoginPage.class);
 	private WebDriver driver;
-    private WebDriverWait wait;
-    private Capabilities capabilities;
+    WebDriverWait wait;
+    Capabilities capabilities;
     private DeviceActions util;
 	
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name=\"" + IOSElements.NAVIGATION_TITLE_ID + "\"]/following-sibling::XCUIElementTypeButton")
@@ -125,23 +118,23 @@ public class SettingsPage{
 	
 	public SettingsPage gotoSettingsMenu() {
 		methodName = "gotoSettings";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		
 		try {
 			MenuPage menu = new MenuPage(driver);
 			menu.clickOnMenu().gotoMenu(Constant.MENU.SETTINGS);
 		}catch(Exception e) {
-			logger.error("Exception raised: " + e);
+			log.error("Exception raised: " + e);
 			driver.quit();
 			return null;
 		}
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return this;
 	}
 	
 	public MobileDriver gotoSettings(SETTINGS_MENU settingsOption) {
 		methodName = "gotoSettings - " + settingsOption + "";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		
 		try {
 			switch(settingsOption) {
@@ -186,53 +179,53 @@ public class SettingsPage{
 				util.clickifClickable(privacyPolicySettings, Constant.SHORT_TIMEOUT);
 				break;
 			default:
-				logger.error("Please provide valid Settings details");
+				log.error("Please provide valid Settings details");
 				break;
 			}
 		}catch(Exception e) {
-			logger.error("Exception raised: " + e);
+			log.error("Exception raised: " + e);
 			driver.quit();
 			return null;
 		}
 		
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return (MobileDriver)driver;
 	}
 	
 	public boolean closeSettingsView() {
 		methodName = "closeSettingsView";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		boolean closedSettingsView = false;
 		try {
 			driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 			closeSettingsButton.click();
 		}catch(Exception e) {
-			logger.error("Exception raised: " + e);
+			log.error("Exception raised: " + e);
 			driver.quit();
 			return closedSettingsView;
 		}
 		//util.clickifClickable(closeSettingsButton, Constant.LONG_TIMEOUT);
 		
 		closedSettingsView = true;
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return closedSettingsView;
 	}
 	
 //	public AccountPage openAccountPage() {
 //		Log.INFO("Clicking on account link to open account page");
-//		logger.log(Status.INFO,"Clicking on account link to open account page");
+//		log.log(Status.INFO,"Clicking on account link to open account page");
 //		util.clickifClickable(account, Constant.SHORT_TIMEOUT);
-//		return new AccountPage(driver, util, logger);
+//		return new AccountPage(driver, util, log);
 //	}
 
 	public void verifyNotificationsSwitchAndLink() {
-		logger.info("verfying if 'notifications toggle switch' and 'edit notification' link is visible");
+		log.info("verfying if 'notifications toggle switch' and 'edit notification' link is visible");
 		util.verifyMobileElements("Settings : Notifications", notificationsSettings, editNotificationsSettings);
-		logger.info("'notifications toggle switch' and 'edit notification' link is visible");
+		log.info("'notifications toggle switch' and 'edit notification' link is visible");
 	}
 
 	public NotificationsPage openNotificationPage() {
-		logger.info("Clicking on 'edit notifications' link to open notification page");
+		log.info("Clicking on 'edit notifications' link to open notification page");
 		util.clickifClickable(editNotificationsSettings, Constant.SHORT_TIMEOUT);
 		return new NotificationsPage(driver);
 	}
@@ -240,11 +233,11 @@ public class SettingsPage{
 	public void verifyStateOfToggleSwitch() {
 
 		if (notificationsSettings.getText().equalsIgnoreCase(Constant.NOTIFICATION_SWITCH_OFF)) {
-			logger.info("Verifying 'Notifications' toggle switch");
-			logger.info("Toggle switch is set to OFF");
+			log.info("Verifying 'Notifications' toggle switch");
+			log.info("Toggle switch is set to OFF");
 		} else if (notificationsSettings.getText().equalsIgnoreCase(Constant.NOTIFICATION_SWITCH_ON)) {
-			logger.info("Verifying 'Notifications' toggle switch");
-			logger.info("Toggle switch is set to ON");
+			log.info("Verifying 'Notifications' toggle switch");
+			log.info("Toggle switch is set to ON");
 		}
 	}
 
@@ -259,7 +252,7 @@ public class SettingsPage{
 //		util.verifyMobileElements("Text Size Section", seekbarTextsize, textSize, capsASmallSize, capsA);
 //		Log.INFO(
 //				"'Text size seek bar',Text:'Text Size', 'Capital letter A with small size','Capital letter A' are present on text size section");
-//		logger.info(
+//		log.info(
 //				"'Text size seek bar',Text:'Text Size', 'Capital letter A with small size','Capital letter A' are present on text size section");
 //
 //	}

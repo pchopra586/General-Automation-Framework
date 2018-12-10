@@ -8,7 +8,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.log4testng.Logger;
+import org.apache.log4j.Logger;
 
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
@@ -34,11 +34,14 @@ public class GenericNavigator{
 	private Capabilities capabilities;
 
 	String browserName = LocalWebDriverListener.browserName;
-    Logger logger = Logger.getLogger(GenericNavigator.class);
+    Logger log = Logger.getLogger(GenericNavigator.class);
     
     @iOSXCUITFindBy(accessibility = IOSElements.CLOSE_INTERSTITIAL_AD_ID)
-    @AndroidFindBy(className = AndroidElements.CLOSE_AD)
+    @AndroidFindBy(accessibility = AndroidElements.CLOSE_AD)
     private MobileElement close_ad;
+    
+    @AndroidFindBy(accessibility = "Interstitial close button")
+	private MobileElement adCloseButton;
     
     @iOSXCUITFindBy(accessibility = IOSElements.MAIN_NAVIGATION_BAR_NAME)
 	@AndroidFindBy(id = AndroidElements.MAIN_NAVIGATION_BAR_NAME)
@@ -52,23 +55,23 @@ public class GenericNavigator{
 	
 	public boolean preConfigured() {
 		methodName = "preConfigured";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		boolean isPreConfigured = false;
 		try{
 			HomePage home = new HomePage(driver);
 			driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 			isPreConfigured = logo.isEnabled();
 		}catch(Exception e) {
-			logger.error("Exception raised: " + e);
+			log.error("Exception raised: " + e);
 			driver.quit();
 		}
-		logger.info("Exiting Method" + methodName);
+		log.info("Exiting Method" + methodName);
 		return isPreConfigured;
 	}
 	
 	public boolean completeBasicInstallConfig() throws MalformedURLException{
 		methodName = "completeBasicInstallConfig";
-		logger.info("Entering Method: " + methodName);
+		log.info("Entering Method: " + methodName);
 		boolean completedBasicInstallConfig = false;
 		LicensePage license;
 		IntroductionPage intro;
@@ -102,7 +105,21 @@ public class GenericNavigator{
         }
 		
 		completedBasicInstallConfig = true;
-		logger.info("Exiting Method: " + methodName);
+		log.info("Exiting Method: " + methodName);
 		return completedBasicInstallConfig;
+	}
+	
+public void isAdDisplayed() {
+		
+		logger.info("Verifying if ad is displayed");
+		if (adCloseButton.isDisplayed()) {
+			adCloseButton.click();	
+		}
+		try {
+			Thread.sleep(4000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

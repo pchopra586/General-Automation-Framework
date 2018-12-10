@@ -1,14 +1,13 @@
 package com.sph.pageObjects.mobile;
 
 import java.net.MalformedURLException;
-import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.log4testng.Logger;
+import org.apache.log4j.Logger;
 
 import com.sph.driverFactory.LocalWebDriverListener;
 import com.sph.utilities.Constant;
@@ -26,10 +25,10 @@ public class BasePage {
 	private String methodName = null;
 
 	String browserName = LocalWebDriverListener.browserName;
-    Logger logger = Logger.getLogger(BasePage.class);
+    Logger log = Logger.getLogger(BasePage.class);
 	private WebDriver driver;
-    private WebDriverWait wait;
-    private Capabilities capabilities;
+    WebDriverWait wait;
+    Capabilities capabilities;
     private DeviceActions util;
 
     public BasePage(WebDriver driver) throws MalformedURLException {
@@ -86,8 +85,7 @@ public class BasePage {
     
     public MobileDriver gotoTab(TAB tab) {
 		methodName = "gotoTab";
-		logger.info("Entering Method: " + methodName);
-		GenericNavigator navigator = new GenericNavigator(driver);
+		log.info("Entering Method: " + methodName);
 		
 		try {
 			switch(tab) {
@@ -137,11 +135,11 @@ public class BasePage {
 				util.clickifClickable(techTab, Constant.LONG_TIMEOUT);
 				break;
 			default:
-				logger.error("Please provide valid Tab Title");
+				log.error("Please provide valid Tab Title");
 				break;	
 			}
 		}catch(Exception e) {
-			logger.error("Exception raised: " + e);
+			log.error("Exception raised: " + e);
 			driver.quit();
 		}
 		
