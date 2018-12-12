@@ -7,6 +7,7 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
@@ -18,6 +19,7 @@ import org.apache.log4j.Logger;
 import com.sph.driverFactory.LocalWebDriverListener;
 import com.sph.utilities.Constant;
 import com.sph.utilities.DeviceActions;
+import com.sph.utilities.GenericNavigator;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
@@ -28,7 +30,7 @@ import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 
 public class BookmarkPage{
-
+	private String methodName = null;
 	String browserName = LocalWebDriverListener.browserName;
     Logger log = Logger.getLogger(BookmarkPage.class);
 	private WebDriver driver;
@@ -55,12 +57,35 @@ public class BookmarkPage{
 	@AndroidFindBy(id = "tv_no_bookmarks")
 	private MobileElement bookmarkHelpText;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='article_title']")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name=\"article_title\"]")
+	//XCUIElementTypeStaticText[@name="article_title"]
 	@AndroidFindBy(id = "article_title")
 	private List<MobileElement> bookmarkedArticleList;
 
 	@iOSXCUITFindBy(accessibility = "Delete")
 	private MobileElement deleteButton;
+	
+	public BookmarkPage gotoBookmarkedPage() {
+		methodName = "gotoBookmarkedPage";
+		log.info("Entering Method: " + methodName);
+		GenericNavigator navigator = new GenericNavigator(driver);
+
+		try {
+			if (!navigator.preConfigured()) {
+				navigator.completeBasicInstallConfig();
+			}
+			driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+			MenuPage menu = new MenuPage(driver);
+			menu.clickOnMenu().gotoMenu(Constant.MENU.BOOKMARK);
+			
+		} catch (Exception e) {
+			log.error("Exception raised: " + e);
+			driver.quit();
+		}
+
+		log.info("Exiting Method: " + methodName);
+		return this;
+	}
 
 	public HomePage verifyScreenTitle() {
 		
@@ -117,15 +142,39 @@ public class BookmarkPage{
 	}
 
 	public BookmarkPage compareBookmarkedArticleList(List<String> articles) {
-		List<String> list = new ArrayList<String>();
-		for (int i = 0; i < bookmarkedArticleList.size(); i++) {
-			list.add(bookmarkedArticleList.get(i).getText());
+		List<String> actualBookmarkedArticleList = new ArrayList<String>();
+		int articleListInView = bookmarkedArticleList.size();
+		String prevLastBookmarkedArticleInView = "";
+		String lastBookmarkedArticleInView = bookmarkedArticleList.get(articleListInView-1).getText();
+		Boolean alreadyCaptured = true;
+	
+		while(!(prevLastBookmarkedArticleInView.equals(lastBookmarkedArticleInView))) {	
+			for (int i = 0; i < bookmarkedArticleList.size(); i++) {
+				String articleTitle = bookmarkedArticleList.get(i).getText();
+				
+				if(alreadyCaptured && actualBookmarkedArticleList.contains(articleTitle)) {
+					continue;
+				}
+				else {
+					alreadyCaptured = false;
+					actualBookmarkedArticleList.add(articleTitle);					
+				}					
+			}
+			
+			alreadyCaptured = true;
+			
+			util = new DeviceActions(this.driver);
+			util.swipeVertical("Up");
+			
+			prevLastBookmarkedArticleInView = lastBookmarkedArticleInView;
+			lastBookmarkedArticleInView = bookmarkedArticleList.get(articleListInView-1).getText();
 		}
+		
 
-		log.info("list are " + list);
+		log.info("list are " + actualBookmarkedArticleList);
 		log.info("Articles list are " + articles);
-		Collections.reverse(list);
-		Assert.assertEquals(list, articles);
+		Collections.reverse(actualBookmarkedArticleList);
+		Assert.assertEquals(actualBookmarkedArticleList, articles);
 		log.info("Bookmarked articles are equal");
 		return this;
 	}
@@ -164,7 +213,7 @@ public class BookmarkPage{
 
 	public HomePage clickOnBackButton(int noOfArticle) {
 		try {
-			return new ArticlePage(driver).clickOnBackButton(noOfArticle);
+			return new ArticlePage(driver).goBackToListingPage(noOfArticle);
 		}catch(Exception e) {
 			log.error("Unable to login from Bookmark page " + e);
 			return null;

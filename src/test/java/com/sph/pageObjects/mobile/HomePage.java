@@ -54,36 +54,6 @@ public class HomePage{
     @AndroidFindBy(className = AndroidElements.CLOSE_AD)
     private MobileElement close_ad;
     
-//    public static Integer sectionLabelHeight = 0;
-//	boolean resetOption = true; //Only for first section
-//	
-//	private static Integer xRowStart = 0;
-//	private static Integer xRowEnd = 0;
-//	//Reset Options for alignment parameters
-//	private static Boolean resetArticleWidth;
-//	private static Boolean resetXAxisStart;
-//	private static Boolean resetArticleImageVideoHeight;
-//	private static Boolean resetRemoveFromHomeBtnDimension;
-//	
-//	//Parameters to capture the expected row-wise Width for articles 
-//	private static Integer firstRowArticleWidth = 0;
-//	private static Integer secondRowArticleWidth = 0;
-//	
-//	//Parameter to capture Height of Image/Video row-wise, instead of Article Height(As article height could vary based on label length)
-//	private static Integer firstRowImageVideoHeight = 0;
-//	private static Integer secondRowImageVideoHeight = 0;
-//	private static Integer thirdRowOnwardsImageVideoHeight = 0;
-//	private static Integer thirdRowOnwardsImageVideoWidth = 0;
-//	
-//	//Parameters to capture the remove from home button dimensions
-//	private static Integer removeFromHomeBtnHeight = 0;
-//	private static Integer removeFromHomeBtnWidth = 0;
-//	private static Integer removeFromHomeBtnXAxisStart = 0;
-	
-	
-	
-	//private static Set<String> defaultSubSections = new HashSet<String>(Arrays.asList(new String[]{"TOP STORIES","ST FOOD","ASIA TOP STORIES","WEB SPECIALS","ENTERTAINMENT"}));
-			
 	@iOSXCUITFindBy(accessibility = IOSElements.MAIN_NAVIGATION_BAR_NAME)
 	@AndroidFindBy(id = AndroidElements.MAIN_NAVIGATION_BAR_NAME)
 	private MobileElement logo;
@@ -329,17 +299,20 @@ public class HomePage{
 		
 		this.gotoSection(sectionLabel);
 		
-		if(sectionDimension.get("sectionLabelHeight").equals(0) && !sectionLabel.equals(IOSElements.PREMIUM_SECTION_LABEL_ID)) {
+		if(sectionDimension.get("sectionLabelHeight").equals(0) && !sectionLabel.equalsIgnoreCase(IOSElements.PREMIUM_ARTICLE_TAG)) {
 			sectionLabelHeight = ((MobileDriver)driver).findElementByXPath("//XCUIElementTypeStaticText[@label=\"" + sectionLabel + "\"]").getSize().getHeight();
 			sectionDimension.put("sectionLabelHeight", sectionLabelHeight);
 		}
 		
-		if(sectionLabel.equals(IOSElements.PREMIUM_SECTION_LABEL_ID)) {
+		if(sectionLabel.equalsIgnoreCase(IOSElements.PREMIUM_ARTICLE_TAG)) {
 			section = new HashMap<String,String>();
-			section.put("value", sectionLabel);
-			section.put("label", sectionLabel);
+			section.put("value", IOSElements.PREMIUM_SECTION_LABEL_ID);
+			section.put("label", IOSElements.PREMIUM_SECTION_LABEL_ID);
 			section.put("enabled", "true");
 			Assert.assertTrue(this.premiumTitleValidation(section));
+			log.info("Successfully Validated the Section title: " + sectionLabel);
+			
+			sectionDimension = this.sectionArticleValidation(IOSElements.PREMIUM_SECTION_LABEL_ID, followedByAd, sectionDimension);
 		}
 		else {
 			section = new HashMap<String,String>();
@@ -348,11 +321,11 @@ public class HomePage{
 			section.put("visible", "true");
 			section.put("height", sectionDimension.get("sectionLabelHeight").toString());
 			Assert.assertTrue(sectionTitleValidation(section, sectionDimension));
+			log.info("Successfully Validated the Section title: " + sectionLabel);
+			
+			sectionDimension = this.sectionArticleValidation(sectionLabel, followedByAd, sectionDimension);
 		}
 		
-		log.info("Successfully Validated the Section title: " + sectionLabel);
-		
-		sectionDimension = this.sectionArticleValidation(sectionLabel, followedByAd, sectionDimension);
 		Assert.assertNotEquals(sectionDimension.get("articleSeqInLayout"),0,"Section Article Validation failed");
 		
 		if(sectionSequence > 2) {
@@ -644,9 +617,6 @@ public class HomePage{
 		}
 		else {
 			articleHeight = ((MobileElement) driver.findElement(By.xpath("//XCUIElementTypeCell[" + articleSeqInLayout.toString() + "]//XCUIElementTypeImage[1]"))).getSize().getHeight();
-			//log.info(((MobileElement) driver.findElement(By.xpath("//XCUIElementTypeCell[" + articleSeqInLayout.toString() + "]//XCUIElementTypeStaticText").getAttribute("label"));
-			log.info("Expected Height: " + sectionDimension.get("firstRowImageVideoHeight"));
-			log.info("Actual Height: " + articleHeight);
 			Assert.assertTrue(Math.abs(articleHeight - (int)sectionDimension.get("firstRowImageVideoHeight")) < 2, "Inconsistent Height of 1st article");
 		}
 		validated  = true;
@@ -959,7 +929,7 @@ public class HomePage{
 			}else if(element.getAttribute("type").equals("XCUIElementTypeOther")) {
 				try {
 					titleElement = (MobileElement) element.findElement(By.xpath("//XCUIElementTypeStaticText[@name=\"" + Constant.SECTION_TITLE + "\"]"));
-					if(titleElement.getAttribute("label").equals(sectionTitle)) {
+					if(titleElement.getAttribute("label").equalsIgnoreCase(sectionTitle)) {
 						List<WebElement> title = driver.findElements(By.xpath("//XCUIElementTypeStaticText[@name=\"article_title\"]"));
 						firstArticleOfSection = title.get(layoutSeqSectionFirstArticle).getAttribute("label");
 						break;
@@ -1115,11 +1085,11 @@ public class HomePage{
 		String navigationDirection = "Up";
 		while(!onExpectedSection) {
 			try {
-				if(label.equals(IOSElements.PREMIUM_SECTION_LABEL_ID)){
-					MobileElement currentElement = (MobileElement) driver.findElement(By.xpath("//XCUIElementTypeStaticText[@name='section_title']//preceding-sibling::XCUIElementTypeImage[@name='premium']"));
+				if(label.equalsIgnoreCase(IOSElements.PREMIUM_ARTICLE_TAG)){
+					MobileElement currentElement = (MobileElement) driver.findElement(By.xpath("//XCUIElementTypeStaticText[@name=\"" + IOSElements.SECTION_LABEL_ID + "\"]//preceding-sibling::XCUIElementTypeImage[@name='" + IOSElements.PREMIUM_ARTICLE_TAG + "']"));
 					onExpectedSection = true;
 				}else {
-					List<WebElement> currentElements = driver.findElements(By.xpath("//XCUIElementTypeStaticText[@name=\"section_title\"]"));
+					List<WebElement> currentElements = driver.findElements(By.xpath("//XCUIElementTypeStaticText[@name=\"" + IOSElements.SECTION_LABEL_ID + "\"]"));
 					for(WebElement element:currentElements) {
 						if(((MobileElement) element).getAttribute("label").equals(label)) {
 							onExpectedSection = true;
@@ -1485,7 +1455,7 @@ public class HomePage{
 
 	public HomePage clickOnBackIcon() {
 		try {
-			return new ArticlePage(driver).clickOnBackButton(1);
+			return new ArticlePage(driver).goBackToListingPage(1);
 		}catch (Exception ex) {
 			log.error("Unable to click On back icon");
 			return null;

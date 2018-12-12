@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -48,6 +49,9 @@ public class ArticlePage {
         this.capabilities = ((RemoteWebDriver) driver).getCapabilities();
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
 	}
+	
+	@iOSXCUITFindBy(accessibility = "ADVERTISEMENT")
+	private MobileElement interimAd;
 
 	@iOSXCUITFindBy(accessibility = "article_title")
 	@AndroidFindBy(id = "article_headline")
@@ -320,9 +324,11 @@ public class ArticlePage {
 		return this;
 	}
 
-	public HomePage clickOnBackButton(int noOfArticle) {
+	//Function name is confusing...as it just says click of button. Actually, it's the process to go back to home/listing page
+	public HomePage goBackToListingPage(int articleNavigationDepth) {
 		try {
-			for (int i = 0; i < noOfArticle; i++) {
+			//articleNavigationDepth -> Total number of times, one needs to click back/close button to reach the listing page
+			for (int i = 0; i < articleNavigationDepth; i++) {
 				util.clickifClickable(backBtn, Constant.SHORT_TIMEOUT);
 			}
 			return new HomePage(driver);
@@ -599,6 +605,8 @@ public class ArticlePage {
 		Integer outbrainLogoTextXStart = outbrainLogoText.getCoordinates().onPage().getX();
 		Integer outbrainLogoTextHeight = outbrainLogoText.getSize().getHeight();
 		
+		log.info("Captured the image dimensions");
+		
 		if(articleContentDimension.get("resetReqDimension").equals(1)) {
 			articleContentDimension.put("textXStart", headlineXStart);
 			articleContentDimension.put("textRowWidth", headlineWidth);
@@ -726,7 +734,19 @@ public class ArticlePage {
 	}
 	
 	public boolean verifyWhetherReachedFirstArticleInListing(String previousArticleHeadline) {
-		return articleHeadline.getAttribute("label").equals(previousArticleHeadline);
+		Boolean reachedFirstArticleInListingPage = false;
+		try{
+			reachedFirstArticleInListingPage = articleHeadline.getAttribute("label").equals(previousArticleHeadline);
+		}catch(Exception ex) {
+			if(interimAd.isDisplayed()) {
+				util = new DeviceActions(this.driver);
+				util.swipeHorizontal("Right");
+				
+				reachedFirstArticleInListingPage = articleHeadline.getAttribute("label").equals(previousArticleHeadline);
+			}else {
+				throw new NoSuchElementException(ex.getMessage());
+			}			
+		}
+		return reachedFirstArticleInListingPage;
 	}
-	
 }

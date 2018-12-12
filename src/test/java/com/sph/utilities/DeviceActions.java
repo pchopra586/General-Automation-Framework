@@ -219,6 +219,7 @@ public class DeviceActions{
 		methodName = "isElementPresent using ElementName: " + element;
 		log.info("Entering Method: " + methodName);
 		if (isElementPresent(element, timeOut)) {
+			log.info("Exiting Method: " + methodName);
 			return true;
 		}
 		Assert.fail(elementName + " is not displayed on the screen");
@@ -231,6 +232,7 @@ public class DeviceActions{
 		log.info("Entering Method: " + methodName);
 		try {
 			WebDriverWait wait = new WebDriverWait(driver, timeOut);
+			log.info("Exiting Method: " + methodName);
 			return wait.until(ExpectedConditions.visibilityOf(element)).isDisplayed();
 		} catch (TimeoutException ex) {
 			log.info("Element is not displayed" + ex.getMessage());

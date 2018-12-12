@@ -12,6 +12,7 @@ import org.openqa.selenium.WebDriver;
 import com.sph.driverFactory.DriverManager;
 import com.sph.pageObjects.mobile.ArticleListingPage;
 import com.sph.pageObjects.mobile.ArticlePage;
+import com.sph.pageObjects.mobile.BookmarkPage;
 import com.sph.pageObjects.mobile.HomePage;
 import com.sph.pageObjects.mobile.PrintEditionCalendar;
 import com.sph.pageObjects.mobile.PrintEditionPage;
@@ -36,7 +37,10 @@ public class BuildSanityValidation {
     
     private String articleTitle = null;
     private ArticlePage articlePage;
+    private BookmarkPage bookmarkPage;
     List<String> bookmarkedArticles;
+    
+    List<String> actualArticlesInBookmarkListPage;
     
     private static Map<String, Object> sectionDimension = null;
     
@@ -52,11 +56,8 @@ public class BuildSanityValidation {
     
     @Given("^I want to complete the basic app installation \\[Sanity Testing\\]$")
     public void i_want_to_complete_the_basic_app_installation_Sanity_Testing() throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
     		genericNavigator = new GenericNavigator(this.driver);
     		genericNavigator.completeBasicInstallConfig();
-    		
-    		//homePage = new HomePage(this.driver);
     }
     
     @Then("^I goto STNow Tab in Home Page View$")
@@ -64,20 +65,6 @@ public class BuildSanityValidation {
         homePage = new HomePage(this.driver);
         homePage.gotoTab(Constant.TAB.ST_NOW);
     }
-    
-//    @Then("^I validate the alignment and title of each articles in Home Page$")
-//    public void i_validate_the_alignment_and_title_of_each_articles_in_Home_Page() throws Throwable {
-//        // Write code here that turns the phrase above into concrete actions
-//    		homePage = new HomePage(this.driver);
-//    		homePage.sectionValidation();
-//        throw new PendingException();
-//    }
-    
-//    @Then("^I validate the alignment and title of \"([^\"]*)\" on Home Page$")
-//	public void i_validate_the_alignment_and_title_of_on_Home_Page(String sectionLabel) throws Throwable {
-//    		homePage = new HomePage(this.driver);
-//		homePage.sectionValidation(sectionLabel);
-//	}
     
     @Then("^I capture the dimension of \"([^\"]*)\" on Home Page$")
     public void i_capture_the_dimension_of_on_Home_Page(String sectionLabel) throws Throwable {
@@ -106,9 +93,9 @@ public class BuildSanityValidation {
 		
     }
 
-    @Then("^I validate the alignment and relative dimension of \"([^\"]*)\" on Home Page$")
-    public void i_validate_the_alignment_and_relative_dimension_of_on_Home_Page(String sectionLabel) throws Throwable {
-    		homePage = new HomePage(this.driver);
+    @Then("^I validate the alignment, relative dimension and duplicacy of articles in \"([^\"]*)\" on Home Page$")
+    public void i_validate_the_alignment_relative_dimension_and_duplicacy_of_articles_in_on_Home_Page(String sectionLabel) throws Throwable {
+        homePage = new HomePage(this.driver);
     		sectionDimension.put("resetDimension", 0);
     		sectionDimension.put("resetArticleWidth", 0);
 	    	sectionDimension.put("resetXAxisStart", 0);
@@ -131,41 +118,6 @@ public class BuildSanityValidation {
     		
     		//Validate the tab title, text-to-speech, bookmark, share option, back button
     		articlePage.assertOnDetailsPage();
-//    		
-//    		
-//    		
-//    		//TODO: Delete later
-//    		String bookmarkedArticleTitle =	articlePage.bookmarkArticle();
-//    		bookmarkedArticles = new ArrayList<String>();
-//	    bookmarkedArticles.add(bookmarkedArticleTitle);
-//	    
-//	    util = new DeviceActions(this.driver);
-//		
-//		Boolean afterSwipeSameArticle = false;
-//		Integer totalBookmarkedArticle;
-//		
-//		totalBookmarkedArticle = bookmarkedArticles.size();
-//		
-//		util.swipeHorizontal("Right");
-//		afterSwipeSameArticle = articlePage.verifyWhetherReachedFirstArticleInListing(bookmarkedArticles.get(totalBookmarkedArticle-1));
-//		
-//		while(!afterSwipeSameArticle) {
-//			bookmarkedArticleTitle =	articlePage.bookmarkArticle();
-//	    	    bookmarkedArticles.add(bookmarkedArticleTitle);
-//				
-//			totalBookmarkedArticle = bookmarkedArticles.size();
-//				
-//			util.swipeHorizontal("Right");
-//	    		afterSwipeSameArticle = articlePage.verifyWhetherReachedFirstArticleInListing(bookmarkedArticles.get(totalBookmarkedArticle-1));
-//		}
-    		
-    		//Validate article image(if present)
-    		//Validate article author
-    		//Validate article publish date
-    		//Validate article content(basic view)
-    		//Validate Internal recommendation view
-    		//Validate Outbrain recommendation view
-    		
     }
 
     @And("^capture the dimension of elements on Article Detail Page$")
@@ -181,89 +133,11 @@ public class BuildSanityValidation {
 	    	 * Publish Date/Time
 	    	 * Internal Recommendations
 	    	 * External Recommendations
-	    	*/
-	    	
+	    	*/	
 	    	//Reset Required Dimension
 	    	articleContentDimension.put("resetReqDimension", 1);
 	    	
-//	    	//Text - Required Dimension for Article Content Page
-//	    	articleContentDimension.put("textXStart", 0);
-//	    	articleContentDimension.put("textRowWidth", 0);
-//	    
-//	    	//Back Button - Required Dimension for Article Content Page
-//	    	articleContentDimension.put("backBtnXStart", 0);
-//	    	articleContentDimension.put("backBtnYStart", 0);
-//	    	articleContentDimension.put("backBtnWidth", 0);
-//	    	articleContentDimension.put("backBtnHeight", 0);
-//	    	
-//	    	//Navigation Bar Title - Required Dimension for Article Content Page
-//	    	articleContentDimension.put("navigationTitleXStart", 0);
-//	    	articleContentDimension.put("navigationTitleYStart", 0);
-//	    	
-//	    	//Text to speech - Required Dimension for Article Content Page
-//	    	articleContentDimension.put("textToSpeechXStart", 0);
-//	    	articleContentDimension.put("textToSpeechYStart", 0);
-//	    	articleContentDimension.put("textToSpeechWidth", 0);
-//	    	articleContentDimension.put("textToSpeechHeight", 0);
-//	    	
-//	    	//Bookmark Button - Required Dimension for Article Content Page
-//	    	articleContentDimension.put("bookmarkXStart", 0);
-//	    	articleContentDimension.put("bookmarkYStart", 0);
-//	    	articleContentDimension.put("bookmarkWidth", 0);
-//	    	articleContentDimension.put("bookmarkHeight", 0);
-//	    	
-//	    	//Share Button - Required Dimension for Article Content Page
-//	    	articleContentDimension.put("shareXStart", 0);
-//	    	articleContentDimension.put("shareYStart", 0);
-//	    	articleContentDimension.put("shareWidth", 0);
-//	    	articleContentDimension.put("shareHeight", 0);
-//	    	
-//	    	//Publish Info and Watch icon next to it - Required Dimension for Article Content Page
-//	    	articleContentDimension.put("timeWidth", 0);
-//	    	articleContentDimension.put("timeHeight", 0);
-//	    	articleContentDimension.put("publishInfoWidth", 0);
-//	    	articleContentDimension.put("publishInfoXStart", 0);
-//	    	
-//	    	//Internal Recommendation - Required Dimension for Article Content Page
-//	    	articleContentDimension.put("internalRecommendationTitleWidth", 0);
-//	    	articleContentDimension.put("internalRecommendationTitleHeight", 0);
-//	    	articleContentDimension.put("recommendationArticleTitleWidth", 0);
-//	    	articleContentDimension.put("recommendationArticleTitleXStart", 0);
-//	    	articleContentDimension.put("internalRecommendationArticlePublishInfoXStart", 0);
-//	    	articleContentDimension.put("internalRecommendationArticlePublishInfoWidth", 0);
-//	    	articleContentDimension.put("internalRecommendationArticlePublishInfoHeight", 0);
-//	    	
-//	    	//External Recommendation - Required Dimension for Article Content Page
-//	    	articleContentDimension.put("externalRecommendationTitleWidth", 0);
-//	    	articleContentDimension.put("externalRecommendationTitleHeight", 0);
-//	    	articleContentDimension.put("externalRecommendationArticleURLXStart", 0);
-//	    	articleContentDimension.put("externalRecommendationArticleURLWidth", 0);
-//	    	
-//	    	articleContentDimension.put("outbrainLogoTextWidth", 0);
-//	    	articleContentDimension.put("outbrainLogoTextHeight", 0);
-//	    	articleContentDimension.put("outbrainLogoWidth", 0);
-//	    	articleContentDimension.put("outbrainLogoHeight", 0);
-//	    	articleContentDimension.put("outbrainLogoXStart", 0);
-//	    	
-//	    	//For Main Image/Video in view
-//	    	articleContentDimension.put("resetMediaDimension", 1);
-//	    	articleContentDimension.put("mediaXStart", 0);
-//	    	articleContentDimension.put("mediaWidth", 0);
-//	    	articleContentDimension.put("mediaHeight", 0);
-//	    	
-//	    	//For Author Name 
-//	    	articleContentDimension.put("resetAuthorDimension", 1);
-//	    	articleContentDimension.put("authorNameXStart", 0);
-//	    	
-//	    	//For Premium Article Tag
-//	    	articleContentDimension.put("resetPremiumIcnDimension", 1);
-//	    	articleContentDimension.put("premiumIcnXStart", 1);
-//	    	articleContentDimension.put("premiumIcnWidth", 0);
-//	    	articleContentDimension.put("premiumIcnHeight", 0);
-	    	
 	    articleContentDimension = articlePage.articlePageAlignmentValidation(articleContentDimension);
-	    	
-	    
     }
 
     @Then("^I bookmark the article in view$")
@@ -273,8 +147,8 @@ public class BuildSanityValidation {
 	    bookmarkedArticles.add(bookmarkedArticleTitle);
     }
 
-    @Then("^Keep Scrolling to navigate and bookmark the articles on Home Page$")
-    public void keep_Scrolling_to_navigate_and_bookmark_the_articles_on_Home_Page() throws Throwable {
+    @Then("^Keep Scrolling to navigate, validate the alignment and bookmark the articles on Home Page$")
+    public void keep_Scrolling_to_navigate_validate_the_alignment_and_bookmark_the_articles_on_Home_Page() throws Throwable {
     		Boolean afterSwipeSameArticle = false;
     		Integer totalBookmarkedArticle;
     		util = new DeviceActions(this.driver);
@@ -297,6 +171,26 @@ public class BuildSanityValidation {
         		afterSwipeSameArticle = articlePage.verifyWhetherReachedFirstArticleInListing(bookmarkedArticles.get(totalBookmarkedArticle-1));
     		}
     }
+    
+    @Then("^I go back to home page$")
+    public void i_go_back_to_home_page() throws Throwable {
+        articlePage.goBackToListingPage(1);
+    }
+    
+    @Then("^I goto Bookmark list page$")
+    public void i_goto_Bookmark_list_page() throws Throwable {
+    		bookmarkPage = new BookmarkPage(this.driver);
+    		bookmarkPage.gotoBookmarkedPage();
+    }
+
+    @Then("^verify the bookmarked articles are same as bookmarked and ordered based on latest first$")
+    public void verify_the_bookmarked_articles_are_same_as_bookmarked_and_ordered_based_on_latest_first() throws Throwable {
+        //now compare the title against expected
+    		bookmarkPage = new BookmarkPage(this.driver);
+    		bookmarkPage.compareBookmarkedArticleList(bookmarkedArticles);
+    }
+
+
     
 
 //    @When("^I open each article in STNow$")
