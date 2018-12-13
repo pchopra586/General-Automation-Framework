@@ -26,8 +26,17 @@ Feature: Run basic sanity tests
    	Then I go back to home page
    	
    Scenario: Bookmark Test
-   	And I goto Bookmark list page
-   	And verify the bookmarked articles are same as bookmarked and ordered based on latest first 
+   	Given I goto Bookmark list page
+   	Then verify the bookmarked articles are same as bookmarked and ordered based on latest first 
+   	When I open the first bookmarked article in view
+   	And I verify the article title is same as expected and bookmark icon is selected in article detail page
+   	Then I go back to bookmark list page 
+   	When I navigate to and open the first article in bookmarked list
+   	Then I verify the article title is same as expected and bookmark icon is selected in article detail page
+  		Then I go back to bookmark list page 
+  		And I start deleting bookmarked articles from top leaving only 2 articles in bookmarked list
+  		Then I open the last bookmarked article in view
+  		And I verify the article title is same as expected and bookmark icon is selected in article detail page
    
    
     

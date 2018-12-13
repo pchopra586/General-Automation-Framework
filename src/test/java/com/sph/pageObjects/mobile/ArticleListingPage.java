@@ -174,4 +174,21 @@ public class ArticleListingPage {
 			return null;
 		}
 	}
+	
+	public ArticleListingPage navigateToTopOfPage() {
+		methodName = "navigateToTopOfListingPage";
+		log.info("Entering Method: " + methodName);
+		boolean topOfHomePage = false;
+		try {
+			MobileElement currentElement = (MobileElement) driver.findElement(By.xpath("//XCUIElementTypeStaticText[@name=\"section_title\"]"));
+			if(currentElement.getAttribute("label").equals("TOP STORIES")) {
+				topOfHomePage = true;
+			}
+		}
+		catch(Exception e) {
+			log.info("Not reached top of Home page yet");
+		}
+		log.info("Successfully exiting from method: " + methodName);
+		return this;
+	}
 }

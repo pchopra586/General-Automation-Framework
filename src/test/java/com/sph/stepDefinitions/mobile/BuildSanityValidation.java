@@ -189,8 +189,42 @@ public class BuildSanityValidation {
     		bookmarkPage = new BookmarkPage(this.driver);
     		bookmarkPage.compareBookmarkedArticleList(bookmarkedArticles);
     }
+    
+    @When("^I open the first bookmarked article in view$")
+    public void i_open_the_first_bookmarked_article_in_view() throws Throwable {
+        articleList = new ArticleListingPage(this.driver);
+		articleTitle = articleList.openFirstArticleInView();
+    }
 
+    @When("^I verify the article title is same as expected and bookmark icon is selected in article detail page$")
+    public void i_verify_the_article_title_is_same_as_expected_and_bookmark_icon_is_selected_in_article_detail_page() throws Throwable {
+        articlePage = new ArticlePage(this.driver);
+        articlePage.assertArticleHeading(articleTitle);
+    }
 
+    @Then("^I go back to bookmark list page$")
+    public void i_go_back_to_bookmark_list_page() throws Throwable {
+        bookmarkPage = new BookmarkPage(this.driver);
+        bookmarkPage.clickOnBackButton(1);
+    }
+
+    @When("^I navigate to and open the first article in bookmarked list$")
+    public void i_navigate_to_and_open_the_first_article_in_bookmarked_list() throws Throwable {
+        articleList = new ArticleListingPage(this.driver);
+        
+    }
+
+    @Then("^I start deleting bookmarked articles from top leaving only (\\d+) articles in bookmarked list$")
+    public void i_start_deleting_bookmarked_articles_from_top_leaving_only_articles_in_bookmarked_list(int arg1) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
+    }
+
+    @Then("^I open the last bookmarked article in view$")
+    public void i_open_the_last_bookmarked_article_in_view() throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
+    }
     
 
 //    @When("^I open each article in STNow$")

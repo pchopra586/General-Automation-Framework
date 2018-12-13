@@ -157,7 +157,6 @@ public class HomePage{
         this.wait = new WebDriverWait(this.driver, 30);
         this.util = new DeviceActions(this.driver);
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
-//		resetRemoveFromHomeBtnDimension = true;
 	}
 	
 	public boolean onHomePage() {
