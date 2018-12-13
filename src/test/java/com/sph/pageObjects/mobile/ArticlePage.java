@@ -4,7 +4,9 @@ import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Map;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -21,6 +23,7 @@ import com.sph.driverFactory.LocalWebDriverListener;
 import com.sph.listeners.Reporter;
 import com.sph.utilities.Constant;
 import com.sph.utilities.DeviceActions;
+import com.sph.utilities.IOSElements;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
@@ -33,11 +36,8 @@ public class ArticlePage {
 	private String methodName = null;
 
 	String browserName = LocalWebDriverListener.browserName;
-
     Logger log = Logger.getLogger(BookmarkPage.class);
 	private WebDriver driver;
-    private WebDriverWait wait;
-
     private Capabilities capabilities;
     private DeviceActions util;
     
@@ -49,6 +49,9 @@ public class ArticlePage {
         this.capabilities = ((RemoteWebDriver) driver).getCapabilities();
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
 	}
+	
+	@iOSXCUITFindBy(accessibility = "ADVERTISEMENT")
+	private MobileElement interimAd;
 
 	@iOSXCUITFindBy(accessibility = "article_title")
 	@AndroidFindBy(id = "article_headline")
@@ -69,22 +72,25 @@ public class ArticlePage {
 	@AndroidFindBy(id = "btn_subscribe")
 	private MobileElement subscribeButton;
 
-
-	@iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeNavigationBar/**/XCUIElementTypeStaticText")
-	@AndroidFindBy(id = "com.buuuk.st:id/tv_title")
-
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeNavigationBar/XCUIElementTypeStaticText")
+	@AndroidFindBy(id = "tv_title")
 	private MobileElement sectionTitle;
+	
+	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name=\"article_published_on\"])[1]")
+	private MobileElement publishInfo;
 
 	@iOSXCUITFindBy(accessibility = "title_subscription_full_article")
 	@AndroidFindBy(id = "tv_read_full_article")
 	private MobileElement readFullArticleText;
+	
+	@iOSXCUITFindBy(accessibility = "time")
+	private MobileElement timeIcn;
 
 	@iOSXCUITFindBy(accessibility = "article_gradient")
 	@AndroidFindBy(id = "gradientView")
 	private MobileElement gradientView;
 
 	@FindBy(css = "#main-content p:nth-child(3) ")
-	@AndroidFindBy(xpath = "(//android.widget.TextView[@resource-id=\"com.buuuk.st:id/tv_text\"])[3]")
 	private WebElement mainContent;
 
 	@iOSXCUITFindBy(accessibility = "FROM AROUND THE WEB")
@@ -155,6 +161,30 @@ public class ArticlePage {
 	@iOSXCUITFindBy(className = "XCUIElementTypeWebView")
 	@AndroidFindBy(className = "android.webkit.WebView")
 	private MobileElement webArticle;
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='article_internal_suggestion']/XCUIElementTypeTable/XCUIElementTypeStaticText")
+	private MobileElement intRecommendedTitle;
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='article_internal_suggestion']//XCUIElementTypeStaticText[@name='article_title']")
+	private MobileElement intRecommendedArticleTitle;
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='article_internal_suggestion']//XCUIElementTypeStaticText[@name='article_published_on']")
+	private MobileElement intRecommendedArticlePublishInfo;
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='article_external_suggestion']/XCUIElementTypeTable/XCUIElementTypeStaticText")
+	private MobileElement extRecommendedTitle;
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='article_external_suggestion']//XCUIElementTypeStaticText[@name='article_title']")
+	private MobileElement extRecommendedArticleTitle;
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='article_external_suggestion']//XCUIElementTypeCell/XCUIElementTypeStaticText[1]")
+	private MobileElement extRecommendedArticlePublisherInfo;
+	
+	@iOSXCUITFindBy(accessibility = IOSElements.OUTBRAIN_TEXT)
+	private MobileElement outbrainLogoText;
+	
+	@iOSXCUITFindBy(accessibility = IOSElements.OUTBRAIN_LOGO_ID)
+	private MobileElement outbrainLogo;
 
 	public ArticlePage switchToMainArticle() {
 		boolean flag = util.isElementPresent(acceptInfo, Constant.SHORT_TIMEOUT);
@@ -167,13 +197,11 @@ public class ArticlePage {
 	public ArticlePage switchView(String view) {
 		log.info("Switching to " + view);
 		try{
-			util.switchContextToView((AppiumDriver<MobileElement>)driver, view);
+			util.switchContextToView((AppiumDriver<MobileElement>) driver, view);
 		}catch (Exception ex) {
 			log.info("Exception in getting response.." + ex.getMessage());
 		}
-
-		//logger.info("body is" + articleContent.getText()); add if condition , if webview then execute this statement
-
+		log.info("body is" + articleContent.getText());
 		return this;
 	}
 
@@ -200,15 +228,8 @@ public class ArticlePage {
 	 */
 
 	public ArticlePage verifyPremiumArticleAccess(int maxSwipe) {
-		log.info("verifying accessibility of premium article");
-		checkView();
-		////switchView(Constant.WEBVIEW);
-		boolean visibilityFlag = util.isElementPresent(mainContent, Constant.LONG_TIMEOUT);
-		if (!visibilityFlag) {
-			log.info("User doesn't have access to the article, kindly subscribe for get access to premium content!");
-		}
-		switchView(Constant.NATIVE);
 
+		log.info("verifying accessibility of premium article");
 		boolean flag = util.swipeVerticalUntilElementIsFound(premiumStoryAccessHelpText, maxSwipe, Constant.UP);
 		if (flag) {
 			log.info("'premium Stories access help text' is visible!");
@@ -224,7 +245,14 @@ public class ArticlePage {
 			Assert.assertEquals(premiumStoryAccessHelpText.getText().trim(), Constant.PREMIUM_STORIES_ACCESS_HELP_TEXT);
 			// util.assertEquals(whatIsPremiumText.getText(),
 			// Constant.WHAT_IS_PREMIUM_TEXT);
+			switchView(Constant.WEBVIEW);
+			boolean visibilityFlag = util.isElementPresent((MobileElement)mainContent, Constant.SHORT_TIMEOUT);
+			if (!visibilityFlag) {
+				log.info("User doesn't have access to the article, kindly subscribe for get access to premium content!");
+			}
+
 		}
+
 		return this;
 
 	}
@@ -233,14 +261,12 @@ public class ArticlePage {
 		log.info("Section title is : " + sectionTitle.getText());
 		Assert.assertEquals(sectionTitle.getText(), tabName);
 		log.info("Section title is displaying correctly!!");
-		Reporter.addStepLog("Section title is "+sectionTitle.getText());
 		return this;
 	}
 
 	public ArticlePage verifyArticleAccess() {
-		////switchView(Constant.WEBVIEW);
-		checkView();
-		util.isElementPresent(mainContent, Constant.SHORT_TIMEOUT);
+		switchView(Constant.WEBVIEW);
+		util.isElementPresent((MobileElement)mainContent, Constant.SHORT_TIMEOUT);
 		log.info(mainContent.getText());
 		log.info("User has access to the article!");
 		switchView(Constant.NATIVE);
@@ -298,9 +324,11 @@ public class ArticlePage {
 		return this;
 	}
 
-	public HomePage clickOnBackButton(int noOfArticle) {
+	//Function name is confusing...as it just says click of button. Actually, it's the process to go back to home/listing page
+	public HomePage goBackToListingPage(int articleNavigationDepth) {
 		try {
-			for (int i = 0; i < noOfArticle; i++) {
+			//articleNavigationDepth -> Total number of times, one needs to click back/close button to reach the listing page
+			for (int i = 0; i < articleNavigationDepth; i++) {
 				util.clickifClickable(backBtn, Constant.SHORT_TIMEOUT);
 			}
 			return new HomePage(driver);
@@ -343,7 +371,7 @@ public class ArticlePage {
 		return this;
 	}
 
-	public ArticlePage bookmarkArticle() {
+	public String bookmarkArticle() {
 		boolean flag = isBookmarkIconSelected();
 		if (flag) {
 			log.info("Article is already bookmarked!!");
@@ -356,7 +384,7 @@ public class ArticlePage {
 				log.error("Unable to bookmark article");
 			}
 		}
-		return this;
+		return articleHeadline.getAttribute("label");
 	}
 
 	public ArticlePage removeBookmarkedArticle() {
@@ -510,13 +538,215 @@ public class ArticlePage {
 		boolean back = util.isElementPresent(backBtn, Constant.SHORT_TIMEOUT, "Bookmark Button");
 		if (headline && bookmark && textToSpeech && share && back) {
 			log.info("Navigated to details page and article headline is displayed");
-			Reporter.addStepLog("Navigated to details page and article headline is displayed");	
-			
+			Reporter.addStepLog("Navigated to details page and article headline is displayed");			
 		}else{
-			log.error("error while Navigation to details");
-					
+			log.error("error while Navigation to details");				
 		}
 		
 	}
 	
+	public Map<String, Integer> articlePageAlignmentValidation(Map<String, Integer> articleContentDimension) {
+		methodName = "articlePageAlignmentValidation";
+		log.info("Entering Method: " + methodName);
+		
+		Integer headlineXStart = articleHeadline.getCoordinates().onPage().getX();
+		Integer headlineWidth = articleHeadline.getSize().getWidth();
+		
+		Integer backBtnWidth = backBtn.getSize().getWidth();
+		Integer backBtnHeight = backBtn.getSize().getHeight();
+		Integer backBtnXStart = backBtn.getCoordinates().onPage().getX();
+		Integer backBtnYStart = backBtn.getCoordinates().onPage().getY();
+		
+		Integer navigationTitleXStart = sectionTitle.getCoordinates().onPage().getX();
+		Integer navigationTitleYStart = sectionTitle.getCoordinates().onPage().getY();
+		
+		Integer textToSpeechWidth = textToSpeechBtn.getSize().getWidth();
+		Integer textToSpeechHeight = textToSpeechBtn.getSize().getHeight();
+		Integer textToSpeechXStart = textToSpeechBtn.getCoordinates().onPage().getX();
+		Integer textToSpeechYStart = textToSpeechBtn.getCoordinates().onPage().getY();
+		
+		Integer bookmarkWidth = bookmarkBtn.getSize().getWidth();
+		Integer bookmarkHeight = bookmarkBtn.getSize().getHeight();
+		Integer bookmarkXStart = bookmarkBtn.getCoordinates().onPage().getX();
+		Integer bookmarkYStart = bookmarkBtn.getCoordinates().onPage().getY();
+		
+		Integer shareWidth = shareBtn.getSize().getWidth();
+		Integer shareHeight = shareBtn.getSize().getHeight();
+		Integer shareXStart = shareBtn.getCoordinates().onPage().getX();
+		Integer shareYStart = shareBtn.getCoordinates().onPage().getY();
+		
+		Integer timeIcnWidth = timeIcn.getSize().getWidth();
+		Integer timeIcnHeight = timeIcn.getSize().getHeight(); //Verification will have timeXStart as well
+		
+		Integer publishInfoWidth = publishInfo.getSize().getWidth();
+		Integer publishInfoXStart = publishInfo.getCoordinates().onPage().getX(); //Verification will have timeXStart as well
+		
+		Integer intRecommendedTitleWidth = intRecommendedTitle.getSize().getWidth();
+		Integer intRecommendedTitleHeight = intRecommendedTitle.getSize().getHeight();
+		
+		Integer intRecommendedArticleTitleWidth = intRecommendedArticleTitle.getSize().getWidth();
+		Integer intRecommendedArticleTitleXStart = intRecommendedArticleTitle.getCoordinates().onPage().getX();
+		
+		Integer intRecommendedArticlePublishInfoWidth = intRecommendedArticlePublishInfo.getSize().getWidth();
+		Integer intRecommendedArticlePublishInfoXStart = intRecommendedArticlePublishInfo.getCoordinates().onPage().getX();
+		Integer intRecommendedArticlePublishInfoHeight = intRecommendedArticlePublishInfo.getSize().getHeight();
+			
+		Integer extRecommendedTitleWidth = extRecommendedTitle.getSize().getWidth();
+		Integer extRecommendedTitleHeight = extRecommendedTitle.getSize().getHeight();		
+		
+		Integer extRecommendedArticlePublisherInfoWidth = extRecommendedArticlePublisherInfo.getSize().getWidth();
+		Integer extRecommendedArticlePublisherInfoXStart = extRecommendedArticlePublisherInfo.getCoordinates().onPage().getX();
+		
+		Integer outbrainLogoWidth = outbrainLogo.getSize().getWidth();
+		Integer outbrainLogoXStart = outbrainLogo.getCoordinates().onPage().getX();
+		Integer outbrainLogoHeight = outbrainLogo.getSize().getHeight();
+		
+		Integer outbrainLogoTextWidth = outbrainLogoText.getSize().getWidth();
+		Integer outbrainLogoTextXStart = outbrainLogoText.getCoordinates().onPage().getX();
+		Integer outbrainLogoTextHeight = outbrainLogoText.getSize().getHeight();
+		
+		log.info("Captured the image dimensions");
+		
+		if(articleContentDimension.get("resetReqDimension").equals(1)) {
+			articleContentDimension.put("textXStart", headlineXStart);
+			articleContentDimension.put("textRowWidth", headlineWidth);
+			
+			articleContentDimension.put("backBtnXStart", backBtnXStart);
+		    articleContentDimension.put("backBtnYStart", backBtnYStart);
+		    articleContentDimension.put("backBtnWidth", backBtnWidth);
+		    articleContentDimension.put("backBtnHeight", backBtnHeight);
+		    
+		    articleContentDimension.put("navigationTitleXStart", navigationTitleXStart);
+		    articleContentDimension.put("navigationTitleYStart", navigationTitleYStart);
+		    
+		    articleContentDimension.put("textToSpeechXStart", textToSpeechXStart);
+		    articleContentDimension.put("textToSpeechYStart", textToSpeechYStart);
+		    articleContentDimension.put("textToSpeechWidth", textToSpeechWidth);
+		    articleContentDimension.put("textToSpeechHeight", textToSpeechHeight);
+		    
+		    articleContentDimension.put("bookmarkXStart", bookmarkXStart);
+		    articleContentDimension.put("bookmarkYStart", bookmarkYStart);
+		    articleContentDimension.put("bookmarkWidth", bookmarkWidth);
+		    articleContentDimension.put("bookmarkHeight", bookmarkHeight);
+		    
+		    articleContentDimension.put("shareXStart", shareXStart);
+		    articleContentDimension.put("shareYStart", shareYStart);
+		    articleContentDimension.put("shareWidth", shareWidth);
+		    articleContentDimension.put("shareHeight", shareHeight);
+		    
+		    articleContentDimension.put("timeIcnWidth", timeIcnWidth);
+		    articleContentDimension.put("timeIcnHeight", timeIcnHeight);
+		    articleContentDimension.put("publishInfoWidth", publishInfoWidth);
+		    articleContentDimension.put("publishInfoXStart", publishInfoXStart);
+		    
+		    articleContentDimension.put("recommendedArticleTitleWidth", intRecommendedArticleTitleWidth);
+		    articleContentDimension.put("recommendedArticleTitleXStart", intRecommendedArticleTitleXStart);
+		    
+		    articleContentDimension.put("intRecommendedTitleWidth", intRecommendedTitleWidth);
+		    articleContentDimension.put("intRecommendedTitleHeight", intRecommendedTitleHeight);
+		    articleContentDimension.put("intRecommendedArticlePublishInfoXStart", intRecommendedArticlePublishInfoXStart);
+		    articleContentDimension.put("intRecommendedArticlePublishInfoWidth", intRecommendedArticlePublishInfoWidth);
+		    articleContentDimension.put("intRecommendedArticlePublishInfoHeight", intRecommendedArticlePublishInfoHeight);
+		    
+		    articleContentDimension.put("extRecommendedTitleWidth", extRecommendedTitleWidth);
+		    articleContentDimension.put("extRecommendedTitleHeight", extRecommendedTitleHeight);
+		    articleContentDimension.put("extRecommendedArticlePublisherInfoXStart", extRecommendedArticlePublisherInfoXStart);
+		    articleContentDimension.put("extRecommendedArticlePublisherInfoWidth", extRecommendedArticlePublisherInfoWidth);
+		    
+		    articleContentDimension.put("outbrainLogoTextXStart", outbrainLogoTextXStart);
+		    articleContentDimension.put("outbrainLogoTextWidth", outbrainLogoTextWidth);
+		    articleContentDimension.put("outbrainLogoTextHeight", outbrainLogoTextHeight);
+		    
+		    articleContentDimension.put("outbrainLogoXStart", outbrainLogoXStart);
+		    articleContentDimension.put("outbrainLogoWidth", outbrainLogoWidth);
+		    articleContentDimension.put("outbrainLogoHeight", outbrainLogoHeight);
+		}
+		else {
+			Integer intRecommendedTitleXStart = intRecommendedTitle.getCoordinates().onPage().getX();
+			Integer extRecommendedTitleXStart = extRecommendedTitle.getCoordinates().onPage().getX();
+			Integer extRecommendedArticleTitleWidth = extRecommendedArticleTitle.getSize().getWidth();
+			Integer extRecommendedArticleTitleXStart = extRecommendedArticleTitle.getCoordinates().onPage().getX();
+			
+			Assert.assertEquals(headlineXStart, articleContentDimension.get("textXStart"), "Inconsistent x-axis placement of articleHeadline");
+			Assert.assertEquals(headlineWidth, articleContentDimension.get("textRowWidth"), "Inconsistent width of articleHeadline row");	
+			
+			Assert.assertEquals(backBtnXStart, articleContentDimension.get("backBtnXStart"), "Inconsistent x-axis placement of Back Button");
+			Assert.assertEquals(backBtnYStart, articleContentDimension.get("backBtnYStart"), "Inconsistent y-axis placement of Back Button");	
+			Assert.assertEquals(backBtnWidth, articleContentDimension.get("backBtnWidth"), "Inconsistent Width of Back Button");
+			Assert.assertEquals(backBtnHeight, articleContentDimension.get("backBtnHeight"), "Inconsistent Height of Back Button");	
+
+			Assert.assertEquals(backBtnXStart, articleContentDimension.get("navigationTitleXStart"), "Inconsistent x-axis placement of navigation title");
+			Assert.assertEquals(backBtnYStart, articleContentDimension.get("navigationTitleYStart"), "Inconsistent y-axis placement of navigation title");	
+			
+			Assert.assertEquals(textToSpeechXStart, articleContentDimension.get("textToSpeechXStart"), "Inconsistent x-axis placement of Text to Speech Button");
+			Assert.assertEquals(textToSpeechYStart, articleContentDimension.get("textToSpeechYStart"), "Inconsistent y-axis placement of Text to Speech Button");	
+			Assert.assertEquals(textToSpeechWidth, articleContentDimension.get("textToSpeechWidth"), "Inconsistent Width of Text to Speech Button");
+			Assert.assertEquals(textToSpeechHeight, articleContentDimension.get("textToSpeechHeight"), "Inconsistent Height of Text to Speech Button");	
+
+			Assert.assertEquals(bookmarkXStart, articleContentDimension.get("bookmarkXStart"), "Inconsistent x-axis placement of Text to Speech Button");
+			Assert.assertEquals(bookmarkYStart, articleContentDimension.get("bookmarkYStart"), "Inconsistent y-axis placement of Text to Speech Button");	
+			Assert.assertEquals(bookmarkWidth, articleContentDimension.get("bookmarkWidth"), "Inconsistent Width of Text to Speech Button");
+			Assert.assertEquals(bookmarkHeight, articleContentDimension.get("bookmarkHeight"), "Inconsistent Height of Text to Speech Button");	
+
+			Assert.assertEquals(shareXStart, articleContentDimension.get("shareXStart"), "Inconsistent x-axis placement of share Button");
+			Assert.assertEquals(shareYStart, articleContentDimension.get("shareYStart"), "Inconsistent y-axis placement of share Button");	
+			Assert.assertEquals(shareWidth, articleContentDimension.get("shareWidth"), "Inconsistent Width of share Button");
+			Assert.assertEquals(shareHeight, articleContentDimension.get("shareHeight"), "Inconsistent Height of share Button");	
+
+			Assert.assertEquals((Integer)timeIcn.getCoordinates().onPage().getX(), articleContentDimension.get("textXStart"), "Inconsistent x-axis placement of articleHeadline");
+			Assert.assertEquals(timeIcnWidth, articleContentDimension.get("timeIcnWidth"), "Inconsistent width of Time Icon");	
+			Assert.assertEquals(timeIcnHeight, articleContentDimension.get("timeIcnHeight"), "Inconsistent height of Time Icon");	
+			
+			Assert.assertEquals(publishInfoXStart, articleContentDimension.get("publishInfoXStart"), "Inconsistent x-axis placement of publish info");
+			Assert.assertEquals(publishInfoWidth, articleContentDimension.get("publishInfoWidth"), "Inconsistent width of publish info");	
+			
+			Assert.assertEquals(intRecommendedTitleWidth, articleContentDimension.get("intRecommendedTitleWidth"), "Inconsistent width of internal Recommended section title");
+			Assert.assertEquals(intRecommendedTitleHeight, articleContentDimension.get("intRecommendedTitleHeight"), "Inconsistent height of internal Recommended section title");	
+			Assert.assertEquals(intRecommendedTitleXStart, articleContentDimension.get("textXStart"), "Inconsistent x-axis placement of internal Recommended section title");
+			
+			Assert.assertEquals(intRecommendedArticleTitleXStart, articleContentDimension.get("recommendedArticleTitleXStart"), "Inconsistent x-axis placement of internally Recommended article title");
+			Assert.assertEquals(intRecommendedArticleTitleWidth, articleContentDimension.get("recommendedArticleTitleWidth"), "Inconsistent width of internally Recommended article title");	
+			
+			Assert.assertEquals(intRecommendedArticlePublishInfoWidth, articleContentDimension.get("intRecommendedArticlePublishInfoWidth"), "Inconsistent width of internal Recommended Publish info");
+			Assert.assertEquals(intRecommendedArticlePublishInfoHeight, articleContentDimension.get("intRecommendedArticlePublishInfoHeight"), "Inconsistent height of internal Recommended Publish info");	
+			Assert.assertEquals(intRecommendedArticlePublishInfoXStart, articleContentDimension.get("intRecommendedArticlePublishInfoXStart"), "Inconsistent x-axis placement of internal Recommended Publish info");
+			
+			Assert.assertEquals(extRecommendedTitleWidth, articleContentDimension.get("extRecommendedTitleWidth"), "Inconsistent width of external Recommended section title");
+			Assert.assertEquals(extRecommendedTitleHeight, articleContentDimension.get("extRecommendedTitleHeight"), "Inconsistent height of external Recommended section title");	
+			Assert.assertEquals(extRecommendedTitleXStart, articleContentDimension.get("textXStart"), "Inconsistent x-axis placement of external Recommended section title");
+			
+			Assert.assertEquals(extRecommendedArticleTitleXStart, articleContentDimension.get("recommendedArticleTitleXStart"), "Inconsistent x-axis placement of externally Recommended article title");
+			Assert.assertEquals(extRecommendedArticleTitleWidth, articleContentDimension.get("recommendedArticleTitleWidth"), "Inconsistent width of externally Recommended article title");	
+		    
+			Assert.assertEquals(extRecommendedArticlePublisherInfoXStart, articleContentDimension.get("extRecommendedArticlePublisherInfoXStart"), "Inconsistent x-axis placement of externally Recommended publisher info");
+			Assert.assertEquals(extRecommendedArticlePublisherInfoWidth, articleContentDimension.get("extRecommendedArticlePublisherInfoWidth"), "Inconsistent width of externally Recommended publisher info");	
+		    
+			Assert.assertEquals(outbrainLogoTextWidth, articleContentDimension.get("outbrainLogoTextWidth"), "Inconsistent width of outbrain logo text");
+			Assert.assertEquals(outbrainLogoTextHeight, articleContentDimension.get("outbrainLogoTextHeight"), "Inconsistent height of outbrain logo text");	
+			Assert.assertEquals(outbrainLogoTextXStart, articleContentDimension.get("outbrainLogoTextXStart"), "Inconsistent x-axis placement of outbrain logo text");
+			
+			Assert.assertEquals(outbrainLogoWidth, articleContentDimension.get("outbrainLogoWidth"), "Inconsistent width of outbrain logo");
+			Assert.assertEquals(outbrainLogoHeight, articleContentDimension.get("outbrainLogoHeight"), "Inconsistent height of outbrain logo");	
+			Assert.assertEquals(outbrainLogoXStart, articleContentDimension.get("outbrainLogoXStart"), "Inconsistent x-axis placement of outbrain logo");
+		}
+		
+		return articleContentDimension;
+	}
+	
+	public boolean verifyWhetherReachedFirstArticleInListing(String previousArticleHeadline) {
+		Boolean reachedFirstArticleInListingPage = false;
+		try{
+			reachedFirstArticleInListingPage = articleHeadline.getAttribute("label").equals(previousArticleHeadline);
+		}catch(Exception ex) {
+			if(interimAd.isDisplayed()) {
+				util = new DeviceActions(this.driver);
+				util.swipeHorizontal("Right");
+				
+				reachedFirstArticleInListingPage = articleHeadline.getAttribute("label").equals(previousArticleHeadline);
+			}else {
+				throw new NoSuchElementException(ex.getMessage());
+			}			
+		}
+		return reachedFirstArticleInListingPage;
+	}
 }

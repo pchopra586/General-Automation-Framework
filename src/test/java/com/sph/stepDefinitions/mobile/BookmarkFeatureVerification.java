@@ -92,7 +92,7 @@ public class BookmarkFeatureVerification {
     @When("^I click on back button \\[Bookmark\\]$")
     public void clickOnBackButton() throws IOException, InterruptedException {
   
-    	articlePage.clickOnBackButton(1);       	
+    	articlePage.goBackToListingPage(1);       	
     }
    
     @Then("^We are navigated back to the homepage \\[Bookmark\\]$")

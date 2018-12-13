@@ -111,7 +111,6 @@ public class AccountPage {
 			driver.quit();
 		}
 
-		// Log.INFO("Exiting Method: " + methodName);
 		log.info("Exiting Method: " + methodName);
 		return this;
 	}

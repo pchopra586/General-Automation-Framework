@@ -109,6 +109,29 @@ public class ArticleListingPage {
 			return null;
 		}
 	}
+    
+    public String openFirstArticleInView() {
+		Integer totalArticlesInView = articlesInView.size();
+		Integer articleIndex = 0;
+		String firstArticleTitle = null;
+		try {
+			while(totalArticlesInView > articleIndex) {
+				MobileElement firstArticleInView = articlesInView.get(articleIndex);
+				if(firstArticleInView.getAttribute("visible").equalsIgnoreCase("true")) {
+					firstArticleTitle = firstArticleInView.getAttribute("label");
+					firstArticleInView.click();
+					break;
+				}
+				else {
+					articleIndex++;
+				}
+			}
+		return firstArticleTitle;
+	}catch(Exception ex) {
+		log.error("Cannot open Article");
+		return null;
+	}
+}
 
     //TODO: Discuss with Sandhya (couldn't get the purpose of element)
 	public ArticlePage navigateToArticle(MobileElement element, String articleType) {
@@ -150,5 +173,22 @@ public class ArticleListingPage {
 			log.error("Heading of Article is inconsistent");
 			return null;
 		}
+	}
+	
+	public ArticleListingPage navigateToTopOfPage() {
+		methodName = "navigateToTopOfListingPage";
+		log.info("Entering Method: " + methodName);
+		boolean topOfHomePage = false;
+		try {
+			MobileElement currentElement = (MobileElement) driver.findElement(By.xpath("//XCUIElementTypeStaticText[@name=\"section_title\"]"));
+			if(currentElement.getAttribute("label").equals("TOP STORIES")) {
+				topOfHomePage = true;
+			}
+		}
+		catch(Exception e) {
+			log.info("Not reached top of Home page yet");
+		}
+		log.info("Successfully exiting from method: " + methodName);
+		return this;
 	}
 }

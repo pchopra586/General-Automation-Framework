@@ -109,9 +109,8 @@ public class GenericNavigator{
 		return completedBasicInstallConfig;
 	}
 	
-public void isAdDisplayed() {
-		
-		logger.info("Verifying if ad is displayed");
+public void isAdDisplayed() {	
+		log.info("Verifying if ad is displayed");
 		if (adCloseButton.isDisplayed()) {
 			adCloseButton.click();	
 		}

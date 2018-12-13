@@ -12,6 +12,7 @@ public class IOSElements {
 	public static final String SECTION_LABEL_TYPE = "XCUIElementTypeStaticText";
 	public static final String SECTION_LABEL_ID = "section_title";
 	public static final String PREMIUM_SECTION_LABEL_ID = "Unique content, exclusive insights";
+	public static final String PREMIUM_ARTICLE_TAG = "premium";
 	
 	public static final String MAIN_NAVIGATION_BAR_NAME = "StraitsTimes_Revamp.ArticleListingHolder";
 	public static final String CUSTOM_SECTIONS_TABLE_VIEW = "StraitsTimes_Revamp.CustomSectionsTableView";
@@ -111,5 +112,8 @@ public class IOSElements {
 	
 	public static final String ALERT_IGNORE_ID = "alert_button_option_two";
 	public static final String ALERT_ACCEPT_ID = "OK";
+	
+	public static final String OUTBRAIN_TEXT = "Recommended by";
+	public static final String OUTBRAIN_LOGO_ID = "Outbrain-logo";
 }
 
